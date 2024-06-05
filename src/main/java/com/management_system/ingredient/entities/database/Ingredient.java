@@ -25,6 +25,10 @@ public class Ingredient implements Serializable {
     @Indexed(unique = true)
     String id;
 
+    @JsonProperty(value = "supplier_id")
+    @Field(name = "supplier_id")
+    String supplierId;
+
     @Field(name = "name")
     String name;
 
@@ -34,6 +38,14 @@ public class Ingredient implements Serializable {
     @JsonProperty(value = "last_update_time")
     @Field(name = "last_update_time")
     Date lastUpdateTime;
+
+    @JsonProperty(value = "creation_date")
+    @Field(name = "creation_date")
+    Date creationDate;
+
+    @JsonProperty(value = "last_update_username")
+    @Field(name = "last_update_username")
+    String lastUpdateUsername;
 
     @Enumerated(EnumType.STRING)
     @Field(name = "status")
