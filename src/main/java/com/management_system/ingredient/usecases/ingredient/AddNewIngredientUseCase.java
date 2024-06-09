@@ -48,13 +48,12 @@ public class AddNewIngredientUseCase extends UseCase<AddNewIngredientUseCase.Inp
             newIngredient.setStatus(IngredientStatusEnum.AVAILABLE);
             newIngredient.setLastUpdateUsername(tokenInfo.getUserName());
 
-            ingredientRepo.save(newIngredient);
+            ingredientRepo.insert(newIngredient);
 
             return ApiResponse.builder()
                     .result("success")
                     .content("Add new ingredient successfully")
                     .status(HttpStatus.OK)
-                    .message(tokenInfo.getUserName())
                     .build();
         }
         catch (Exception e) {
