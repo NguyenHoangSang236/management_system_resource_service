@@ -1,11 +1,15 @@
 package com.management_system.ingredient.infrastucture.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.management_system.ingredient.entities.database.Ingredient;
+import com.management_system.ingredient.entities.request_dto.IngredientFilterOptions;
 import com.management_system.ingredient.entities.request_dto.IngredientRequest;
 import com.management_system.ingredient.usecases.ingredient.AddNewIngredientUseCase;
 import com.management_system.ingredient.usecases.ingredient.EditIngredientUseCase;
 import com.management_system.ingredient.usecases.ingredient.FilterIngredientsUseCase;
+import com.management_system.utilities.core.deserializer.FilterOptionsDeserializer;
+import com.management_system.utilities.core.filter.FilterOption;
 import com.management_system.utilities.core.usecase.UseCase;
 import com.management_system.utilities.core.usecase.UseCaseExecutor;
 import com.management_system.utilities.entities.ApiResponse;
@@ -61,6 +65,11 @@ public class IngredientController {
     @PostMapping("/filterIngredient")
     public CompletableFuture<ResponseEntity<ApiResponse>> filterIngredient(@RequestBody String json, HttpServletRequest request) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
+        SimpleModule module = new SimpleModule();
+
+        module.addDeserializer(FilterOption.class, new FilterOptionsDeserializer(IngredientFilterOptions.class));
+        objectMapper.registerModule(module);
+
         FilterRequest filterRequest = objectMapper.readValue(json, FilterRequest.class);
 
         return useCaseExecutor.execute(

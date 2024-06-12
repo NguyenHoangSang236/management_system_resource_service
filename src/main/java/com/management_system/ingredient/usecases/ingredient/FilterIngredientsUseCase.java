@@ -15,7 +15,7 @@ public class FilterIngredientsUseCase extends UseCase<FilterIngredientsUseCase.I
     public ApiResponse execute(InputValue input) {
         IngredientFilterOptions options = (IngredientFilterOptions) input.filterRequest().getFilterOption();
 
-        System.out.println(options.getName());
+
 
         return ApiResponse.builder()
                 .result("success")
