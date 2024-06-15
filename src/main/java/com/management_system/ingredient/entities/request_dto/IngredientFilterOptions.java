@@ -1,6 +1,8 @@
 package com.management_system.ingredient.entities.request_dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.management_system.ingredient.infrastucture.constant.IngredientMeasurementUnitEnum;
 import com.management_system.ingredient.infrastucture.constant.IngredientStatusEnum;
 import com.management_system.ingredient.infrastucture.constant.SortType;
@@ -10,6 +12,8 @@ import jakarta.persistence.Enumerated;
 import lombok.*;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -18,6 +22,9 @@ import java.util.Date;
 @Builder
 public class IngredientFilterOptions extends FilterOption {
     String name;
+
+    @JsonProperty("supplier_name")
+    String supplierNName;
 
     String id;
 
@@ -40,4 +47,11 @@ public class IngredientFilterOptions extends FilterOption {
     @JsonProperty("sort_type")
     @Enumerated(EnumType.STRING)
     SortType sortType;
+
+
+    @Override
+    public Map<String, Object> toMap() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.convertValue(this, new TypeReference<Map<String, Object>>() {});
+    }
 }
