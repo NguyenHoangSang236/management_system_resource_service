@@ -11,13 +11,15 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class IngredientRequest {
+public class IngredientRequest implements Serializable {
     String supplierName;
 
     String name;
@@ -44,4 +46,6 @@ public class IngredientRequest {
     IngredientMeasurementUnitEnum measurementUnit;
 
     double quantity;
+
+    List<String> categories;
 }

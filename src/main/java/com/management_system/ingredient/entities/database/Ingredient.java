@@ -13,6 +13,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -61,4 +62,8 @@ public class Ingredient implements Serializable {
 
     @Field(name = "quantity")
     double quantity;
+
+    @JsonProperty(value = "categories")
+    @Field(name = "categories")
+    List<String> categories;
 }

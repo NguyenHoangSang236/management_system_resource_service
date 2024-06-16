@@ -15,9 +15,10 @@ import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @Component
-public class AddNewIngredientUseCase extends UseCase<AddNewIngredientUseCase.InputValue, ApiResponse> {
+public class AddNewIngredientsUseCase extends UseCase<AddNewIngredientsUseCase.InputValue, ApiResponse> {
     @Autowired
     IngredientRepository ingredientRepo;
 
@@ -30,10 +31,10 @@ public class AddNewIngredientUseCase extends UseCase<AddNewIngredientUseCase.Inp
 
     @Override
     public ApiResponse execute(InputValue input) {
-        try {
-            TokenInfo tokenInfo = jwtUtils.getTokenInfoFromHttpRequest(input.request());
-            Ingredient newIngredient = input.ingredient();
+        TokenInfo tokenInfo = jwtUtils.getTokenInfoFromHttpRequest(input.request());
+        List<Ingredient> newIngredients = input.ingredients();
 
+        for(Ingredient newIngredient: newIngredients) {
             Date currentTime = new Date();
 
             SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
@@ -49,23 +50,15 @@ public class AddNewIngredientUseCase extends UseCase<AddNewIngredientUseCase.Inp
             newIngredient.setLastUpdateUsername(tokenInfo.getUserName());
 
             ingredientRepo.insert(newIngredient);
+        }
 
-            return ApiResponse.builder()
-                    .result("success")
-                    .content("Add new ingredient successfully")
-                    .status(HttpStatus.OK)
-                    .build();
-        }
-        catch (Exception e) {
-            e.printStackTrace();
-            return ApiResponse.builder()
-                    .result("failed")
-                    .content(e.getMessage())
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .build();
-        }
+        return ApiResponse.builder()
+                .result("success")
+                .content("Add new ingredients successfully")
+                .status(HttpStatus.OK)
+                .build();
 
     }
 
-    public record InputValue(HttpServletRequest request, Ingredient ingredient) implements UseCase.InputValue{}
+    public record InputValue(HttpServletRequest request, List<Ingredient> ingredients) implements UseCase.InputValue{}
 }
