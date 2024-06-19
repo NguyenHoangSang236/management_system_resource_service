@@ -14,6 +14,7 @@ import org.springframework.context.annotation.ComponentScan;
 				"com.management_system.ingredient.infrastructure",
 				"com.management_system.ingredient",
 				"com.management_system.utilities",
+				"com.management_system.redis_service",
 		}
 )
 @ComponentScan(basePackages = {
@@ -22,6 +23,7 @@ import org.springframework.context.annotation.ComponentScan;
 		"com.management_system.ingredient.infrastructure",
 		"com.management_system.ingredient",
 		"com.management_system.utilities",
+		"com.management_system.redis_service",
 })@EnableDiscoveryClient
 public class IngredientApplication {
 
