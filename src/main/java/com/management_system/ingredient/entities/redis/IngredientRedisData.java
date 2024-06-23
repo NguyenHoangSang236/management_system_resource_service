@@ -1,6 +1,6 @@
 package com.management_system.ingredient.entities.redis;
 
-import com.management_system.redis_service.core.RedisData;
+import com.management_system.utilities.core.redis.RedisData;
 import lombok.*;
 
 import java.io.Serializable;

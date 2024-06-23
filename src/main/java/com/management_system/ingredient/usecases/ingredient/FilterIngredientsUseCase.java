@@ -1,7 +1,6 @@
 package com.management_system.ingredient.usecases.ingredient;
 
 import com.management_system.ingredient.entities.database.Ingredient;
-import com.management_system.ingredient.entities.redis.IngredientRedisData;
 import com.management_system.ingredient.entities.request_dto.IngredientFilterOptions;
 import com.management_system.utilities.core.usecase.UseCase;
 import com.management_system.utilities.entities.ApiResponse;
@@ -28,7 +27,7 @@ public class FilterIngredientsUseCase extends UseCase<FilterIngredientsUseCase.I
         IngredientFilterOptions options = (IngredientFilterOptions) input.filterRequest().getFilterOption();
 
         List<Ingredient> resultList = dbUtils.filterData(options, input.filterRequest.getPagination(), Ingredient.class);
-        IngredientRedisData redisData = new IngredientRedisData(resultList.get(0).getId(), resultList.get(0).getName());
+//        IngredientRedisData redisData = new IngredientRedisData(resultList.get(0).getId(), resultList.get(0).getName());
 //        redisService.save(redisData, "ingredient");
 //        redisService.findAll("ingredient");
 //        redisService.deleteAll();
