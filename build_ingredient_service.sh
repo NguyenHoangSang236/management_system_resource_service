@@ -52,5 +52,5 @@ fi
 # Xóa container cũ, build và run container mới
 docker rm -f ingredient-service-container
 docker build -t ingredient-service-image .
-docker run -p8082:8082 --name ingredient-service-container ingredient-service-image
+docker run -d -p 8082:8082 --name ingredient-service-container --network root_my_network ingredient-service-image
 EOF
