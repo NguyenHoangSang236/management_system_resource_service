@@ -2,6 +2,7 @@ package com.management_system.ingredient.usecases.ingredient;
 
 import com.management_system.ingredient.entities.database.Ingredient;
 import com.management_system.ingredient.entities.request_dto.IngredientFilterOptions;
+import com.management_system.ingredient.infrastucture.feign.RedisServiceClient;
 import com.management_system.utilities.core.usecase.UseCase;
 import com.management_system.utilities.entities.ApiResponse;
 import com.management_system.utilities.entities.FilterRequest;
@@ -18,6 +19,9 @@ public class FilterIngredientsUseCase extends UseCase<FilterIngredientsUseCase.I
     @Autowired
     DbUtils dbUtils;
 
+    @Autowired
+    RedisServiceClient redisServiceClient;
+
 //    @Autowired
 //    RedisService redisService;
 
@@ -31,6 +35,10 @@ public class FilterIngredientsUseCase extends UseCase<FilterIngredientsUseCase.I
 //        redisService.save(redisData, "ingredient");
 //        redisService.findAll("ingredient");
 //        redisService.deleteAll();
+
+
+        ApiResponse testFeignRes = redisServiceClient.findByKey("INGREDIENT:" + options.getName());
+        System.out.println(testFeignRes.getContent().toString());
 
         return ApiResponse.builder()
                 .result("success")
