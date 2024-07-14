@@ -9,6 +9,7 @@ import com.management_system.ingredient.entities.request_dto.IngredientRequest;
 import com.management_system.ingredient.usecases.ingredient.AddNewIngredientsUseCase;
 import com.management_system.ingredient.usecases.ingredient.EditIngredientUseCase;
 import com.management_system.ingredient.usecases.ingredient.FilterIngredientsUseCase;
+import com.management_system.ingredient.usecases.ingredient.ViewIngredientDetailsByIdUseCase;
 import com.management_system.utilities.core.deserializer.FilterOptionsDeserializer;
 import com.management_system.utilities.core.filter.FilterOption;
 import com.management_system.utilities.core.usecase.UseCaseExecutor;
@@ -33,6 +34,7 @@ public class IngredientController {
     final AddNewIngredientsUseCase addNewIngredientsUseCase;
     final FilterIngredientsUseCase filterIngredientsUseCase;
     final EditIngredientUseCase editIngredientUseCase;
+    final ViewIngredientDetailsByIdUseCase viewIngredientDetailsByIdUseCase;
     final UseCaseExecutor useCaseExecutor;
 
     @PreAuthorize("hasAuthority('MANAGER')")
@@ -76,6 +78,16 @@ public class IngredientController {
         return useCaseExecutor.execute(
                 filterIngredientsUseCase,
                 new FilterIngredientsUseCase.InputValue(filterRequest),
+                ResponseMapper::map
+        );
+    }
+
+
+    @GetMapping("/ingredientId={id}")
+    public CompletableFuture<ResponseEntity<ApiResponse>> viewIngredientById(@PathVariable("id") String id) {
+        return useCaseExecutor.execute(
+                viewIngredientDetailsByIdUseCase,
+                new ViewIngredientDetailsByIdUseCase.InputValue(id),
                 ResponseMapper::map
         );
     }

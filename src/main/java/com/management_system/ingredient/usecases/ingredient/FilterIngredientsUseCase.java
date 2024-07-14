@@ -36,10 +36,6 @@ public class FilterIngredientsUseCase extends UseCase<FilterIngredientsUseCase.I
 //        redisService.findAll("ingredient");
 //        redisService.deleteAll();
 
-
-        ApiResponse testFeignRes = redisServiceClient.findByKey("INGREDIENT:" + options.getName());
-        System.out.println(testFeignRes.getContent().toString());
-
         return ApiResponse.builder()
                 .result("success")
                 .content(resultList)
