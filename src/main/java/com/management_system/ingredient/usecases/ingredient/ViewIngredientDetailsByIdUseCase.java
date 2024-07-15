@@ -3,6 +3,7 @@ package com.management_system.ingredient.usecases.ingredient;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.management_system.ingredient.entities.database.Ingredient;
 import com.management_system.ingredient.infrastucture.feign.RedisServiceClient;
+import com.management_system.ingredient.infrastucture.repository.IngredientRepository;
 import com.management_system.utilities.core.usecase.UseCase;
 import com.management_system.utilities.entities.ApiResponse;
 import com.management_system.utilities.entities.FilterRequest;
@@ -16,7 +17,7 @@ import java.util.concurrent.CompletableFuture;
 @Component
 public class ViewIngredientDetailsByIdUseCase extends UseCase<ViewIngredientDetailsByIdUseCase.InputValue, ApiResponse>{
     @Autowired
-    DbUtils dbUtils;
+    IngredientRepository ingredientRepo;
 
     @Autowired
     RedisServiceClient redisServiceClient;
@@ -27,21 +28,24 @@ public class ViewIngredientDetailsByIdUseCase extends UseCase<ViewIngredientDeta
         try {
             String ingredientId = input.id();
 
-            CompletableFuture<Ingredient> redisFuture = CompletableFuture.supplyAsync(() -> {
+            CompletableFuture<Object> redisFuture = CompletableFuture.supplyAsync(() -> {
                 ApiResponse redisRes = redisServiceClient.findByKey("INGREDIENT:" + ingredientId);
 
-                return (Ingredient) redisRes.getContent();
+                return redisRes.getContent();
             });
 
-            CompletableFuture<Ingredient> mongoFuture = CompletableFuture.supplyAsync(() -> dbUtils.getDataById(input.id(), Ingredient.class));
+            CompletableFuture<Ingredient> mongoFuture = CompletableFuture.supplyAsync(() -> ingredientRepo.getIngredientById(ingredientId));
 
-            CompletableFuture<Object> res = CompletableFuture.anyOf(redisFuture, mongoFuture);
-
-            Ingredient ingredient = (Ingredient) res.get();
+            CompletableFuture<Object> res = CompletableFuture
+                    .anyOf(redisFuture, mongoFuture)
+                    .thenApply(data -> {
+                        ObjectMapper objectMapper = new ObjectMapper();
+                        return objectMapper.convertValue(data, Ingredient.class);
+                    });
 
             return ApiResponse.builder()
                     .result("success")
-                    .content(ingredient)
+                    .content(res.get())
                     .status(HttpStatus.OK)
                     .build();
         }
