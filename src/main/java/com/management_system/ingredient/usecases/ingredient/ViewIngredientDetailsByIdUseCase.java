@@ -1,9 +1,13 @@
 package com.management_system.ingredient.usecases.ingredient;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.management_system.ingredient.entities.database.Ingredient;
 import com.management_system.ingredient.infrastucture.feign.RedisServiceClient;
 import com.management_system.ingredient.infrastucture.repository.IngredientRepository;
+import com.management_system.utilities.constant.enumuration.FilterType;
+import com.management_system.utilities.core.redis.RedisData;
+import com.management_system.utilities.core.redis.RedisRequest;
 import com.management_system.utilities.core.usecase.UseCase;
 import com.management_system.utilities.entities.ApiResponse;
 import com.management_system.utilities.entities.FilterRequest;
@@ -12,7 +16,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 @Component
 public class ViewIngredientDetailsByIdUseCase extends UseCase<ViewIngredientDetailsByIdUseCase.InputValue, ApiResponse>{
@@ -27,27 +34,47 @@ public class ViewIngredientDetailsByIdUseCase extends UseCase<ViewIngredientDeta
     public ApiResponse execute(InputValue input) {
         try {
             String ingredientId = input.id();
+            ObjectMapper objectMapper = new ObjectMapper();
 
-            CompletableFuture<Object> redisFuture = CompletableFuture.supplyAsync(() -> {
-                ApiResponse redisRes = redisServiceClient.findByKey("INGREDIENT:" + ingredientId);
+            ApiResponse redisRes = redisServiceClient.findByKey("INGREDIENT:" + ingredientId);
+            Object contentObj = redisRes.getContent();
+            HttpStatus status = redisRes.getStatus();
 
-                return redisRes.getContent();
-            });
+            if(!status.equals(HttpStatus.NO_CONTENT) && contentObj != null) {
+                return ApiResponse.builder()
+                        .result("success")
+                        .content(contentObj)
+                        .status(HttpStatus.OK)
+                        .build();
+            }
+            else {
+                Ingredient ingredient = ingredientRepo.getIngredientById(ingredientId);
 
-            CompletableFuture<Ingredient> mongoFuture = CompletableFuture.supplyAsync(() -> ingredientRepo.getIngredientById(ingredientId));
+                if(ingredient != null) {
+                    CompletableFuture.runAsync(() -> {
+                        try {
+                            redisServiceClient.save(objectMapper.writeValueAsString(
+                                    RedisRequest
+                                            .builder()
+                                            .type(FilterType.INGREDIENT)
+                                            .data(objectMapper.convertValue(ingredient, Map.class))
+                                            .build()
+                            ));
+                        } catch (JsonProcessingException e) {
+                            e.printStackTrace();
+                        }
+                    }).exceptionally(ex -> {
+                        ex.printStackTrace();
+                        return null;
+                    });;
+                }
 
-            CompletableFuture<Object> res = CompletableFuture
-                    .anyOf(redisFuture, mongoFuture)
-                    .thenApply(data -> {
-                        ObjectMapper objectMapper = new ObjectMapper();
-                        return objectMapper.convertValue(data, Ingredient.class);
-                    });
-
-            return ApiResponse.builder()
-                    .result("success")
-                    .content(res.get())
-                    .status(HttpStatus.OK)
-                    .build();
+                return ApiResponse.builder()
+                        .result("success")
+                        .content(ingredient)
+                        .status(HttpStatus.OK)
+                        .build();
+            }
         }
         catch (Exception e) {
             e.printStackTrace();
