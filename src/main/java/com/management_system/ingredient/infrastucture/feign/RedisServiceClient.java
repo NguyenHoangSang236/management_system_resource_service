@@ -12,6 +12,9 @@ public interface RedisServiceClient {
     @RequestMapping(method = RequestMethod.GET, value = "/redis/unauthen/action/findByKey-{key}")
     ApiResponse findByKey(@PathVariable("key") String key);
 
+    @RequestMapping(method = RequestMethod.GET, value = "/redis/unauthen/action/deleteByKey-{key}")
+    ApiResponse deleteByKey(@PathVariable("key") String key);
+
     @RequestMapping(method = RequestMethod.POST, value = "/redis/unauthen/action/save")
     ApiResponse save(@RequestBody String json);
 }
