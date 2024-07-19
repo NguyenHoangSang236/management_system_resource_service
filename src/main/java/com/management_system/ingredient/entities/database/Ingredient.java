@@ -3,6 +3,7 @@ package com.management_system.ingredient.entities.database;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.management_system.ingredient.infrastucture.constant.IngredientMeasurementUnitEnum;
 import com.management_system.ingredient.infrastucture.constant.IngredientStatusEnum;
+import com.management_system.utilities.entities.database.MongoDbEntity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.*;
@@ -21,7 +22,7 @@ import java.util.List;
 @Setter
 @Document("ingredients")
 @Builder
-public class Ingredient implements Serializable {
+public class Ingredient extends MongoDbEntity implements Serializable {
     @Id
     @Indexed(unique = true)
     String id;
@@ -35,14 +36,6 @@ public class Ingredient implements Serializable {
 
     @Field(name = "image")
     String image;
-
-    @JsonProperty(value = "last_update_time")
-    @Field(name = "last_update_time")
-    Date lastUpdateTime;
-
-    @JsonProperty(value = "creation_date")
-    @Field(name = "creation_date")
-    Date creationDate;
 
     @JsonProperty(value = "last_update_username")
     @Field(name = "last_update_username")

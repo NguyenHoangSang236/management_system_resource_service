@@ -8,6 +8,7 @@ import java.io.Serializable;
 @Getter
 @Setter
 @NoArgsConstructor
+@AllArgsConstructor
 public class IngredientRedisData extends RedisData implements Serializable {
     String name;
 

@@ -1,6 +1,7 @@
 package com.management_system.ingredient.usecases.category;
 
 import com.management_system.ingredient.entities.database.Category;
+import com.management_system.ingredient.entities.database.SubCategory;
 import com.management_system.ingredient.infrastucture.repository.CategoryRepository;
 import com.management_system.ingredient.usecases.ingredient.AddNewIngredientsUseCase;
 import com.management_system.utilities.core.usecase.UseCase;
@@ -33,7 +34,7 @@ public class AddNewCategoriesUseCase extends UseCase<AddNewCategoriesUseCase.Inp
             category.setId(id);
 
             if(category.getSubCategories() != null && !category.getSubCategories().isEmpty()) {
-                for(Category subCategory: category.getSubCategories()) {
+                for(SubCategory subCategory: category.getSubCategories()) {
                     id = valueParsingUtils.parseStringToId(subCategory.getName(), "-", false);
                     subCategory.setId(id);
                 }

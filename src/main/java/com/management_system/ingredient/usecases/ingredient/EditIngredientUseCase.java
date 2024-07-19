@@ -3,6 +3,7 @@ package com.management_system.ingredient.usecases.ingredient;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.management_system.ingredient.entities.database.Ingredient;
 import com.management_system.ingredient.entities.request_dto.IngredientRequest;
+import com.management_system.ingredient.infrastucture.feign.RedisServiceClient;
 import com.management_system.ingredient.infrastucture.repository.IngredientRepository;
 import com.management_system.utilities.core.usecase.UseCase;
 import com.management_system.utilities.entities.ApiResponse;
@@ -19,6 +20,7 @@ import org.springframework.stereotype.Component;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 @Component
 public class EditIngredientUseCase extends UseCase<EditIngredientUseCase.InputValue, ApiResponse>{
@@ -34,6 +36,9 @@ public class EditIngredientUseCase extends UseCase<EditIngredientUseCase.InputVa
     @Autowired
     ValueParsingUtils valueParsingUtils;
 
+    @Autowired
+    RedisServiceClient redisServiceClient;
+
 
     @Override
     public ApiResponse execute(InputValue input) {
@@ -47,6 +52,13 @@ public class EditIngredientUseCase extends UseCase<EditIngredientUseCase.InputVa
         Map<String, Object> map = valueParsingUtils.parseMongoDbMap(ingredientReq);
 
         dbUtils.updateSpecificFields("_id", id, map, Ingredient.class);
+
+        CompletableFuture.runAsync(() -> redisServiceClient.deleteByKey(id)).exceptionally(
+                ex -> {
+                ex.printStackTrace();
+                return null;
+            }
+        );
 
         return ApiResponse.builder()
                 .result("success")

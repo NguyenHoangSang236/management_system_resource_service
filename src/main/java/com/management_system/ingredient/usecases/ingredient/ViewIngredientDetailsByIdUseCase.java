@@ -36,7 +36,7 @@ public class ViewIngredientDetailsByIdUseCase extends UseCase<ViewIngredientDeta
             String ingredientId = input.id();
             ObjectMapper objectMapper = new ObjectMapper();
 
-            ApiResponse redisRes = redisServiceClient.findByKey("INGREDIENT:" + ingredientId);
+            ApiResponse redisRes = redisServiceClient.findByKey(ingredientId);
             Object contentObj = redisRes.getContent();
             HttpStatus status = redisRes.getStatus();
 
@@ -54,8 +54,7 @@ public class ViewIngredientDetailsByIdUseCase extends UseCase<ViewIngredientDeta
                     CompletableFuture.runAsync(() -> {
                         try {
                             redisServiceClient.save(objectMapper.writeValueAsString(
-                                    RedisRequest
-                                            .builder()
+                                    RedisRequest.builder()
                                             .type(FilterType.INGREDIENT)
                                             .data(objectMapper.convertValue(ingredient, Map.class))
                                             .build()
@@ -66,7 +65,7 @@ public class ViewIngredientDetailsByIdUseCase extends UseCase<ViewIngredientDeta
                     }).exceptionally(ex -> {
                         ex.printStackTrace();
                         return null;
-                    });;
+                    });
                 }
 
                 return ApiResponse.builder()
