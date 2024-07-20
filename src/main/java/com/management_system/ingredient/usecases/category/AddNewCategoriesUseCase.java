@@ -1,9 +1,8 @@
-package com.management_system.ingredient.usecases.category;
+package com.management_system.resource.usecases.category;
 
-import com.management_system.ingredient.entities.database.Category;
-import com.management_system.ingredient.entities.database.SubCategory;
-import com.management_system.ingredient.infrastucture.repository.CategoryRepository;
-import com.management_system.ingredient.usecases.ingredient.AddNewIngredientsUseCase;
+import com.management_system.ingredient.entities.database.ingredient.Category;
+import com.management_system.ingredient.entities.database.ingredient.SubCategory;
+import com.management_system.resource.infrastucture.repository.CategoryRepository;
 import com.management_system.utilities.core.usecase.UseCase;
 import com.management_system.utilities.entities.ApiResponse;
 import com.management_system.utilities.utils.DbUtils;

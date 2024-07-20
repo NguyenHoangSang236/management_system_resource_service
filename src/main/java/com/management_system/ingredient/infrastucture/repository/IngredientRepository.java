@@ -1,6 +1,6 @@
-package com.management_system.ingredient.infrastucture.repository;
+package com.management_system.resource.infrastucture.repository;
 
-import com.management_system.ingredient.entities.database.Ingredient;
+import com.management_system.ingredient.entities.database.ingredient.Ingredient;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;

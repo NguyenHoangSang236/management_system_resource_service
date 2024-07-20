@@ -1,4 +1,4 @@
-package com.management_system.ingredient.entities.database;
+package com.management_system.ingredient.entities.database.ingredient;
 
 
 import lombok.*;

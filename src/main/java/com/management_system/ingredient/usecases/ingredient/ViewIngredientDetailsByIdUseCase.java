@@ -1,25 +1,20 @@
-package com.management_system.ingredient.usecases.ingredient;
+package com.management_system.resource.usecases.resource;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.management_system.ingredient.entities.database.Ingredient;
-import com.management_system.ingredient.infrastucture.feign.RedisServiceClient;
-import com.management_system.ingredient.infrastucture.repository.IngredientRepository;
+import com.management_system.ingredient.entities.database.ingredient.Ingredient;
+import com.management_system.resource.infrastucture.feign.RedisServiceClient;
+import com.management_system.resource.infrastucture.repository.IngredientRepository;
 import com.management_system.utilities.constant.enumuration.FilterType;
-import com.management_system.utilities.core.redis.RedisData;
 import com.management_system.utilities.core.redis.RedisRequest;
 import com.management_system.utilities.core.usecase.UseCase;
 import com.management_system.utilities.entities.ApiResponse;
-import com.management_system.utilities.entities.FilterRequest;
-import com.management_system.utilities.utils.DbUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 @Component
 public class ViewIngredientDetailsByIdUseCase extends UseCase<ViewIngredientDetailsByIdUseCase.InputValue, ApiResponse>{
@@ -48,15 +43,15 @@ public class ViewIngredientDetailsByIdUseCase extends UseCase<ViewIngredientDeta
                         .build();
             }
             else {
-                Ingredient ingredient = ingredientRepo.getIngredientById(ingredientId);
+                Ingredient resource = ingredientRepo.getIngredientById(ingredientId);
 
-                if(ingredient != null) {
+                if(resource != null) {
                     CompletableFuture.runAsync(() -> {
                         try {
                             redisServiceClient.save(objectMapper.writeValueAsString(
                                     RedisRequest.builder()
                                             .type(FilterType.INGREDIENT)
-                                            .data(objectMapper.convertValue(ingredient, Map.class))
+                                            .data(objectMapper.convertValue(resource, Map.class))
                                             .build()
                             ));
                         } catch (JsonProcessingException e) {
@@ -70,7 +65,7 @@ public class ViewIngredientDetailsByIdUseCase extends UseCase<ViewIngredientDeta
 
                 return ApiResponse.builder()
                         .result("success")
-                        .content(ingredient)
+                        .content(resource)
                         .status(HttpStatus.OK)
                         .build();
             }

@@ -1,8 +1,8 @@
-package com.management_system.ingredient.entities.request_dto;
+package com.management_system.resource.entities.request_dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.management_system.ingredient.infrastucture.constant.IngredientMeasurementUnitEnum;
-import com.management_system.ingredient.infrastucture.constant.IngredientStatusEnum;
+import com.management_system.resource.infrastucture.constant.IngredientMeasurementUnitEnum;
+import com.management_system.resource.infrastucture.constant.IngredientStatusEnum;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.AllArgsConstructor;

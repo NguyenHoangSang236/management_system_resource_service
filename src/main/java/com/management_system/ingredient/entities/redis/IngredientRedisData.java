@@ -1,4 +1,4 @@
-package com.management_system.ingredient.entities.redis;
+package com.management_system.resource.entities.redis;
 
 import com.management_system.utilities.core.redis.RedisData;
 import lombok.*;

@@ -1,13 +1,13 @@
 #!/bin/bash
 
 # Xoá file JAR trước khi build
-rm target/ingredient-0.0.1-SNAPSHOT.jar
+rm target/resource-0.0.1-SNAPSHOT.jar
 
 # Build project và tạo file JAR
 ./mvnw clean install
 
 # Kiểm tra xem file JAR có được tạo ra hay không
-if [ ! -f target/ingredient-0.0.1-SNAPSHOT.jar ]; then
+if [ ! -f target/resource-0.0.1-SNAPSHOT.jar ]; then
   echo "Build failed: JAR file not found."
   exit 1
 fi
@@ -16,7 +16,7 @@ fi
 rm -f splited-app-* || true
 
 # Chia tách file JAR thành các file nhỏ hơn
-split -b 21M target/ingredient-0.0.1-SNAPSHOT.jar splited-app-
+split -b 21M target/resource-0.0.1-SNAPSHOT.jar splited-app-
 
 # Thêm và commit các file chia tách vào git
 git add .
@@ -35,22 +35,22 @@ if [ ! -f splited-app-aa ]; then
 fi
 
 # Xoá JAR file
-rm target/ingredient-0.0.1-SNAPSHOT.jar
+rm target/resource-0.0.1-SNAPSHOT.jar
 
 # Tạo thư mục target nếu chưa tồn tại
 mkdir -p target
 
 # Hợp lại các file chia tách thành file JAR
-cat splited-app-* > target/ingredient-0.0.1-SNAPSHOT.jar
+cat splited-app-* > target/resource-0.0.1-SNAPSHOT.jar
 
 # Kiểm tra xem file JAR đã hợp lại có tồn tại hay không
-if [ ! -f target/ingredient-0.0.1-SNAPSHOT.jar ]; then
+if [ ! -f target/resource-0.0.1-SNAPSHOT.jar ]; then
   echo "Deploy failed: Reassembled JAR file not found."
   exit 1
 fi
 
 # Xóa container cũ, build và run container mới
-docker rm -f ingredient-service-container
-docker build -t ingredient-service-image .
-docker run -d -p 8082:8082 --name ingredient-service-container --network root_my_network ingredient-service-image
+docker rm -f resource-service-container
+docker build -t resource-service-image .
+docker run -d -p 8082:8082 --name resource-service-container --network root_my_network resource-service-image
 EOF

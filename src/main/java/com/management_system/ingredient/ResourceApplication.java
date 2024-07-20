@@ -1,4 +1,4 @@
-package com.management_system.ingredient;
+package com.management_system.resource;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -10,24 +10,24 @@ import org.springframework.context.annotation.ComponentScan;
 @SpringBootApplication(
 		exclude = {SecurityAutoConfiguration.class},
 		scanBasePackages = {
-				"com.management_system.ingredient.usecases",
-				"com.management_system.ingredient.entities",
-				"com.management_system.ingredient.infrastructure",
-				"com.management_system.ingredient",
+				"com.management_system.resource.usecases",
+				"com.management_system.resource.entities",
+				"com.management_system.resource.infrastructure",
+				"com.management_system.resource",
 				"com.management_system.utilities",
 		}
 )
 @ComponentScan(basePackages = {
-		"com.management_system.ingredient.usecases",
-		"com.management_system.ingredient.entities",
-		"com.management_system.ingredient.infrastructure",
-		"com.management_system.ingredient",
+		"com.management_system.resource.usecases",
+		"com.management_system.resource.entities",
+		"com.management_system.resource.infrastructure",
+		"com.management_system.resource",
 		"com.management_system.utilities",
 })
 @EnableDiscoveryClient
 @EnableFeignClients
-public class IngredientApplication {
+public class ResourceApplication {
 	public static void main(String[] args) {
-		SpringApplication.run(IngredientApplication.class, args);
+		SpringApplication.run(com.management_system.resource.ResourceApplication.class, args);
 	}
 }

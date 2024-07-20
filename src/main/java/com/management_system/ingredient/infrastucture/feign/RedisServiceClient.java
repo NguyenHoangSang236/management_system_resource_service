@@ -1,4 +1,4 @@
-package com.management_system.ingredient.infrastucture.feign;
+package com.management_system.resource.infrastucture.feign;
 
 import com.management_system.utilities.entities.ApiResponse;
 import org.springframework.cloud.openfeign.FeignClient;

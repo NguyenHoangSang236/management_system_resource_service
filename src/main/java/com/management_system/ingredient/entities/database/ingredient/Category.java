@@ -1,4 +1,4 @@
-package com.management_system.ingredient.entities.database;
+package com.management_system.ingredient.entities.database.ingredient;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.management_system.utilities.entities.database.MongoDbEntity;

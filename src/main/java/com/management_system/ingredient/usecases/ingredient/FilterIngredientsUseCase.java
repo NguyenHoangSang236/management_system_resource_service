@@ -1,8 +1,8 @@
-package com.management_system.ingredient.usecases.ingredient;
+package com.management_system.resource.usecases.resource;
 
-import com.management_system.ingredient.entities.database.Ingredient;
-import com.management_system.ingredient.entities.request_dto.IngredientFilterOptions;
-import com.management_system.ingredient.infrastucture.feign.RedisServiceClient;
+import com.management_system.ingredient.entities.database.ingredient.Ingredient;
+import com.management_system.resource.entities.request_dto.IngredientFilterOptions;
+import com.management_system.resource.infrastucture.feign.RedisServiceClient;
 import com.management_system.utilities.core.usecase.UseCase;
 import com.management_system.utilities.entities.ApiResponse;
 import com.management_system.utilities.entities.FilterRequest;
@@ -32,8 +32,8 @@ public class FilterIngredientsUseCase extends UseCase<FilterIngredientsUseCase.I
 
         List<Ingredient> resultList = dbUtils.filterData(options, input.filterRequest.getPagination(), Ingredient.class);
 //        IngredientRedisData redisData = new IngredientRedisData(resultList.get(0).getId(), resultList.get(0).getName());
-//        redisService.save(redisData, "ingredient");
-//        redisService.findAll("ingredient");
+//        redisService.save(redisData, "resource");
+//        redisService.findAll("resource");
 //        redisService.deleteAll();
 
         return ApiResponse.builder()

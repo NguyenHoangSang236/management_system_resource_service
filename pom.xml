@@ -9,9 +9,9 @@
 		<relativePath/>
 	</parent>
 	<groupId>com.management_system</groupId>
-	<artifactId>ingredient</artifactId>
+	<artifactId>resource</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<name>ingredient</name>
+	<name>resource</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
 		<java.version>19</java.version>

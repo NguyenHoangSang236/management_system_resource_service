@@ -1,15 +1,15 @@
-package com.management_system.ingredient.infrastucture.controller;
+package com.management_system.resource.infrastucture.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.management_system.ingredient.entities.database.Ingredient;
-import com.management_system.ingredient.entities.request_dto.IngredientFilterOptions;
-import com.management_system.ingredient.entities.request_dto.IngredientRequest;
-import com.management_system.ingredient.usecases.ingredient.AddNewIngredientsUseCase;
-import com.management_system.ingredient.usecases.ingredient.EditIngredientUseCase;
-import com.management_system.ingredient.usecases.ingredient.FilterIngredientsUseCase;
-import com.management_system.ingredient.usecases.ingredient.ViewIngredientDetailsByIdUseCase;
+import com.management_system.ingredient.entities.database.ingredient.Ingredient;
+import com.management_system.resource.entities.request_dto.IngredientFilterOptions;
+import com.management_system.resource.entities.request_dto.IngredientRequest;
+import com.management_system.resource.usecases.resource.AddNewIngredientsUseCase;
+import com.management_system.resource.usecases.resource.EditIngredientUseCase;
+import com.management_system.resource.usecases.resource.FilterIngredientsUseCase;
+import com.management_system.resource.usecases.resource.ViewIngredientDetailsByIdUseCase;
 import com.management_system.utilities.core.deserializer.FilterOptionsDeserializer;
 import com.management_system.utilities.core.filter.FilterOption;
 import com.management_system.utilities.core.usecase.UseCaseExecutor;
@@ -28,7 +28,7 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @RestController
-@RequestMapping(value = "/authen/ingredient", consumes = {"*/*"}, produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(value = "/authen/resource", consumes = {"*/*"}, produces = {MediaType.APPLICATION_JSON_VALUE})
 @AllArgsConstructor
 public class IngredientController {
     final AddNewIngredientsUseCase addNewIngredientsUseCase;

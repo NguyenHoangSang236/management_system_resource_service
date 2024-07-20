@@ -1,11 +1,9 @@
-package com.management_system.ingredient.infrastucture.controller;
+package com.management_system.resource.infrastucture.controller;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.management_system.ingredient.entities.database.Category;
-import com.management_system.ingredient.entities.database.Ingredient;
-import com.management_system.ingredient.usecases.category.AddNewCategoriesUseCase;
-import com.management_system.ingredient.usecases.ingredient.AddNewIngredientsUseCase;
+import com.management_system.ingredient.entities.database.ingredient.Category;
+import com.management_system.resource.usecases.category.AddNewCategoriesUseCase;
 import com.management_system.utilities.core.usecase.UseCaseExecutor;
 import com.management_system.utilities.entities.ApiResponse;
 import com.management_system.utilities.entities.ResponseMapper;

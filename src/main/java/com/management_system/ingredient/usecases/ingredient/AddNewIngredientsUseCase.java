@@ -1,8 +1,8 @@
-package com.management_system.ingredient.usecases.ingredient;
+package com.management_system.resource.usecases.resource;
 
-import com.management_system.ingredient.entities.database.Ingredient;
-import com.management_system.ingredient.infrastucture.constant.IngredientStatusEnum;
-import com.management_system.ingredient.infrastucture.repository.IngredientRepository;
+import com.management_system.ingredient.entities.database.ingredient.Ingredient;
+import com.management_system.resource.infrastucture.constant.IngredientStatusEnum;
+import com.management_system.resource.infrastucture.repository.IngredientRepository;
 import com.management_system.utilities.core.usecase.UseCase;
 import com.management_system.utilities.entities.ApiResponse;
 import com.management_system.utilities.entities.TokenInfo;

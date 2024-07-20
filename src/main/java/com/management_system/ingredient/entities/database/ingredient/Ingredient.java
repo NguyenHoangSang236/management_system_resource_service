@@ -1,8 +1,8 @@
-package com.management_system.ingredient.entities.database;
+package com.management_system.ingredient.entities.database.ingredient;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.management_system.ingredient.infrastucture.constant.IngredientMeasurementUnitEnum;
-import com.management_system.ingredient.infrastucture.constant.IngredientStatusEnum;
+import com.management_system.resource.infrastucture.constant.IngredientMeasurementUnitEnum;
+import com.management_system.resource.infrastucture.constant.IngredientStatusEnum;
 import com.management_system.utilities.entities.database.MongoDbEntity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -13,7 +13,6 @@ import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 @AllArgsConstructor
