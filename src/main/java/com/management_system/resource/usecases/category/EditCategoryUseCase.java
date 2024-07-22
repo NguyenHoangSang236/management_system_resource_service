@@ -70,6 +70,5 @@ public class EditCategoryUseCase extends UseCase<EditCategoryUseCase.InputValue,
         }
     }
 
-    public record InputValue(HttpServletRequest request, Category category) implements UseCase.InputValue {
-    }
+    public record InputValue(HttpServletRequest request, Category category) implements UseCase.InputValue {}
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.management_system.resource.entities.database.ingredient.Category;
 import com.management_system.resource.usecases.category.AddNewCategoriesUseCase;
+import com.management_system.resource.usecases.category.DeleteCategoriesUseCase;
 import com.management_system.resource.usecases.category.EditCategoryUseCase;
 import com.management_system.utilities.core.usecase.UseCaseExecutor;
 import com.management_system.utilities.entities.ApiResponse;
@@ -26,6 +27,7 @@ import java.util.concurrent.CompletableFuture;
 @RequestMapping(value = "/authen/category", consumes = {"*/*"}, produces = {MediaType.APPLICATION_JSON_VALUE})
 @RequiredArgsConstructor
 public class CategoryController {
+    final DeleteCategoriesUseCase deleteCategoriesUseCase;
     final EditCategoryUseCase editCategoryUseCase;
     final AddNewCategoriesUseCase addNewCategoriesUseCase;
     final UseCaseExecutor useCaseExecutor;
@@ -34,8 +36,7 @@ public class CategoryController {
     @PostMapping("/addNewCategories")
     public CompletableFuture<ResponseEntity<ApiResponse>> addNewCategories(@RequestBody String json, HttpServletRequest request) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        List<Category> categories = objectMapper.readValue(json, new TypeReference<>() {
-        });
+        List<Category> categories = objectMapper.readValue(json, new TypeReference<>() {});
 
         return useCaseExecutor.execute(
                 addNewCategoriesUseCase,
@@ -53,6 +54,19 @@ public class CategoryController {
         return useCaseExecutor.execute(
                 editCategoryUseCase,
                 new EditCategoryUseCase.InputValue(request, category),
+                ResponseMapper::map
+        );
+    }
+
+    @PreAuthorize("hasAuthority('MANAGER')")
+    @PostMapping("/deleteCategories")
+    public CompletableFuture<ResponseEntity<ApiResponse>> deleteCategories(@RequestBody String json, HttpServletRequest request) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        List<String> idList = objectMapper.readValue(json, new TypeReference<>() {});
+
+        return useCaseExecutor.execute(
+                deleteCategoriesUseCase,
+                new DeleteCategoriesUseCase.InputValue(request, idList),
                 ResponseMapper::map
         );
     }
