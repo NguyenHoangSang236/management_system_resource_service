@@ -1,4 +1,4 @@
-package com.management_system.resource.usecases.resource;
+package com.management_system.resource.usecases.ingredient;
 
 import com.management_system.resource.entities.database.ingredient.Ingredient;
 import com.management_system.resource.infrastucture.constant.IngredientStatusEnum;
@@ -31,7 +31,7 @@ public class AddNewIngredientsUseCase extends UseCase<AddNewIngredientsUseCase.I
 
     @Override
     public ApiResponse execute(InputValue input) {
-        TokenInfo tokenInfo = jwtUtils.getTokenInfoFromHttpRequest(input.request());
+//        TokenInfo tokenInfo = jwtUtils.getTokenInfoFromHttpRequest(input.request());
         List<Ingredient> newIngredients = input.ingredients();
 
         for (Ingredient newIngredient : newIngredients) {
@@ -47,7 +47,7 @@ public class AddNewIngredientsUseCase extends UseCase<AddNewIngredientsUseCase.I
             newIngredient.setId(ingredientId);
             newIngredient.setCreationDate(currentTime);
             newIngredient.setStatus(IngredientStatusEnum.AVAILABLE);
-            newIngredient.setLastUpdateUsername(tokenInfo.getUserName());
+//            newIngredient.setLastUpdateUsername(tokenInfo.getUserName());
 
             ingredientRepo.insert(newIngredient);
         }

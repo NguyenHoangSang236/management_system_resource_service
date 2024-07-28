@@ -1,4 +1,4 @@
-package com.management_system.resource.usecases.resource;
+package com.management_system.resource.usecases.ingredient;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;

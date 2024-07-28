@@ -1,4 +1,4 @@
-package com.management_system.resource.usecases.resource;
+package com.management_system.resource.usecases.ingredient;
 
 import com.management_system.resource.entities.database.ingredient.Ingredient;
 import com.management_system.resource.entities.request_dto.IngredientFilterOptions;
