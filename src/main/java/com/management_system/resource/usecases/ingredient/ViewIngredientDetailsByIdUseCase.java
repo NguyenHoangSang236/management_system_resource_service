@@ -35,7 +35,7 @@ public class ViewIngredientDetailsByIdUseCase extends UseCase<ViewIngredientDeta
             Object contentObj = redisRes.getContent();
             HttpStatus status = redisRes.getStatus();
 
-            if (!status.equals(HttpStatus.NO_CONTENT) && contentObj != null) {
+            if (status.equals(HttpStatus.OK) && contentObj != null) {
                 return ApiResponse.builder()
                         .result("success")
                         .content(contentObj)

@@ -2,12 +2,13 @@ package com.management_system.resource.infrastucture.feign;
 
 import com.management_system.utilities.entities.ApiResponse;
 import org.springframework.cloud.openfeign.FeignClient;
+import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-@FeignClient(value = "redis-service", url = "https://localhost:8079")
+@FeignClient(value = "redis-service", url = "https://localhost:8079", fallback = RedisServiceClientFallback.class)
 public interface RedisServiceClient {
     @RequestMapping(method = RequestMethod.GET, value = "/redis/unauthen/action/findByKey-{redisHashKey}:{key}")
     ApiResponse findByKey(@PathVariable("redisHashKey") String hashKey, @PathVariable("key") String key);
@@ -18,3 +19,5 @@ public interface RedisServiceClient {
     @RequestMapping(method = RequestMethod.POST, value = "/redis/unauthen/action/save")
     ApiResponse save(@RequestBody String json);
 }
+
+
