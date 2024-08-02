@@ -27,12 +27,12 @@ public class EditFacilityUseCase extends UseCase<EditFacilityUseCase.InputValue,
 
 
     @Override
-    public ApiResponse execute(InputValue input)  {
+    public ApiResponse execute(InputValue input) {
         try {
             Facility rqFacility = input.facility();
             Optional<Facility> facilityOptional = facilityRepo.findById(rqFacility.getId());
 
-            if(facilityOptional.isPresent()) {
+            if (facilityOptional.isPresent()) {
                 facilityRepo.save(dbUtils.mergeMongoEntityFromRequest(facilityOptional.get(), input.facility()));
 
                 CompletableFuture.runAsync(() -> redisServiceClient.deleteByKey(
@@ -49,8 +49,7 @@ public class EditFacilityUseCase extends UseCase<EditFacilityUseCase.InputValue,
                         .content("Edit facility with ID " + input.facility.getId() + " successfully")
                         .status(HttpStatus.OK)
                         .build();
-            }
-            else {
+            } else {
                 return ApiResponse.builder()
                         .result("failed")
                         .content("This facility does not exist")
@@ -68,5 +67,6 @@ public class EditFacilityUseCase extends UseCase<EditFacilityUseCase.InputValue,
         }
     }
 
-    public record InputValue(Facility facility) implements UseCase.InputValue {}
+    public record InputValue(Facility facility) implements UseCase.InputValue {
+    }
 }
