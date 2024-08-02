@@ -27,11 +27,23 @@ public class ViewIngredientDetailsByIdUseCase extends UseCase<ViewIngredientDeta
 
     @Override
     public ApiResponse execute(InputValue input) {
+        ApiResponse redisRes;
+
         try {
             String ingredientId = input.id();
             ObjectMapper objectMapper = new ObjectMapper();
 
-            ApiResponse redisRes = redisServiceClient.findByKey(FilterType.INGREDIENT.name(), ingredientId);
+            try {
+                redisRes = redisServiceClient.findByKey(FilterType.INGREDIENT.name(), ingredientId);
+            } catch (Exception e) {
+                e.printStackTrace();
+                redisRes = ApiResponse.builder()
+                        .result("failed")
+                        .content("Error!")
+                        .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                        .build();
+            }
+
             Object contentObj = redisRes.getContent();
             HttpStatus status = redisRes.getStatus();
 

@@ -7,7 +7,6 @@ import com.management_system.utilities.constant.enumuration.FilterType;
 import com.management_system.utilities.core.usecase.UseCase;
 import com.management_system.utilities.entities.ApiResponse;
 import com.management_system.utilities.utils.DbUtils;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -65,8 +64,7 @@ public class EditCategoryUseCase extends UseCase<EditCategoryUseCase.InputValue,
                         .status(HttpStatus.BAD_REQUEST)
                         .build();
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
 
             return ApiResponse.builder()
@@ -77,5 +75,6 @@ public class EditCategoryUseCase extends UseCase<EditCategoryUseCase.InputValue,
         }
     }
 
-    public record InputValue(HttpServletRequest request, Category category) implements UseCase.InputValue {}
+    public record InputValue(Category category) implements UseCase.InputValue {
+    }
 }
