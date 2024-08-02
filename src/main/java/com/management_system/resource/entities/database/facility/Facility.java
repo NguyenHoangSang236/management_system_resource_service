@@ -1,6 +1,8 @@
 package com.management_system.resource.entities.database.facility;
 
+import com.management_system.resource.infrastucture.constant.FacilityStatusEnum;
 import com.management_system.resource.infrastucture.constant.FacilityTypeEnum;
+import com.management_system.utilities.entities.database.MongoDbEntity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.*;
@@ -14,7 +16,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Facility {
+public class Facility extends MongoDbEntity {
     @Id
     String id;
 
@@ -33,4 +35,8 @@ public class Facility {
 
     @Field(name = "note")
     String note;
+
+    @Enumerated(EnumType.STRING)
+    @Field(name = "status")
+    FacilityStatusEnum status;
 }

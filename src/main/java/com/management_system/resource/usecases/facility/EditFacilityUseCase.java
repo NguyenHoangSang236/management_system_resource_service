@@ -1,8 +1,8 @@
-package com.management_system.resource.usecases.category;
+package com.management_system.resource.usecases.facility;
 
-import com.management_system.resource.entities.database.ingredient.Category;
+import com.management_system.resource.entities.database.facility.Facility;
 import com.management_system.resource.infrastucture.feign.RedisServiceClient;
-import com.management_system.resource.infrastucture.repository.CategoryRepository;
+import com.management_system.resource.infrastucture.repository.FacilityRepository;
 import com.management_system.utilities.constant.enumuration.FilterType;
 import com.management_system.utilities.core.usecase.UseCase;
 import com.management_system.utilities.entities.ApiResponse;
@@ -15,36 +15,28 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 @Component
-public class EditCategoryUseCase extends UseCase<EditCategoryUseCase.InputValue, ApiResponse> {
+public class EditFacilityUseCase extends UseCase<EditFacilityUseCase.InputValue, ApiResponse> {
     @Autowired
-    DbUtils dbUtils;
+    FacilityRepository facilityRepo;
 
     @Autowired
-    CategoryRepository categoryRepo;
+    DbUtils dbUtils;
 
     @Autowired
     RedisServiceClient redisServiceClient;
 
 
     @Override
-    public ApiResponse execute(InputValue input) {
+    public ApiResponse execute(InputValue input)  {
         try {
-            if (input.category().getId() == null) {
-                return ApiResponse.builder()
-                        .result("failed")
-                        .content("Can not find id field")
-                        .status(HttpStatus.BAD_REQUEST)
-                        .build();
-            }
+            Facility rqFacility = input.facility();
+            Optional<Facility> facilityOptional = facilityRepo.findById(rqFacility.getId());
 
-            Optional<Category> optionalCategory = categoryRepo.findById(input.category().getId());
-
-            if (optionalCategory.isPresent()) {
-                categoryRepo.save(dbUtils.mergeMongoEntityFromRequest(optionalCategory.get(), input.category()));
+            if(facilityOptional.isPresent()) {
+                facilityRepo.save(dbUtils.mergeMongoEntityFromRequest(facilityOptional.get(), input.facility()));
 
                 CompletableFuture.runAsync(() -> redisServiceClient.deleteByKey(
-                                FilterType.CATEGORY.name(),
-                                input.category().getId()))
+                                FilterType.FACILITY.name(), input.facility().getId()))
                         .exceptionally(
                                 ex -> {
                                     ex.printStackTrace();
@@ -54,13 +46,14 @@ public class EditCategoryUseCase extends UseCase<EditCategoryUseCase.InputValue,
 
                 return ApiResponse.builder()
                         .result("success")
-                        .content("Edit category successfully")
+                        .content("Edit facility with ID " + input.facility.getId() + " successfully")
                         .status(HttpStatus.OK)
                         .build();
-            } else {
+            }
+            else {
                 return ApiResponse.builder()
                         .result("failed")
-                        .content("Category with id " + input.category().getId() + " does not exist")
+                        .content("This facility does not exist")
                         .status(HttpStatus.BAD_REQUEST)
                         .build();
             }
@@ -75,6 +68,5 @@ public class EditCategoryUseCase extends UseCase<EditCategoryUseCase.InputValue,
         }
     }
 
-    public record InputValue(Category category) implements UseCase.InputValue {
-    }
+    public record InputValue(Facility facility) implements UseCase.InputValue {}
 }

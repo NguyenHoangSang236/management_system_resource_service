@@ -1,23 +1,61 @@
 package com.management_system.resource.usecases.facility;
 
 import com.management_system.resource.entities.database.facility.Facility;
+import com.management_system.resource.infrastucture.constant.FacilityStatusEnum;
+import com.management_system.resource.infrastucture.repository.FacilityRepository;
 import com.management_system.utilities.core.usecase.UseCase;
 import com.management_system.utilities.entities.ApiResponse;
-import jakarta.servlet.http.HttpServletRequest;
+import com.management_system.utilities.utils.ValueParsingUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
+import java.util.Date;
 import java.util.List;
 
 @Component
 public class AddNewFacilityUseCase extends UseCase<AddNewFacilityUseCase.InputValue, ApiResponse> {
+    @Autowired
+    FacilityRepository facilityRepo;
+
+    @Autowired
+    ValueParsingUtils valueParsingUtils;
+
+
     @Override
     public ApiResponse execute(InputValue input) {
+        try {
+            List<Facility> facilities = input.facility();
 
+            for (Facility facility : facilities) {
+                Date currentTime = new Date();
 
+                String formatedIngredientName = valueParsingUtils.parseStringToId(facility.getName(), "-", false);
+                String facilityId = formatedIngredientName;
 
-        return null;
+                facility.setId(facilityId);
+                facility.setCreationDate(currentTime);
+                facility.setStatus(FacilityStatusEnum.AVAILABLE);
+
+                facilityRepo.insert(facility);
+            }
+
+            return ApiResponse.builder()
+                    .result("success")
+                    .content("Add new facilities successfully")
+                    .status(HttpStatus.OK)
+                    .build();
+        } catch (Exception e) {
+            e.printStackTrace();
+
+            return ApiResponse.builder()
+                    .result("failed")
+                    .content(e.getMessage())
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .build();
+        }
     }
 
-    public record InputValue(HttpServletRequest request, Facility facility) implements UseCase.InputValue {
+    public record InputValue(List<Facility> facility) implements UseCase.InputValue {
     }
 }

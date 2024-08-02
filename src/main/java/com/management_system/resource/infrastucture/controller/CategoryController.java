@@ -36,7 +36,8 @@ public class CategoryController {
     @PostMapping("/addNewCategories")
     public CompletableFuture<ResponseEntity<ApiResponse>> addNewCategories(@RequestBody String json, HttpServletRequest request) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        List<Category> categories = objectMapper.readValue(json, new TypeReference<>() {});
+        List<Category> categories = objectMapper.readValue(json, new TypeReference<>() {
+        });
 
         return useCaseExecutor.execute(
                 addNewCategoriesUseCase,
@@ -53,7 +54,7 @@ public class CategoryController {
 
         return useCaseExecutor.execute(
                 editCategoryUseCase,
-                new EditCategoryUseCase.InputValue(request, category),
+                new EditCategoryUseCase.InputValue(category),
                 ResponseMapper::map
         );
     }
@@ -62,7 +63,8 @@ public class CategoryController {
     @PostMapping("/deleteCategories")
     public CompletableFuture<ResponseEntity<ApiResponse>> deleteCategories(@RequestBody String json, HttpServletRequest request) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        List<String> idList = objectMapper.readValue(json, new TypeReference<>() {});
+        List<String> idList = objectMapper.readValue(json, new TypeReference<>() {
+        });
 
         return useCaseExecutor.execute(
                 deleteCategoriesUseCase,

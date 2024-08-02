@@ -23,25 +23,24 @@ public class DeleteCategoriesUseCase extends UseCase<DeleteCategoriesUseCase.Inp
         List<String> categoryList = input.idList();
         StringBuilder resBuilder = new StringBuilder();
 
-        for(String cateId: categoryList) {
-            if(!cateId.isBlank()) {
+        for (String cateId : categoryList) {
+            if (!cateId.isBlank()) {
                 Optional<Category> categoryOptional = categoryRepo.findById(cateId);
 
-                if(categoryOptional.isPresent()) {
+                if (categoryOptional.isPresent()) {
                     categoryRepo.deleteById(cateId);
                     resBuilder.append(cateId + ", ");
                 }
             }
         }
 
-        if(resBuilder.toString().isBlank()) {
+        if (resBuilder.toString().isBlank()) {
             return ApiResponse.builder()
                     .result("failed")
                     .content("")
                     .status(HttpStatus.BAD_REQUEST)
                     .build();
-        }
-        else {
+        } else {
             return ApiResponse.builder()
                     .result("success")
                     .content("Delete category ID " + resBuilder.substring(0, resBuilder.lastIndexOf(",")) + " successfully")
@@ -50,5 +49,6 @@ public class DeleteCategoriesUseCase extends UseCase<DeleteCategoriesUseCase.Inp
         }
     }
 
-    public record InputValue(HttpServletRequest request, List<String> idList) implements UseCase.InputValue {}
+    public record InputValue(HttpServletRequest request, List<String> idList) implements UseCase.InputValue {
+    }
 }
