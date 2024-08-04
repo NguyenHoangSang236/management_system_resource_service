@@ -4,7 +4,7 @@ import com.management_system.resource.entities.database.ingredient.Ingredient;
 import com.management_system.resource.infrastucture.constant.IngredientStatusEnum;
 import com.management_system.resource.infrastucture.repository.IngredientRepository;
 import com.management_system.utilities.core.usecase.UseCase;
-import com.management_system.utilities.entities.ApiResponse;
+import com.management_system.utilities.entities.api.response.ApiResponse;
 import com.management_system.utilities.utils.ValueParsingUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;

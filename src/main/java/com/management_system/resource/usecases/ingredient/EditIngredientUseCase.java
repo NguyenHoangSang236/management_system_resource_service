@@ -6,7 +6,7 @@ import com.management_system.resource.infrastucture.feign.RedisServiceClient;
 import com.management_system.resource.infrastucture.repository.IngredientRepository;
 import com.management_system.utilities.constant.enumuration.FilterType;
 import com.management_system.utilities.core.usecase.UseCase;
-import com.management_system.utilities.entities.ApiResponse;
+import com.management_system.utilities.entities.api.response.ApiResponse;
 import com.management_system.utilities.utils.DbUtils;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;

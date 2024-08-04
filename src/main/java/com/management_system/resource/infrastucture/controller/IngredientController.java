@@ -13,9 +13,9 @@ import com.management_system.resource.usecases.ingredient.ViewIngredientDetailsB
 import com.management_system.utilities.core.deserializer.FilterOptionsDeserializer;
 import com.management_system.utilities.core.filter.FilterOption;
 import com.management_system.utilities.core.usecase.UseCaseExecutor;
-import com.management_system.utilities.entities.ApiResponse;
-import com.management_system.utilities.entities.FilterRequest;
-import com.management_system.utilities.entities.ResponseMapper;
+import com.management_system.utilities.entities.api.request.FilterRequest;
+import com.management_system.utilities.entities.api.response.ApiResponse;
+import com.management_system.utilities.entities.api.response.ResponseMapper;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
@@ -66,7 +66,7 @@ public class IngredientController {
     }
 
 
-    @PostMapping("/filterIngredient")
+    @PostMapping("/filterIngredients")
     public CompletableFuture<ResponseEntity<ApiResponse>> filterIngredient(@RequestBody String json, HttpServletRequest request) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         SimpleModule module = new SimpleModule();

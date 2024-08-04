@@ -1,6 +1,6 @@
 package com.management_system.resource.infrastucture.feign;
 
-import com.management_system.utilities.entities.ApiResponse;
+import com.management_system.utilities.entities.api.response.ApiResponse;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
