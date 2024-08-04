@@ -1,7 +1,7 @@
 package com.management_system.resource.infrastucture.feign;
 
 import com.management_system.utilities.config.feign.FeignClientConfig;
-import com.management_system.utilities.entities.ApiResponse;
+import com.management_system.utilities.entities.api.response.ApiResponse;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
