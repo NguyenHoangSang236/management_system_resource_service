@@ -37,13 +37,13 @@ public class DeleteCategoriesUseCase extends UseCase<DeleteCategoriesUseCase.Inp
         if (resBuilder.toString().isBlank()) {
             return ApiResponse.builder()
                     .result("failed")
-                    .content("")
+                    .message("Can not delete")
                     .status(HttpStatus.BAD_REQUEST)
                     .build();
         } else {
             return ApiResponse.builder()
                     .result("success")
-                    .content("Delete category ID " + resBuilder.substring(0, resBuilder.lastIndexOf(",")) + " successfully")
+                    .message("Delete category ID " + resBuilder.substring(0, resBuilder.lastIndexOf(",")) + " successfully")
                     .status(HttpStatus.OK)
                     .build();
         }

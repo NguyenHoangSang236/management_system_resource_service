@@ -34,7 +34,7 @@ public class EditIngredientUseCase extends UseCase<EditIngredientUseCase.InputVa
             if (input.ingredientRequest().getId() == null) {
                 return ApiResponse.builder()
                         .result("failed")
-                        .content("Can not find id field")
+                        .message("Can not find id field")
                         .status(HttpStatus.BAD_REQUEST)
                         .build();
             }
@@ -55,13 +55,13 @@ public class EditIngredientUseCase extends UseCase<EditIngredientUseCase.InputVa
 
                 return ApiResponse.builder()
                         .result("success")
-                        .content("Edit resource ID " + input.ingredientRequest().getId() + " successfully")
+                        .message("Edit resource ID " + input.ingredientRequest().getId() + " successfully")
                         .status(HttpStatus.OK)
                         .build();
             } else {
                 return ApiResponse.builder()
                         .result("failed")
-                        .content("Category with id " + input.ingredientRequest().getId() + " does not exist")
+                        .message("Category with id " + input.ingredientRequest().getId() + " does not exist")
                         .status(HttpStatus.BAD_REQUEST)
                         .build();
             }

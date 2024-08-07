@@ -24,36 +24,26 @@ public class AddNewFacilityUseCase extends UseCase<AddNewFacilityUseCase.InputVa
 
     @Override
     public ApiResponse execute(InputValue input) {
-        try {
-            List<Facility> facilities = input.facility();
+        List<Facility> facilities = input.facility();
 
-            for (Facility facility : facilities) {
-                Date currentTime = new Date();
+        for (Facility facility : facilities) {
+            Date currentTime = new Date();
 
-                String formatedIngredientName = valueParsingUtils.parseStringToId(facility.getName(), "-", false);
-                String facilityId = formatedIngredientName;
+            String formatedIngredientName = valueParsingUtils.parseStringToId(facility.getName(), "-", false);
+            String facilityId = formatedIngredientName;
 
-                facility.setId(facilityId);
-                facility.setCreationDate(currentTime);
-                facility.setStatus(FacilityStatusEnum.AVAILABLE);
+            facility.setId(facilityId);
+            facility.setCreationDate(currentTime);
+            facility.setStatus(FacilityStatusEnum.AVAILABLE);
 
-                facilityRepo.insert(facility);
-            }
-
-            return ApiResponse.builder()
-                    .result("success")
-                    .content("Add new facilities successfully")
-                    .status(HttpStatus.OK)
-                    .build();
-        } catch (Exception e) {
-            e.printStackTrace();
-
-            return ApiResponse.builder()
-                    .result("failed")
-                    .content(e.getMessage())
-                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .build();
+            facilityRepo.insert(facility);
         }
+
+        return ApiResponse.builder()
+                .result("success")
+                .message("Add new facilities successfully")
+                .status(HttpStatus.OK)
+                .build();
     }
 
     public record InputValue(List<Facility> facility) implements UseCase.InputValue {

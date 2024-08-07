@@ -39,7 +39,7 @@ public class ViewIngredientDetailsByIdUseCase extends UseCase<ViewIngredientDeta
                 e.printStackTrace();
                 redisRes = ApiResponse.builder()
                         .result("failed")
-                        .content("Error!")
+                        .message("Error!")
                         .status(HttpStatus.INTERNAL_SERVER_ERROR)
                         .build();
             }

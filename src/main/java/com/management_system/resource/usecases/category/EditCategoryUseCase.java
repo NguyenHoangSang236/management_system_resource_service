@@ -32,7 +32,7 @@ public class EditCategoryUseCase extends UseCase<EditCategoryUseCase.InputValue,
             if (input.category().getId() == null) {
                 return ApiResponse.builder()
                         .result("failed")
-                        .content("Can not find id field")
+                        .message("Can not find id field")
                         .status(HttpStatus.BAD_REQUEST)
                         .build();
             }
@@ -54,13 +54,13 @@ public class EditCategoryUseCase extends UseCase<EditCategoryUseCase.InputValue,
 
                 return ApiResponse.builder()
                         .result("success")
-                        .content("Edit category successfully")
+                        .message("Edit category successfully")
                         .status(HttpStatus.OK)
                         .build();
             } else {
                 return ApiResponse.builder()
                         .result("failed")
-                        .content("Category with id " + input.category().getId() + " does not exist")
+                        .message("Category with id " + input.category().getId() + " does not exist")
                         .status(HttpStatus.BAD_REQUEST)
                         .build();
             }
@@ -69,7 +69,7 @@ public class EditCategoryUseCase extends UseCase<EditCategoryUseCase.InputValue,
 
             return ApiResponse.builder()
                     .result("failed")
-                    .content(e.getMessage())
+                    .message(e.getMessage())
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .build();
         }

@@ -48,7 +48,7 @@ public class AddNewIngredientsUseCase extends UseCase<AddNewIngredientsUseCase.I
 
             return ApiResponse.builder()
                     .result("success")
-                    .content("Add new ingredients successfully")
+                    .message("Add new ingredients successfully")
                     .status(HttpStatus.OK)
                     .build();
         } catch (Exception e) {

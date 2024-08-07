@@ -46,13 +46,13 @@ public class EditFacilityUseCase extends UseCase<EditFacilityUseCase.InputValue,
 
                 return ApiResponse.builder()
                         .result("success")
-                        .content("Edit facility with ID " + input.facility.getId() + " successfully")
+                        .message("Edit facility with ID " + input.facility.getId() + " successfully")
                         .status(HttpStatus.OK)
                         .build();
             } else {
                 return ApiResponse.builder()
                         .result("failed")
-                        .content("This facility does not exist")
+                        .message("This facility does not exist")
                         .status(HttpStatus.BAD_REQUEST)
                         .build();
             }

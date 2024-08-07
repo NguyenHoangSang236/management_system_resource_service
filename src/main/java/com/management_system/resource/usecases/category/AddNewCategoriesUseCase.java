@@ -42,7 +42,7 @@ public class AddNewCategoriesUseCase extends UseCase<AddNewCategoriesUseCase.Inp
 
         return ApiResponse.builder()
                 .result("success")
-                .content("Add new categories successfully")
+                .message("Add new categories successfully")
                 .status(HttpStatus.OK)
                 .build();
     }
