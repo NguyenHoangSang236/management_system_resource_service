@@ -8,7 +8,6 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.*;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -23,7 +22,6 @@ import java.util.List;
 @Builder
 public class Ingredient extends MongoDbEntity implements Serializable {
     @Id
-    @Indexed(unique = true)
     String id;
 
     @JsonProperty(value = "supplier_name")

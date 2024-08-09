@@ -35,8 +35,8 @@ public class AddNewIngredientsUseCase extends UseCase<AddNewIngredientsUseCase.I
                 SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
                 String strDate = formatter.format(currentTime);
 
-                String formatedDateStr = valueParsingUtils.parseStringToId(strDate, "-", false);
-                String formatedIngredientName = valueParsingUtils.parseStringToId(newIngredient.getName(), "-", false);
+                String formatedDateStr = valueParsingUtils.parseStringToId("-", false, strDate);
+                String formatedIngredientName = valueParsingUtils.parseStringToId("-", false, newIngredient.getName());
                 String ingredientId = formatedIngredientName + "_" + formatedDateStr;
 
                 newIngredient.setId(ingredientId);

@@ -29,8 +29,7 @@ public class AddNewFacilityUseCase extends UseCase<AddNewFacilityUseCase.InputVa
         for (Facility facility : facilities) {
             Date currentTime = new Date();
 
-            String formatedIngredientName = valueParsingUtils.parseStringToId(facility.getName(), "-", false);
-            String facilityId = formatedIngredientName;
+            String facilityId = valueParsingUtils.parseStringToId("-", false, facility.getName());
 
             facility.setId(facilityId);
             facility.setCreationDate(currentTime);

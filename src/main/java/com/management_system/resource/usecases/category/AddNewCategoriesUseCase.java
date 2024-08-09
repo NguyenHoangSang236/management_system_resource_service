@@ -26,13 +26,13 @@ public class AddNewCategoriesUseCase extends UseCase<AddNewCategoriesUseCase.Inp
     @Override
     public ApiResponse execute(InputValue input) {
         for (Category category : input.categories()) {
-            String id = valueParsingUtils.parseStringToId(category.getName(), "-", false);
+            String id = valueParsingUtils.parseStringToId("-", false, category.getName());
             category.setId(id);
             category.setCreationDate(new Date());
 
             if (category.getSubCategories() != null && !category.getSubCategories().isEmpty()) {
                 for (SubCategory subCategory : category.getSubCategories()) {
-                    id = valueParsingUtils.parseStringToId(subCategory.getName(), "-", false);
+                    id = valueParsingUtils.parseStringToId("-", false, subCategory.getName());
                     subCategory.setId(id);
                 }
             }

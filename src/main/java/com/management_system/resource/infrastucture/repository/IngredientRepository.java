@@ -7,9 +7,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface IngredientRepository extends MongoRepository<Ingredient, String> {
-    @Query("{'name': ?0}")
-    Ingredient getIngredientByName(String name);
-
     @Query("{'_id': ?0}")
     Ingredient getIngredientById(String id);
 }

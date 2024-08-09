@@ -10,13 +10,15 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.io.Serializable;
+
 @Document("facilities")
 @Builder
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class Facility extends MongoDbEntity {
+public class Facility extends MongoDbEntity implements Serializable {
     @Id
     String id;
 

@@ -67,7 +67,7 @@ public class IngredientController {
 
 
     @PostMapping("/filterIngredients")
-    public CompletableFuture<ResponseEntity<ApiResponse>> filterIngredient(@RequestBody String json, HttpServletRequest request) throws IOException {
+    public CompletableFuture<ResponseEntity<ApiResponse>> filterIngredient(@RequestBody String json) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
         SimpleModule module = new SimpleModule();
 
