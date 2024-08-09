@@ -1,8 +1,6 @@
 package com.management_system.resource.usecases.supplier;
 
-import com.management_system.resource.entities.database.facility.Facility;
 import com.management_system.resource.entities.database.supplier.Supplier;
-import com.management_system.resource.infrastucture.constant.FacilityStatusEnum;
 import com.management_system.resource.infrastucture.constant.SupplierStatusEnum;
 import com.management_system.resource.infrastucture.repository.SupplierRepository;
 import com.management_system.utilities.core.usecase.UseCase;
@@ -47,5 +45,6 @@ public class AddNewSuppliersUseCase extends UseCase<AddNewSuppliersUseCase.Input
                 .build();
     }
 
-    public record InputValue(List<Supplier> suppliers) implements UseCase.InputValue{}
+    public record InputValue(List<Supplier> suppliers) implements UseCase.InputValue {
+    }
 }

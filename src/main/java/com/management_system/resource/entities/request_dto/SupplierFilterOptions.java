@@ -5,7 +5,6 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.management_system.resource.infrastucture.constant.SupplierStatusEnum;
 import com.management_system.utilities.core.filter.FilterOption;
-import com.management_system.utilities.entities.api.request.FilterRequest;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.*;

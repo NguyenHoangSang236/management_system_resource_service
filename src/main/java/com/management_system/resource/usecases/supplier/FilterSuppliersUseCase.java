@@ -1,7 +1,6 @@
 package com.management_system.resource.usecases.supplier;
 
 import com.management_system.resource.entities.database.supplier.Supplier;
-import com.management_system.resource.entities.request_dto.SupplierFilterOptions;
 import com.management_system.utilities.core.usecase.UseCase;
 import com.management_system.utilities.entities.api.request.FilterRequest;
 import com.management_system.utilities.entities.api.response.ApiResponse;
@@ -29,5 +28,6 @@ public class FilterSuppliersUseCase extends UseCase<FilterSuppliersUseCase.Input
                 .build();
     }
 
-    public record InputValue(FilterRequest filterRequest) implements UseCase.InputValue{}
+    public record InputValue(FilterRequest filterRequest) implements UseCase.InputValue {
+    }
 }

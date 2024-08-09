@@ -5,7 +5,6 @@ import com.management_system.resource.infrastucture.constant.SupplierStatusEnum;
 import com.management_system.utilities.entities.database.MongoDbEntity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.Index;
 import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
