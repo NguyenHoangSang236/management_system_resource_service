@@ -1,14 +1,13 @@
-package com.management_system.resource.usecases.ingredient;
+package com.management_system.resource.usecases.supplier;
 
-import com.management_system.resource.entities.database.ingredient.Ingredient;
-import com.management_system.resource.entities.request_dto.IngredientRequest;
+import com.management_system.resource.entities.database.supplier.Supplier;
+import com.management_system.resource.entities.request_dto.SupplierRequest;
 import com.management_system.resource.infrastucture.feign.redis.RedisServiceClient;
-import com.management_system.resource.infrastucture.repository.IngredientRepository;
+import com.management_system.resource.infrastucture.repository.SupplierRepository;
 import com.management_system.utilities.constant.enumuration.FilterType;
 import com.management_system.utilities.core.usecase.UseCase;
 import com.management_system.utilities.entities.api.response.ApiResponse;
 import com.management_system.utilities.utils.DbUtils;
-import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -17,20 +16,20 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 @Component
-public class EditIngredientUseCase extends UseCase<EditIngredientUseCase.InputValue, ApiResponse> {
+public class EditSupplierUseCase extends UseCase<EditSupplierUseCase.InputValue, ApiResponse> {
     @Autowired
-    IngredientRepository ingredientRepo;
-
-    @Autowired
-    DbUtils dbUtils;
+    SupplierRepository supplierRepo;
 
     @Autowired
     RedisServiceClient redisServiceClient;
 
+    @Autowired
+    DbUtils dbUtils;
+
 
     @Override
     public ApiResponse execute(InputValue input) {
-        if (input.ingredientRequest().getId().isBlank()) {
+        if (input.supplierRequest().getId().isBlank()) {
             return ApiResponse.builder()
                     .result("failed")
                     .message("Can not find id field")
@@ -38,13 +37,13 @@ public class EditIngredientUseCase extends UseCase<EditIngredientUseCase.InputVa
                     .build();
         }
 
-        Optional<Ingredient> ingredientOptional = ingredientRepo.findById(input.ingredientRequest().getId());
+        Optional<Supplier> supplierOptional = supplierRepo.findById(input.supplierRequest().getId());
 
-        if (ingredientOptional.isPresent()) {
-            ingredientRepo.save(dbUtils.mergeMongoEntityFromRequest(ingredientOptional.get(), input.ingredientRequest()));
+        if(supplierOptional.isPresent()) {
+            supplierRepo.save(dbUtils.mergeMongoEntityFromRequest(supplierOptional.get(), input.supplierRequest()));
 
             CompletableFuture.runAsync(() -> redisServiceClient.deleteByKey(
-                            FilterType.INGREDIENT.name(), input.ingredientRequest().getId()))
+                            FilterType.SUPPLIER.name(), input.supplierRequest().getId()))
                     .exceptionally(
                             ex -> {
                                 ex.printStackTrace();
@@ -54,19 +53,18 @@ public class EditIngredientUseCase extends UseCase<EditIngredientUseCase.InputVa
 
             return ApiResponse.builder()
                     .result("success")
-                    .message("Edit ingredient ID " + input.ingredientRequest().getId() + " successfully")
+                    .message("Edit supplier ID " + input.supplierRequest().getId() + " successfully")
                     .status(HttpStatus.OK)
                     .build();
-        } else {
+        }
+        else {
             return ApiResponse.builder()
                     .result("failed")
-                    .message("Category with id " + input.ingredientRequest().getId() + " does not exist")
+                    .message("Supplier with id " + input.supplierRequest().getId() + " does not exist")
                     .status(HttpStatus.BAD_REQUEST)
                     .build();
         }
     }
 
-    public record InputValue(HttpServletRequest request,
-                             IngredientRequest ingredientRequest) implements UseCase.InputValue {
-    }
+    public record InputValue(SupplierRequest supplierRequest) implements UseCase.InputValue {}
 }

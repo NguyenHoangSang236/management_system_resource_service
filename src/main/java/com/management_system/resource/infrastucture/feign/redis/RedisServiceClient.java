@@ -1,4 +1,4 @@
-package com.management_system.resource.infrastucture.feign;
+package com.management_system.resource.infrastucture.feign.redis;
 
 import com.management_system.utilities.config.feign.FeignClientConfig;
 import com.management_system.utilities.entities.api.response.ApiResponse;

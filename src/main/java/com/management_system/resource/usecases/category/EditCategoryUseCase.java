@@ -1,7 +1,7 @@
 package com.management_system.resource.usecases.category;
 
 import com.management_system.resource.entities.database.ingredient.Category;
-import com.management_system.resource.infrastucture.feign.RedisServiceClient;
+import com.management_system.resource.infrastucture.feign.redis.RedisServiceClient;
 import com.management_system.resource.infrastucture.repository.CategoryRepository;
 import com.management_system.utilities.constant.enumuration.FilterType;
 import com.management_system.utilities.core.usecase.UseCase;
