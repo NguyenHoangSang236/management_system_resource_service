@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-@FeignClient(value = "redis-service", url = "https://localhost:8079", fallback = RedisServiceClientFallback.class, configuration = FeignClientConfig.class)
+@FeignClient(value = "redis-service", url = "https://redis.management-system.com", fallback = RedisServiceClientFallback.class, configuration = FeignClientConfig.class)
 public interface RedisServiceClient {
     @RequestMapping(method = RequestMethod.GET, value = "/redis/unauthen/action/findByKey-{redisHashKey}:{key}")
     ApiResponse findByKey(@PathVariable("redisHashKey") String hashKey, @PathVariable("key") String key);

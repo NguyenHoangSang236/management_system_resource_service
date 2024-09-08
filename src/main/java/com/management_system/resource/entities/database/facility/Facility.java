@@ -22,23 +22,23 @@ public class Facility extends MongoDbEntity implements Serializable {
     @Id
     String id;
 
-    @Field(name = "name")
+    @Field(name = "name", write = Field.Write.NON_NULL)
     String name;
 
     @Enumerated(EnumType.STRING)
-    @Field(name = "type")
+    @Field(name = "type", write = Field.Write.NON_NULL)
     FacilityTypeEnum type;
 
-    @Field(name = "quantity")
+    @Field(name = "quantity", write = Field.Write.NON_NULL)
     int quantity;
 
-    @Field(name = "image")
+    @Field(name = "image", write = Field.Write.NON_NULL)
     String image;
 
     @Field(name = "note")
     String note;
 
     @Enumerated(EnumType.STRING)
-    @Field(name = "status")
+    @Field(name = "status", write = Field.Write.NON_NULL)
     FacilityStatusEnum status;
 }

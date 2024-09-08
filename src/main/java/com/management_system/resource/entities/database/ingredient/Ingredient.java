@@ -25,21 +25,17 @@ public class Ingredient extends MongoDbEntity implements Serializable {
     String id;
 
     @JsonProperty(value = "supplier_name")
-    @Field(name = "supplier_name")
+    @Field(name = "supplier_name", write = Field.Write.NON_NULL)
     String supplierName;
 
-    @Field(name = "name")
+    @Field(name = "name", write = Field.Write.NON_NULL)
     String name;
 
-    @Field(name = "image")
+    @Field(name = "image", write = Field.Write.NON_NULL)
     String image;
 
-    @JsonProperty(value = "last_update_username")
-    @Field(name = "last_update_username")
-    String lastUpdateUsername;
-
     @Enumerated(EnumType.STRING)
-    @Field(name = "status")
+    @Field(name = "status", write = Field.Write.NON_NULL)
     IngredientStatusEnum status;
 
     @Field(name = "note")
@@ -47,13 +43,13 @@ public class Ingredient extends MongoDbEntity implements Serializable {
 
     @JsonProperty(value = "measurement_unit")
     @Enumerated(EnumType.STRING)
-    @Field(name = "measurement_unit")
+    @Field(name = "measurement_unit", write = Field.Write.NON_NULL)
     IngredientMeasurementUnitEnum measurementUnit;
 
-    @Field(name = "quantity")
+    @Field(name = "quantity", write = Field.Write.NON_NULL)
     double quantity;
 
     @JsonProperty(value = "categories")
-    @Field(name = "categories")
+    @Field(name = "categories", write = Field.Write.NON_NULL)
     List<String> categories;
 }

@@ -9,6 +9,9 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class SubCategory {
+    @NonNull
     String id;
+
+    @NonNull
     String name;
 }

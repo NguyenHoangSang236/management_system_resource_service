@@ -20,10 +20,10 @@ public class Category extends MongoDbEntity implements Serializable {
     @Id
     String id;
 
-    @Field(name = "name")
+    @Field(name = "name", write = Field.Write.NON_NULL)
     String name;
 
     @JsonProperty(value = "sub_categories")
-    @Field(name = "sub_categories")
+    @Field(name = "sub_categories", write = Field.Write.NON_NULL)
     List<SubCategory> subCategories;
 }

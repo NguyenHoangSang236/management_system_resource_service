@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.management_system.resource.entities.database.supplier.Supplier;
 import com.management_system.resource.entities.request_dto.SupplierFilterOptions;
+import com.management_system.resource.entities.request_dto.SupplierRequest;
 import com.management_system.resource.usecases.supplier.AddNewSuppliersUseCase;
 import com.management_system.resource.usecases.supplier.FilterSuppliersUseCase;
 import com.management_system.utilities.core.deserializer.FilterOptionsDeserializer;
@@ -13,10 +14,15 @@ import com.management_system.utilities.core.usecase.UseCaseExecutor;
 import com.management_system.utilities.entities.api.request.FilterRequest;
 import com.management_system.utilities.entities.api.response.ApiResponse;
 import com.management_system.utilities.entities.api.response.ResponseMapper;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +32,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+@Validated
 @RestController
 @RequestMapping(value = "/authen/supplier", consumes = {"*/*"}, produces = {MediaType.APPLICATION_JSON_VALUE})
 @AllArgsConstructor
@@ -55,11 +62,7 @@ public class SupplierController {
 
     @PreAuthorize("hasAuthority('MANAGER')")
     @PostMapping("/addNewSuppliers")
-    public CompletableFuture<ResponseEntity<ApiResponse>> addNewSuppliers(@RequestBody String json) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        List<Supplier> suppliers = objectMapper.readValue(json, new TypeReference<List<Supplier>>() {
-        });
-
+    public CompletableFuture<ResponseEntity<ApiResponse>> addNewSuppliers(@Valid @RequestBody List<@Valid SupplierRequest> suppliers) {
         return useCaseExecutor.execute(
                 addNewSuppliersUseCase,
                 new AddNewSuppliersUseCase.InputValue(suppliers),

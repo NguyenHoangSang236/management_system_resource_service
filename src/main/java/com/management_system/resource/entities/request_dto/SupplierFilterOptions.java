@@ -7,6 +7,7 @@ import com.management_system.resource.infrastucture.constant.SupplierStatusEnum;
 import com.management_system.utilities.core.filter.FilterOption;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.Email;
 import lombok.*;
 
 import java.io.Serializable;
@@ -20,6 +21,7 @@ import java.util.Map;
 public class SupplierFilterOptions extends FilterOption implements Serializable {
     String name;
 
+    @Email(message = "Invalid email format")
     String email;
 
     String address;

@@ -3,6 +3,7 @@ package com.management_system.resource.entities.request_dto;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.management_system.resource.infrastucture.constant.IngredientMeasurementUnitEnum;
 import com.management_system.resource.infrastucture.constant.IngredientStatusEnum;
+import com.management_system.utilities.entities.api.request.ApiRequest;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.*;
@@ -18,7 +19,7 @@ import java.util.List;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class IngredientRequest implements Serializable {
+public class IngredientRequest extends ApiRequest implements Serializable {
     String id;
 
     String supplierName;

@@ -14,7 +14,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 @AllArgsConstructor
 public class ImportationStatus {
     @Enumerated(EnumType.STRING)
-    @Field(name = "name")
+    @Field(name = "name", write = Field.Write.NON_NULL)
     ImportationStatusEnum name;
 
     @JsonProperty(value = "debt_amount")

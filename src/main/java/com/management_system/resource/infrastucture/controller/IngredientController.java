@@ -17,6 +17,7 @@ import com.management_system.utilities.entities.api.request.FilterRequest;
 import com.management_system.utilities.entities.api.response.ApiResponse;
 import com.management_system.utilities.entities.api.response.ResponseMapper;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -39,14 +40,10 @@ public class IngredientController {
 
     @PreAuthorize("hasAuthority('MANAGER')")
     @PostMapping("/addNewIngredients")
-    public CompletableFuture<ResponseEntity<ApiResponse>> addNewIngredient(@RequestBody String json, HttpServletRequest request) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        List<Ingredient> ingredients = objectMapper.readValue(json, new TypeReference<List<Ingredient>>() {
-        });
-
+    public CompletableFuture<ResponseEntity<ApiResponse>> addNewIngredient(@Valid @RequestBody List<@Valid IngredientRequest> ingredientRequests, HttpServletRequest request) {
         return useCaseExecutor.execute(
                 addNewIngredientsUseCase,
-                new AddNewIngredientsUseCase.InputValue(request, ingredients),
+                new AddNewIngredientsUseCase.InputValue(request, ingredientRequests),
                 ResponseMapper::map
         );
     }
@@ -54,10 +51,7 @@ public class IngredientController {
 
     @PreAuthorize("hasAuthority('MANAGER')")
     @PostMapping("/editIngredient")
-    public CompletableFuture<ResponseEntity<ApiResponse>> editIngredient(@RequestBody String json, HttpServletRequest request) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        IngredientRequest ingredientReq = objectMapper.readValue(json, IngredientRequest.class);
-
+    public CompletableFuture<ResponseEntity<ApiResponse>> editIngredient(@RequestBody IngredientRequest ingredientReq, HttpServletRequest request) {
         return useCaseExecutor.execute(
                 editIngredientUseCase,
                 new EditIngredientUseCase.InputValue(request, ingredientReq),

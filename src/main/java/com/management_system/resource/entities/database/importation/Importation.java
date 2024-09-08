@@ -28,17 +28,17 @@ public class Importation extends MongoDbEntity implements Serializable {
     @Field(value = "image")
     String image;
 
-    @Field(value = "quantity")
+    @Field(value = "quantity", write = Field.Write.NON_NULL)
     double quantity;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
     @JsonProperty("import_date")
-    @Field(name = "import_date")
+    @Field(name = "import_date", write = Field.Write.NON_NULL)
     Date importDate;
 
     @Enumerated(EnumType.STRING)
     @JsonProperty("measurement_unit")
-    @Field(name = "measurement_unit")
+    @Field(name = "measurement_unit", write = Field.Write.NON_NULL)
     MeasurementUnitEnum measurementUnit;
 
     @JsonProperty("ingredient_id")
@@ -55,15 +55,15 @@ public class Importation extends MongoDbEntity implements Serializable {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
     @JsonProperty("manufacture_date")
-    @Field(name = "manufacture_date")
+    @Field(name = "manufacture_date", write = Field.Write.NON_NULL)
     Date manufactureDate;
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
     @JsonProperty("expiration_date")
-    @Field(name = "expiration_date")
+    @Field(name = "expiration_date", write = Field.Write.NON_NULL)
     Date expirationDate;
 
     @JsonProperty("supplier")
-    @Field(value = "supplier")
+    @Field(value = "supplier", write = Field.Write.NON_NULL)
     Supplier supplier;
 }
