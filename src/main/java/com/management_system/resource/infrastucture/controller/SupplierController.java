@@ -1,13 +1,12 @@
 package com.management_system.resource.infrastucture.controller;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.management_system.resource.entities.database.supplier.Supplier;
 import com.management_system.resource.entities.request_dto.SupplierFilterOptions;
 import com.management_system.resource.entities.request_dto.SupplierRequest;
 import com.management_system.resource.usecases.supplier.AddNewSuppliersUseCase;
 import com.management_system.resource.usecases.supplier.FilterSuppliersUseCase;
+import com.management_system.resource.usecases.supplier.ViewSupplierDetailsByIdUseCase;
 import com.management_system.utilities.core.deserializer.FilterOptionsDeserializer;
 import com.management_system.utilities.core.filter.FilterOption;
 import com.management_system.utilities.core.usecase.UseCaseExecutor;
@@ -16,17 +15,11 @@ import com.management_system.utilities.entities.api.response.ApiResponse;
 import com.management_system.utilities.entities.api.response.ResponseMapper;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.validation.BindingResult;
-import org.springframework.validation.ObjectError;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -40,6 +33,7 @@ public class SupplierController {
     final UseCaseExecutor useCaseExecutor;
     final FilterSuppliersUseCase filterSuppliersUseCase;
     final AddNewSuppliersUseCase addNewSuppliersUseCase;
+    final ViewSupplierDetailsByIdUseCase viewSupplierDetailsByIdUseCase;
 
 
     @PostMapping("/filterSuppliers")
@@ -66,6 +60,15 @@ public class SupplierController {
         return useCaseExecutor.execute(
                 addNewSuppliersUseCase,
                 new AddNewSuppliersUseCase.InputValue(suppliers),
+                ResponseMapper::map
+        );
+    }
+
+    @GetMapping("/supplierId={id}")
+    public CompletableFuture<ResponseEntity<ApiResponse>> viewSupplierById(@PathVariable("id") String id) {
+        return useCaseExecutor.execute(
+                viewSupplierDetailsByIdUseCase,
+                new ViewSupplierDetailsByIdUseCase.InputValue(id),
                 ResponseMapper::map
         );
     }

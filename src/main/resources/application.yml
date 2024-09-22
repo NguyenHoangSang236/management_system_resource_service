@@ -1,0 +1,57 @@
+spring:
+  application:
+    name: resource-service
+  cloud:
+    gateway:
+      httpclient:
+        max-header-size: 65536
+    instance:
+      hostname: ${spring.application.name}.${eureka.instance.instance-id}
+      instance-id: ${spring.application.name}:${spring.application.instance-id:${random.value}}
+  mvc:
+    problem-details:
+      enabled: false
+  data:
+    mongodb:
+#      uri: mongodb://localhost:27017/management_system?retryWrites=true&w=majority
+      host: localhost
+      port: 27017
+      auto-index-creation: true
+      database: management_system
+      username: root
+      password: hoangsang236
+      authentication-database: admin
+
+server:
+  port: 8082
+  host: localhost
+  servlet:
+    context-path: /resource
+  ssl:
+    key-store: keystore.p12
+    key-store-password: hoangsang236
+    keyStoreType: PKCS12
+    keyAlias: tomcat
+  max-http-request-header-size: 65536
+
+eureka:
+  instance:
+    securePortEnabled: true
+    securePort: 8082
+    nonSecurePortEnabled: false
+    preferIpAddress: true
+  client:
+    register-with-eureka: true
+    fetch-registry: true
+    service-url:
+      defaultZone: https://localhost:8761/eureka/
+
+feign:
+  client:
+    config:
+      default:
+        connectTimeout: 5000
+        readTimeout: 5000
+        loggerLevel: basic
+  hystrix:
+    enabled: true

@@ -1,6 +1,5 @@
 package com.management_system.resource.infrastucture.feign.account;
 
-import com.management_system.resource.infrastucture.feign.redis.RedisServiceClientFallback;
 import com.management_system.utilities.config.feign.FeignClientConfig;
 import org.springframework.cloud.openfeign.FeignClient;
 

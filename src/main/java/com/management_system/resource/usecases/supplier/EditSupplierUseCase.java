@@ -39,7 +39,7 @@ public class EditSupplierUseCase extends UseCase<EditSupplierUseCase.InputValue,
 
         Optional<Supplier> supplierOptional = supplierRepo.findById(input.supplierRequest().getId());
 
-        if(supplierOptional.isPresent()) {
+        if (supplierOptional.isPresent()) {
             supplierRepo.save(dbUtils.mergeMongoEntityFromRequest(supplierOptional.get(), input.supplierRequest()));
 
             CompletableFuture.runAsync(() -> redisServiceClient.deleteByKey(
@@ -56,8 +56,7 @@ public class EditSupplierUseCase extends UseCase<EditSupplierUseCase.InputValue,
                     .message("Edit supplier ID " + input.supplierRequest().getId() + " successfully")
                     .status(HttpStatus.OK)
                     .build();
-        }
-        else {
+        } else {
             return ApiResponse.builder()
                     .result("failed")
                     .message("Supplier with id " + input.supplierRequest().getId() + " does not exist")
@@ -66,5 +65,6 @@ public class EditSupplierUseCase extends UseCase<EditSupplierUseCase.InputValue,
         }
     }
 
-    public record InputValue(SupplierRequest supplierRequest) implements UseCase.InputValue {}
+    public record InputValue(SupplierRequest supplierRequest) implements UseCase.InputValue {
+    }
 }

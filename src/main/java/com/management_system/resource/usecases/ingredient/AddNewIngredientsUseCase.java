@@ -45,16 +45,14 @@ public class AddNewIngredientsUseCase extends UseCase<AddNewIngredientsUseCase.I
             int successCount = 0;
 
             for (IngredientRequest ingredientReq : ingredientRequests) {
-                if(ingredientReq.getSupplierName().isBlank()) {
+                if (ingredientReq.getSupplierName().isBlank()) {
                     rsList.add("Add ingredient" + ingredientReq.getName() + " failed because supplier's name is null");
-                }
-                else if(ingredientReq.getCategories() == null || ingredientReq.getCategories().isEmpty()) {
+                } else if (ingredientReq.getCategories() == null || ingredientReq.getCategories().isEmpty()) {
                     rsList.add("Add ingredient" + ingredientReq.getName() + " failed because there is no category");
-                }
-                else {
+                } else {
                     Optional<List<Supplier>> supplierOptional = supplierRepo.getSupplierByName(ingredientReq.getSupplierName());
 
-                    if(supplierOptional.isPresent() && !supplierOptional.get().isEmpty()) {
+                    if (supplierOptional.isPresent() && !supplierOptional.get().isEmpty()) {
                         Ingredient ingredient = new Ingredient();
                         ingredient = dbUtils.mergeMongoEntityFromRequest(ingredient, ingredientReq);
 
@@ -75,8 +73,7 @@ public class AddNewIngredientsUseCase extends UseCase<AddNewIngredientsUseCase.I
 
                         successCount++;
                         rsList.add("Add ingredient" + formatedIngredientName + " successfully");
-                    }
-                    else {
+                    } else {
                         rsList.add("Add ingredient" + ingredientReq.getSupplierName() + " successfully");
                     }
                 }
@@ -98,6 +95,7 @@ public class AddNewIngredientsUseCase extends UseCase<AddNewIngredientsUseCase.I
         }
     }
 
-    public record InputValue(HttpServletRequest request, List<IngredientRequest> ingredientRequests) implements UseCase.InputValue {
+    public record InputValue(HttpServletRequest request,
+                             List<IngredientRequest> ingredientRequests) implements UseCase.InputValue {
     }
 }

@@ -1,9 +1,7 @@
 package com.management_system.resource.infrastucture.controller;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
-import com.management_system.resource.entities.database.ingredient.Ingredient;
 import com.management_system.resource.entities.request_dto.IngredientFilterOptions;
 import com.management_system.resource.entities.request_dto.IngredientRequest;
 import com.management_system.resource.usecases.ingredient.AddNewIngredientsUseCase;

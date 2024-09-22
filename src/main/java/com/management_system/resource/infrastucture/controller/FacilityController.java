@@ -1,13 +1,14 @@
 package com.management_system.resource.infrastucture.controller;
 
-import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.management_system.resource.entities.database.facility.Facility;
 import com.management_system.resource.entities.request_dto.FacilityFilterOptions;
+import com.management_system.resource.entities.request_dto.FacilityRequest;
 import com.management_system.resource.usecases.facility.AddNewFacilityUseCase;
 import com.management_system.resource.usecases.facility.EditFacilityUseCase;
 import com.management_system.resource.usecases.facility.FilterFacilitiesUseCase;
+import com.management_system.resource.usecases.facility.ViewFacilityDetailsByIdUseCase;
 import com.management_system.utilities.core.deserializer.FilterOptionsDeserializer;
 import com.management_system.utilities.core.filter.FilterOption;
 import com.management_system.utilities.core.usecase.UseCaseExecutor;
@@ -18,10 +19,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.List;
@@ -35,15 +33,12 @@ public class FacilityController {
     final AddNewFacilityUseCase addNewFacilityUseCase;
     final EditFacilityUseCase editFacilityUseCase;
     final FilterFacilitiesUseCase filterFacilitiesUseCase;
+    final ViewFacilityDetailsByIdUseCase viewFacilityDetailsByIdUseCase;
 
 
     @PreAuthorize("hasAuthority('MANAGER')")
     @PostMapping("/addNewFacilities")
-    public CompletableFuture<ResponseEntity<ApiResponse>> addNewFacilities(@RequestBody String json) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        List<Facility> facilities = objectMapper.readValue(json, new TypeReference<>() {
-        });
-
+    public CompletableFuture<ResponseEntity<ApiResponse>> addNewFacilities(@RequestBody List<Facility> facilities) {
         return useCaseExecutor.execute(
                 addNewFacilityUseCase,
                 new AddNewFacilityUseCase.InputValue(facilities),
@@ -54,13 +49,10 @@ public class FacilityController {
 
     @PreAuthorize("hasAuthority('MANAGER')")
     @PostMapping("/editFacility")
-    public CompletableFuture<ResponseEntity<ApiResponse>> editFacility(@RequestBody String json) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        Facility facility = objectMapper.readValue(json, Facility.class);
-
+    public CompletableFuture<ResponseEntity<ApiResponse>> editFacility(@RequestBody FacilityRequest facilityRequest) {
         return useCaseExecutor.execute(
                 editFacilityUseCase,
-                new EditFacilityUseCase.InputValue(facility),
+                new EditFacilityUseCase.InputValue(facilityRequest),
                 ResponseMapper::map
         );
     }
@@ -79,6 +71,16 @@ public class FacilityController {
         return useCaseExecutor.execute(
                 filterFacilitiesUseCase,
                 new FilterFacilitiesUseCase.InputValue(filterRequest),
+                ResponseMapper::map
+        );
+    }
+
+
+    @GetMapping("/facilityId={id}")
+    public CompletableFuture<ResponseEntity<ApiResponse>> viewFacilityById(@PathVariable("id") String id) {
+        return useCaseExecutor.execute(
+                viewFacilityDetailsByIdUseCase,
+                new ViewFacilityDetailsByIdUseCase.InputValue(id),
                 ResponseMapper::map
         );
     }

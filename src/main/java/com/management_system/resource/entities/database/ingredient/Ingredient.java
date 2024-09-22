@@ -14,11 +14,11 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import java.io.Serializable;
 import java.util.List;
 
+@Document("ingredients")
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
 @Setter
-@Document("ingredients")
 @Builder
 public class Ingredient extends MongoDbEntity implements Serializable {
     @Id

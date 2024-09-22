@@ -1,5 +1,6 @@
 package com.management_system.resource.entities.request_dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.management_system.resource.infrastucture.constant.IngredientMeasurementUnitEnum;
 import com.management_system.resource.infrastucture.constant.IngredientStatusEnum;
@@ -28,9 +29,11 @@ public class IngredientRequest extends ApiRequest implements Serializable {
 
     String image;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
     @JsonProperty(value = "last_update_time")
     Date lastUpdateTime;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
     @JsonProperty(value = "creation_date")
     Date creationDate;
 

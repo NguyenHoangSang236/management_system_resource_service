@@ -3,6 +3,7 @@ package com.management_system.resource.infrastucture.controller;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.management_system.resource.entities.database.ingredient.Category;
+import com.management_system.resource.entities.request_dto.CategoryRequest;
 import com.management_system.resource.usecases.category.AddNewCategoriesUseCase;
 import com.management_system.resource.usecases.category.DeleteCategoriesUseCase;
 import com.management_system.resource.usecases.category.EditCategoryUseCase;
@@ -34,11 +35,7 @@ public class CategoryController {
 
     @PreAuthorize("hasAuthority('MANAGER')")
     @PostMapping("/addNewCategories")
-    public CompletableFuture<ResponseEntity<ApiResponse>> addNewCategories(@RequestBody String json, HttpServletRequest request) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        List<Category> categories = objectMapper.readValue(json, new TypeReference<>() {
-        });
-
+    public CompletableFuture<ResponseEntity<ApiResponse>> addNewCategories(@RequestBody List<Category> categories, HttpServletRequest request) {
         return useCaseExecutor.execute(
                 addNewCategoriesUseCase,
                 new AddNewCategoriesUseCase.InputValue(request, categories),
@@ -48,13 +45,10 @@ public class CategoryController {
 
     @PreAuthorize("hasAuthority('MANAGER')")
     @PostMapping("/editCategory")
-    public CompletableFuture<ResponseEntity<ApiResponse>> editCategory(@RequestBody String json, HttpServletRequest request) throws IOException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        Category category = objectMapper.readValue(json, Category.class);
-
+    public CompletableFuture<ResponseEntity<ApiResponse>> editCategory(@RequestBody CategoryRequest categoryRequest, HttpServletRequest request) {
         return useCaseExecutor.execute(
                 editCategoryUseCase,
-                new EditCategoryUseCase.InputValue(category),
+                new EditCategoryUseCase.InputValue(categoryRequest),
                 ResponseMapper::map
         );
     }

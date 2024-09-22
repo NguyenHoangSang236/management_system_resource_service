@@ -1,6 +1,5 @@
 package com.management_system.resource.infrastucture.repository;
 
-import com.management_system.resource.entities.database.ingredient.Ingredient;
 import com.management_system.resource.entities.database.supplier.Supplier;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;

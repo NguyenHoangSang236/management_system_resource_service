@@ -1,10 +1,10 @@
-package com.management_system.resource.usecases.ingredient;
+package com.management_system.resource.usecases.supplier;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.management_system.resource.entities.database.ingredient.Ingredient;
+import com.management_system.resource.entities.database.supplier.Supplier;
 import com.management_system.resource.infrastucture.feign.redis.RedisServiceClient;
-import com.management_system.resource.infrastucture.repository.IngredientRepository;
+import com.management_system.resource.infrastucture.repository.SupplierRepository;
 import com.management_system.utilities.constant.enumuration.FilterType;
 import com.management_system.utilities.core.redis.RedisRequest;
 import com.management_system.utilities.core.usecase.UseCase;
@@ -18,23 +18,21 @@ import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
 @Component
-public class ViewIngredientDetailsByIdUseCase extends UseCase<ViewIngredientDetailsByIdUseCase.InputValue, ApiResponse> {
+public class ViewSupplierDetailsByIdUseCase extends UseCase<ViewSupplierDetailsByIdUseCase.InputValue, ApiResponse> {
     @Autowired
-    IngredientRepository ingredientRepo;
+    SupplierRepository supplierRepo;
 
     @Autowired
     RedisServiceClient redisServiceClient;
 
-
     @Override
     public ApiResponse execute(InputValue input) {
+        String supplierId = input.id();
         ApiResponse redisRes;
-
-        String ingredientId = input.id();
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
-            redisRes = redisServiceClient.findByKey(FilterType.INGREDIENT.name(), ingredientId);
+            redisRes = redisServiceClient.findByKey(FilterType.SUPPLIER.name(), supplierId);
         } catch (Exception e) {
             e.printStackTrace();
             redisRes = ApiResponse.builder()
@@ -54,15 +52,15 @@ public class ViewIngredientDetailsByIdUseCase extends UseCase<ViewIngredientDeta
                     .status(HttpStatus.OK)
                     .build();
         } else {
-            Optional<Ingredient> resource = ingredientRepo.findById(ingredientId);
+            Optional<Supplier> supplierOptional = supplierRepo.findById(supplierId);
 
-            if (resource.isPresent()) {
+            if (supplierOptional.isPresent()) {
                 CompletableFuture.runAsync(() -> {
                     try {
                         redisServiceClient.save(objectMapper.writeValueAsString(
                                 RedisRequest.builder()
-                                        .type(FilterType.INGREDIENT)
-                                        .data(objectMapper.convertValue(resource, Map.class))
+                                        .type(FilterType.SUPPLIER)
+                                        .data(objectMapper.convertValue(supplierOptional.get(), Map.class))
                                         .build()
                         ));
                     } catch (JsonProcessingException e) {
@@ -75,19 +73,18 @@ public class ViewIngredientDetailsByIdUseCase extends UseCase<ViewIngredientDeta
 
                 return ApiResponse.builder()
                         .result("success")
-                        .content(resource)
+                        .content(supplierOptional.get())
                         .status(HttpStatus.OK)
                         .build();
             } else {
                 return ApiResponse.builder()
                         .result("failed")
-                        .content("This ingredient does not exist")
+                        .content("This supplier does not exist")
                         .status(HttpStatus.NO_CONTENT)
                         .build();
             }
         }
     }
-
 
     public record InputValue(String id) implements UseCase.InputValue {
     }

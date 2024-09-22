@@ -1,6 +1,7 @@
 package com.management_system.resource.usecases.category;
 
 import com.management_system.resource.entities.database.ingredient.Category;
+import com.management_system.resource.entities.request_dto.CategoryRequest;
 import com.management_system.resource.infrastucture.feign.redis.RedisServiceClient;
 import com.management_system.resource.infrastucture.repository.CategoryRepository;
 import com.management_system.utilities.constant.enumuration.FilterType;
@@ -29,7 +30,19 @@ public class EditCategoryUseCase extends UseCase<EditCategoryUseCase.InputValue,
     @Override
     public ApiResponse execute(InputValue input) {
         try {
-            if (input.category().getId() == null) {
+            CategoryRequest categoryReq = input.categoryRequest();
+
+            if (categoryReq == null) {
+                return ApiResponse.builder()
+                        .result("failed")
+                        .message("Category request is empty")
+                        .status(HttpStatus.BAD_REQUEST)
+                        .build();
+            }
+
+            String categoryId = categoryReq.getId();
+
+            if (categoryId == null) {
                 return ApiResponse.builder()
                         .result("failed")
                         .message("Can not find id field")
@@ -37,14 +50,14 @@ public class EditCategoryUseCase extends UseCase<EditCategoryUseCase.InputValue,
                         .build();
             }
 
-            Optional<Category> optionalCategory = categoryRepo.findById(input.category().getId());
+            Optional<Category> optionalCategory = categoryRepo.findById(categoryId);
 
             if (optionalCategory.isPresent()) {
-                categoryRepo.save(dbUtils.mergeMongoEntityFromRequest(optionalCategory.get(), input.category()));
+                categoryRepo.save(dbUtils.mergeMongoEntityFromRequest(optionalCategory.get(), categoryReq));
 
                 CompletableFuture.runAsync(() -> redisServiceClient.deleteByKey(
                                 FilterType.CATEGORY.name(),
-                                input.category().getId()))
+                                categoryId))
                         .exceptionally(
                                 ex -> {
                                     ex.printStackTrace();
@@ -60,7 +73,7 @@ public class EditCategoryUseCase extends UseCase<EditCategoryUseCase.InputValue,
             } else {
                 return ApiResponse.builder()
                         .result("failed")
-                        .message("Category with id " + input.category().getId() + " does not exist")
+                        .message("Category with id " + categoryId + " does not exist")
                         .status(HttpStatus.BAD_REQUEST)
                         .build();
             }
@@ -75,6 +88,6 @@ public class EditCategoryUseCase extends UseCase<EditCategoryUseCase.InputValue,
         }
     }
 
-    public record InputValue(Category category) implements UseCase.InputValue {
+    public record InputValue(CategoryRequest categoryRequest) implements UseCase.InputValue {
     }
 }

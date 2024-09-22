@@ -19,5 +19,3 @@ public interface RedisServiceClient {
     @RequestMapping(method = RequestMethod.POST, value = "/redis/unauthen/action/save")
     ApiResponse save(@RequestBody String json);
 }
-
-

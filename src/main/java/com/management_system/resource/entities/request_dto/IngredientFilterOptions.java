@@ -1,5 +1,6 @@
 package com.management_system.resource.entities.request_dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -39,9 +40,11 @@ public class IngredientFilterOptions extends FilterOption implements Serializabl
     @Enumerated(EnumType.STRING)
     IngredientStatusEnum status;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
     @JsonProperty("start_creation_date")
     Date startCreationDate;
 
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
     @JsonProperty("end_creation_date")
     Date endCreationDate;
 

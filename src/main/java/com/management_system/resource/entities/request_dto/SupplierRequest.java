@@ -2,7 +2,6 @@ package com.management_system.resource.entities.request_dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.management_system.resource.infrastucture.constant.SupplierStatusEnum;
-import com.management_system.utilities.core.validator.EmailConstraint;
 import com.management_system.utilities.entities.api.request.ApiRequest;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

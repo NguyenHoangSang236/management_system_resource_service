@@ -1,6 +1,7 @@
 package com.management_system.resource.usecases.facility;
 
 import com.management_system.resource.entities.database.facility.Facility;
+import com.management_system.resource.entities.request_dto.FacilityRequest;
 import com.management_system.resource.infrastucture.feign.redis.RedisServiceClient;
 import com.management_system.resource.infrastucture.repository.FacilityRepository;
 import com.management_system.utilities.constant.enumuration.FilterType;
@@ -29,14 +30,14 @@ public class EditFacilityUseCase extends UseCase<EditFacilityUseCase.InputValue,
     @Override
     public ApiResponse execute(InputValue input) {
         try {
-            Facility rqFacility = input.facility();
+            FacilityRequest rqFacility = input.facilityRequest();
             Optional<Facility> facilityOptional = facilityRepo.findById(rqFacility.getId());
 
             if (facilityOptional.isPresent()) {
-                facilityRepo.save(dbUtils.mergeMongoEntityFromRequest(facilityOptional.get(), input.facility()));
+                facilityRepo.save(dbUtils.mergeMongoEntityFromRequest(facilityOptional.get(), rqFacility));
 
                 CompletableFuture.runAsync(() -> redisServiceClient.deleteByKey(
-                                FilterType.FACILITY.name(), input.facility().getId()))
+                                FilterType.FACILITY.name(), rqFacility.getId()))
                         .exceptionally(
                                 ex -> {
                                     ex.printStackTrace();
@@ -46,7 +47,7 @@ public class EditFacilityUseCase extends UseCase<EditFacilityUseCase.InputValue,
 
                 return ApiResponse.builder()
                         .result("success")
-                        .message("Edit facility with ID " + input.facility.getId() + " successfully")
+                        .message("Edit facility with ID " + rqFacility.getId() + " successfully")
                         .status(HttpStatus.OK)
                         .build();
             } else {
@@ -67,6 +68,6 @@ public class EditFacilityUseCase extends UseCase<EditFacilityUseCase.InputValue,
         }
     }
 
-    public record InputValue(Facility facility) implements UseCase.InputValue {
+    public record InputValue(FacilityRequest facilityRequest) implements UseCase.InputValue {
     }
 }
