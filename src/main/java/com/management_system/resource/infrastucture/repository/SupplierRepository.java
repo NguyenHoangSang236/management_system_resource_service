@@ -8,6 +8,6 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SupplierRepository extends MongoRepository<Supplier, String> {
-    @Query("{'name': ?0}")
+    @Query("{'name': { $regex: ?0, $options: 'i' }}")
     Optional<List<Supplier>> getSupplierByName(String name);
 }

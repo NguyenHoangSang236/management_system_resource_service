@@ -1,6 +1,7 @@
 package com.management_system.resource.entities.database.menu;
 
 import com.management_system.resource.infrastucture.constant.MenuStatusEnum;
+import com.management_system.utilities.entities.database.MongoDbEntity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
@@ -8,6 +9,7 @@ import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Document("menu")
@@ -16,7 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class Menu {
+public class Menu extends MongoDbEntity implements Serializable {
     @Id
     String id;
 

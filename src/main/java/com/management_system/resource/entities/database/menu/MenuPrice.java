@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.*;
-import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.Currency;
 import java.util.Date;
@@ -20,8 +19,11 @@ public class MenuPrice {
     @JsonProperty("start_date")
     Date startDate;
 
-    double price;
+    Double price;
+
+    @JsonProperty("update_manager_id")
+    String updateManagerId;
 
     @Enumerated(EnumType.STRING)
-    Currency status;
+    Currency currency;
 }

@@ -2,10 +2,10 @@ package com.management_system.resource.entities.request_dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.management_system.resource.infrastucture.constant.SupplierStatusEnum;
+import com.management_system.utilities.core.validator.insert.InsertValid;
 import com.management_system.utilities.entities.api.request.ApiRequest;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.validation.constraints.Email;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -19,16 +19,23 @@ import java.io.Serializable;
 public class SupplierRequest extends ApiRequest implements Serializable {
     String id;
 
+    @InsertValid(nullMessage = "Name can not be null")
     @Field(value = "name")
     String name;
 
+    @InsertValid(nullMessage = "Organization can not be null")
     @Field(value = "organization")
     String organization;
 
+    @InsertValid(nullMessage = "Address can not be null")
     @Field(value = "address")
     String address;
 
-    @Email(message = "Invalid email format")
+    @InsertValid(
+            nullMessage = "Email can not be null",
+            emailMessage = "Invalid email",
+            isEmail = true
+    )
     @Field(value = "email")
     String email;
 
@@ -36,6 +43,11 @@ public class SupplierRequest extends ApiRequest implements Serializable {
     @Field(value = "status")
     SupplierStatusEnum status;
 
+    @InsertValid(
+            nullMessage = "Phone number can not be null",
+            phoneMessage = "Wrong format for phone number",
+            isPhoneNumber = true
+    )
     @JsonProperty(value = "phone_number")
     String phoneNumber;
 }

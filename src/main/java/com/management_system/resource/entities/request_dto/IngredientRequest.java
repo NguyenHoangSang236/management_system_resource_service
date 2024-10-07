@@ -7,6 +7,7 @@ import com.management_system.resource.infrastucture.constant.IngredientStatusEnu
 import com.management_system.utilities.entities.api.request.ApiRequest;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -23,8 +24,10 @@ import java.util.List;
 public class IngredientRequest extends ApiRequest implements Serializable {
     String id;
 
+    @NotNull(message = "Supplier name can not be null")
     String supplierName;
 
+    @NotNull(message = "Ingredient name can not be null")
     String name;
 
     String image;
@@ -52,5 +55,6 @@ public class IngredientRequest extends ApiRequest implements Serializable {
 
     double quantity;
 
+    @NotNull(message = "Categories name can not be null")
     List<String> categories;
 }

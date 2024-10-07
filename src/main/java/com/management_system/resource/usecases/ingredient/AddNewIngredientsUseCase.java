@@ -16,10 +16,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 @Component
 public class AddNewIngredientsUseCase extends UseCase<AddNewIngredientsUseCase.InputValue, ApiResponse> {
@@ -40,50 +37,62 @@ public class AddNewIngredientsUseCase extends UseCase<AddNewIngredientsUseCase.I
     public ApiResponse execute(InputValue input) {
         try {
             List<IngredientRequest> ingredientRequests = input.ingredientRequests();
-            String msgBuilder = "";
-            List<String> rsList = new ArrayList<>();
+            Map<String, String> resMap = new HashMap<>();
             int successCount = 0;
 
-            for (IngredientRequest ingredientReq : ingredientRequests) {
-                if (ingredientReq.getSupplierName().isBlank()) {
-                    rsList.add("Add ingredient" + ingredientReq.getName() + " failed because supplier's name is null");
-                } else if (ingredientReq.getCategories() == null || ingredientReq.getCategories().isEmpty()) {
-                    rsList.add("Add ingredient" + ingredientReq.getName() + " failed because there is no category");
-                } else {
-                    Optional<List<Supplier>> supplierOptional = supplierRepo.getSupplierByName(ingredientReq.getSupplierName());
+            if (!ingredientRequests.isEmpty()) {
+                for (IngredientRequest ingredientReq : ingredientRequests) {
+                    String ingredientName = ingredientReq.getName();
 
-                    if (supplierOptional.isPresent() && !supplierOptional.get().isEmpty()) {
-                        Ingredient ingredient = new Ingredient();
-                        ingredient = dbUtils.mergeMongoEntityFromRequest(ingredient, ingredientReq);
-
-                        Date currentTime = new Date();
-
-                        SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
-                        String strDate = formatter.format(currentTime);
-
-                        String formatedDateStr = valueParsingUtils.parseStringToId("-", false, strDate);
-                        String formatedIngredientName = valueParsingUtils.parseStringToId("-", false, ingredientReq.getName());
-                        String ingredientId = formatedIngredientName + "_" + formatedDateStr;
-
-                        ingredient.setId(ingredientId);
-                        ingredient.setCreationDate(currentTime);
-                        ingredient.setStatus(IngredientStatusEnum.AVAILABLE);
-
-                        ingredientRepo.insert(ingredient);
-
-                        successCount++;
-                        rsList.add("Add ingredient" + formatedIngredientName + " successfully");
+                    if (ingredientRepo.getIngredientByName(ingredientReq.getName()).isPresent()) {
+                        resMap.put(ingredientName, "Add ingredient " + ingredientName + " failed because this ingredient has already existed");
+                    } else if (ingredientReq.getSupplierName().isBlank()) {
+                        resMap.put(ingredientName, "Add ingredient " + ingredientName + " failed because supplier's name is null");
+                    } else if (ingredientReq.getCategories() == null || ingredientReq.getCategories().isEmpty()) {
+                        resMap.put(ingredientName, "Add ingredient " + ingredientName + " failed because there is no category");
                     } else {
-                        rsList.add("Add ingredient" + ingredientReq.getSupplierName() + " successfully");
+                        Optional<List<Supplier>> supplierOptional = supplierRepo.getSupplierByName(ingredientReq.getSupplierName());
+
+                        if (supplierOptional.isPresent() && !supplierOptional.get().isEmpty()) {
+                            Ingredient ingredient = new Ingredient();
+                            ingredient = dbUtils.mergeMongoEntityFromRequest(ingredient, ingredientReq);
+
+                            Date currentTime = new Date();
+
+                            SimpleDateFormat formatter = new SimpleDateFormat("dd-MM-yyyy");
+                            String strDate = formatter.format(currentTime);
+
+                            String formatedDateStr = valueParsingUtils.parseStringToId("-", false, strDate);
+                            String formatedIngredientName = valueParsingUtils.parseStringToId("-", false, ingredientReq.getName());
+                            String ingredientId = formatedIngredientName + "_" + formatedDateStr;
+
+                            ingredient.setId(ingredientId);
+                            ingredient.setCreationDate(currentTime);
+                            ingredient.setStatus(IngredientStatusEnum.AVAILABLE);
+
+                            ingredientRepo.insert(ingredient);
+
+                            successCount++;
+                            resMap.put(ingredientName, "Add ingredient " + formatedIngredientName + " successfully");
+                        } else {
+                            resMap.put(ingredientName, "Add ingredient" + ingredientReq.getSupplierName() + " failed because supplier does not exist");
+                        }
                     }
                 }
-            }
 
-            return ApiResponse.builder()
-                    .result("success")
-                    .message("Add new ingredients successfully")
-                    .status(HttpStatus.OK)
-                    .build();
+                return ApiResponse.builder()
+                        .result("success")
+                        .content(resMap)
+                        .message("Add " + successCount + "/" + ingredientRequests.size() + " new ingredients successfully")
+                        .status(HttpStatus.OK)
+                        .build();
+            } else {
+                return ApiResponse.builder()
+                        .result("failed")
+                        .message("There is no ingredient to add")
+                        .status(HttpStatus.OK)
+                        .build();
+            }
         } catch (Exception e) {
             e.printStackTrace();
 

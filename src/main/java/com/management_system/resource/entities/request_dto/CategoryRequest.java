@@ -7,13 +7,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.List;
 
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class CategoryRequest extends ApiRequest {
+public class CategoryRequest extends ApiRequest implements Serializable {
     String id;
     String name;
     List<SubCategory> subCategories;

@@ -8,11 +8,13 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.io.Serializable;
+
 @Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class FacilityRequest extends ApiRequest {
+public class FacilityRequest extends ApiRequest implements Serializable {
     String id;
     String name;
     FacilityTypeEnum type;

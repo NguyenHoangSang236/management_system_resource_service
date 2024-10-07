@@ -13,7 +13,7 @@ spring:
       enabled: false
   data:
     mongodb:
-#      uri: mongodb://localhost:27017/management_system?retryWrites=true&w=majority
+      #      uri: mongodb://localhost:27017/management_system?retryWrites=true&w=majority
       host: localhost
       port: 27017
       auto-index-creation: true
