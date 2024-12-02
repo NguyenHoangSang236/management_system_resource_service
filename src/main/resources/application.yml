@@ -22,29 +22,29 @@ spring:
       password: hoangsang236
       authentication-database: admin
 
-server:
-  port: 8082
-  host: localhost
-  servlet:
-    context-path: /resource
-  ssl:
-    key-store: keystore.p12
-    key-store-password: hoangsang236
-    keyStoreType: PKCS12
-    keyAlias: tomcat
-  max-http-request-header-size: 65536
+#server:
+#  port: 8082
+#  host: localhost
+#  servlet:
+#    context-path: /resource
+#  ssl:
+#    key-store: keystore.p12
+#    key-store-password: hoangsang236
+#    keyStoreType: PKCS12
+#    keyAlias: tomcat
+#  max-http-request-header-size: 65536
 
-eureka:
-  instance:
-    securePortEnabled: true
-    securePort: 8082
-    nonSecurePortEnabled: false
-    preferIpAddress: true
-  client:
-    register-with-eureka: true
-    fetch-registry: true
-    service-url:
-      defaultZone: https://localhost:8761/eureka/
+#eureka:
+#  instance:
+#    securePortEnabled: true
+#    securePort: 8082
+#    nonSecurePortEnabled: false
+#    preferIpAddress: true
+#  client:
+#    register-with-eureka: true
+#    fetch-registry: true
+#    service-url:
+#      defaultZone: https://localhost:8761/eureka/
 
 feign:
   client:

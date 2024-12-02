@@ -14,6 +14,7 @@ import org.springframework.context.annotation.ComponentScan;
                 "com.management_system.resource.usecases",
                 "com.management_system.resource.entities",
                 "com.management_system.resource.infrastructure",
+                "com.management_system.resource.config",
                 "com.management_system.resource",
                 "com.management_system.utilities",
         }
@@ -22,10 +23,11 @@ import org.springframework.context.annotation.ComponentScan;
         "com.management_system.resource.usecases",
         "com.management_system.resource.entities",
         "com.management_system.resource.infrastructure",
+        "com.management_system.resource.config",
         "com.management_system.resource",
         "com.management_system.utilities",
 })
-@EnableDiscoveryClient
+//@EnableDiscoveryClient
 @EnableFeignClients
 @EnableHystrix
 public class ResourceApplication {
