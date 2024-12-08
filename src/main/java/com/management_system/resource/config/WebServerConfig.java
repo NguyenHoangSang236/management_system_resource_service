@@ -19,16 +19,17 @@ public class WebServerConfig implements WebServerFactoryCustomizer<TomcatServlet
 
     @Override
     public void customize(TomcatServletWebServerFactory server) {
-        Ssl ssl = new Ssl();
-        ssl.setKeyStore(SystemMetaData.SSL_KEYSTORE_FILE_PATH);
-        ssl.setKeyStorePassword(credentialsUtils.getCredentials(SystemConfigKeyName.SSL_KEYSTORE_PASSWORD));
-        ssl.setKeyStoreType(credentialsUtils.getCredentials(SystemConfigKeyName.SSL_KEYSTORE_TYPE));
-        ssl.setKeyAlias(credentialsUtils.getCredentials(SystemConfigKeyName.SSL_KEYSTORE_ALIAS));
+//        Ssl ssl = new Ssl();
+//        ssl.setKeyStore(SystemMetaData.SSL_KEYSTORE_FILE_PATH);
+//        ssl.setKeyStorePassword(credentialsUtils.getCredentials(SystemConfigKeyName.SSL_KEYSTORE_PASSWORD));
+//        ssl.setKeyStoreType(credentialsUtils.getCredentials(SystemConfigKeyName.SSL_KEYSTORE_TYPE));
+//        ssl.setKeyAlias(credentialsUtils.getCredentials(SystemConfigKeyName.SSL_KEYSTORE_ALIAS));
 
         Http2 http2 = new Http2();
         http2.setEnabled(true);
 
-        server.setSsl(ssl);
+//        server.setSsl(ssl);
+        server.setSsl(null);
         server.setHttp2(http2);
         server.setContextPath("/resource");
         server.setPort(Integer.parseInt(credentialsUtils.getCredentials(SystemConfigKeyName.RESOURCE_SERVICE_SERVER_PORT).trim()));
