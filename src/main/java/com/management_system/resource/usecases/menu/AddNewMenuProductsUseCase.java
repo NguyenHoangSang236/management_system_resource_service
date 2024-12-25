@@ -14,7 +14,7 @@ import com.management_system.utilities.utils.JwtUtils;
 import com.management_system.utilities.utils.ValueParsingUtils;
 import com.mongodb.MongoWriteException;
 import jakarta.servlet.http.HttpServletRequest;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
@@ -22,21 +22,13 @@ import org.springframework.stereotype.Component;
 import java.util.*;
 
 @Component
-public class AddNewProductsUseCase extends UseCase<AddNewProductsUseCase.InputValue, ApiResponse> {
-    @Autowired
-    MenuRepository menuRepo;
-
-    @Autowired
-    CategoryRepository categoryRepo;
-
-    @Autowired
-    DbUtils dbUtils;
-
-    @Autowired
-    JwtUtils jwtUtils;
-
-    @Autowired
-    ValueParsingUtils valueParsingUtils;
+@RequiredArgsConstructor
+public class AddNewMenuProductsUseCase extends UseCase<AddNewMenuProductsUseCase.InputValue, ApiResponse> {
+    final MenuRepository menuRepo;
+    final CategoryRepository categoryRepo;
+    final DbUtils dbUtils;
+    final JwtUtils jwtUtils;
+    final ValueParsingUtils valueParsingUtils;
 
 
     @Override
@@ -60,6 +52,7 @@ public class AddNewProductsUseCase extends UseCase<AddNewProductsUseCase.InputVa
                     } else {
                         Menu menu = new Menu();
                         TokenInfo tokenInfo = jwtUtils.getTokenInfoFromHttpRequest(input.request());
+                        String addedNewMenuItemUserName = tokenInfo.getUserName();
                         menu = dbUtils.mergeMongoEntityFromRequest(menu, request);
                         String id = valueParsingUtils.parseStringToId("_", false, menuProductName);
 
@@ -69,7 +62,7 @@ public class AddNewProductsUseCase extends UseCase<AddNewProductsUseCase.InputVa
                                         .price(request.getPrice())
                                         .startDate(new Date())
                                         .currency(request.getCurrency())
-                                        .updateManagerId(tokenInfo.getUserName())
+                                        .updateManagerId(addedNewMenuItemUserName)
                                         .build()
                         );
 

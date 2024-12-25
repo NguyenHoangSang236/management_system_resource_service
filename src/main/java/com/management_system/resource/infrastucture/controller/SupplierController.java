@@ -7,6 +7,7 @@ import com.management_system.resource.entities.request_dto.SupplierRequest;
 import com.management_system.resource.usecases.supplier.AddNewSuppliersUseCase;
 import com.management_system.resource.usecases.supplier.FilterSuppliersUseCase;
 import com.management_system.resource.usecases.supplier.ViewSupplierDetailsByIdUseCase;
+import com.management_system.utilities.constant.ConstantValue;
 import com.management_system.utilities.core.deserializer.FilterOptionsDeserializer;
 import com.management_system.utilities.core.filter.FilterOption;
 import com.management_system.utilities.core.usecase.UseCaseExecutor;
@@ -52,7 +53,7 @@ public class SupplierController {
     }
 
 
-    @PreAuthorize("hasAuthority('MANAGER')")
+    @PreAuthorize(ConstantValue.MANAGER_AUTHOR)
     @PostMapping("/addNewSuppliers")
     public CompletableFuture<ResponseEntity<ApiResponse>> addNewSuppliers(@Valid @RequestBody List<@Valid SupplierRequest> suppliers) {
         return useCaseExecutor.execute(

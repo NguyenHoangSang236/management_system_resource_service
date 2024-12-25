@@ -8,6 +8,7 @@ import com.management_system.resource.usecases.ingredient.AddNewIngredientsUseCa
 import com.management_system.resource.usecases.ingredient.EditIngredientUseCase;
 import com.management_system.resource.usecases.ingredient.FilterIngredientsUseCase;
 import com.management_system.resource.usecases.ingredient.ViewIngredientDetailsByIdUseCase;
+import com.management_system.utilities.constant.ConstantValue;
 import com.management_system.utilities.core.deserializer.FilterOptionsDeserializer;
 import com.management_system.utilities.core.filter.FilterOption;
 import com.management_system.utilities.core.usecase.UseCaseExecutor;
@@ -36,7 +37,7 @@ public class IngredientController {
     final ViewIngredientDetailsByIdUseCase viewIngredientDetailsByIdUseCase;
     final UseCaseExecutor useCaseExecutor;
 
-    @PreAuthorize("hasAuthority('MANAGER')")
+    @PreAuthorize(ConstantValue.MANAGER_AUTHOR)
     @PostMapping("/addNewIngredients")
     public CompletableFuture<ResponseEntity<ApiResponse>> addNewIngredient(@Valid @RequestBody List<@Valid IngredientRequest> ingredientRequests, HttpServletRequest request) {
         return useCaseExecutor.execute(
@@ -47,7 +48,7 @@ public class IngredientController {
     }
 
 
-    @PreAuthorize("hasAuthority('MANAGER')")
+    @PreAuthorize(ConstantValue.MANAGER_AUTHOR)
     @PostMapping("/editIngredient")
     public CompletableFuture<ResponseEntity<ApiResponse>> editIngredient(@RequestBody IngredientRequest ingredientReq, HttpServletRequest request) {
         return useCaseExecutor.execute(

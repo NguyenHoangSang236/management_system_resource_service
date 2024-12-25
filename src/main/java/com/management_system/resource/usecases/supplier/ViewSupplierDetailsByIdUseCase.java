@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.management_system.resource.entities.database.supplier.Supplier;
 import com.management_system.resource.infrastucture.feign.redis.RedisServiceClient;
 import com.management_system.resource.infrastucture.repository.SupplierRepository;
-import com.management_system.utilities.constant.enumuration.FilterType;
+import com.management_system.utilities.constant.enumuration.TableName;
 import com.management_system.utilities.core.redis.RedisRequest;
 import com.management_system.utilities.core.usecase.UseCase;
 import com.management_system.utilities.entities.api.response.ApiResponse;
@@ -32,7 +32,7 @@ public class ViewSupplierDetailsByIdUseCase extends UseCase<ViewSupplierDetailsB
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
-            redisRes = redisServiceClient.findByKey(FilterType.SUPPLIER.name(), supplierId);
+            redisRes = redisServiceClient.find(TableName.SUPPLIER, supplierId);
         } catch (Exception e) {
             e.printStackTrace();
             redisRes = ApiResponse.builder()
@@ -59,7 +59,7 @@ public class ViewSupplierDetailsByIdUseCase extends UseCase<ViewSupplierDetailsB
                     try {
                         redisServiceClient.save(objectMapper.writeValueAsString(
                                 RedisRequest.builder()
-                                        .type(FilterType.SUPPLIER)
+                                        .type(TableName.SUPPLIER)
                                         .data(objectMapper.convertValue(supplierOptional.get(), Map.class))
                                         .build()
                         ));

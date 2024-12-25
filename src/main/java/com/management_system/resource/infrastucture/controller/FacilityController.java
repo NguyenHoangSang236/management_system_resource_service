@@ -9,6 +9,7 @@ import com.management_system.resource.usecases.facility.AddNewFacilityUseCase;
 import com.management_system.resource.usecases.facility.EditFacilityUseCase;
 import com.management_system.resource.usecases.facility.FilterFacilitiesUseCase;
 import com.management_system.resource.usecases.facility.ViewFacilityDetailsByIdUseCase;
+import com.management_system.utilities.constant.ConstantValue;
 import com.management_system.utilities.core.deserializer.FilterOptionsDeserializer;
 import com.management_system.utilities.core.filter.FilterOption;
 import com.management_system.utilities.core.usecase.UseCaseExecutor;
@@ -36,7 +37,7 @@ public class FacilityController {
     final ViewFacilityDetailsByIdUseCase viewFacilityDetailsByIdUseCase;
 
 
-    @PreAuthorize("hasAuthority('MANAGER')")
+    @PreAuthorize(ConstantValue.MANAGER_AUTHOR)
     @PostMapping("/addNewFacilities")
     public CompletableFuture<ResponseEntity<ApiResponse>> addNewFacilities(@RequestBody List<Facility> facilities) {
         return useCaseExecutor.execute(
@@ -47,7 +48,7 @@ public class FacilityController {
     }
 
 
-    @PreAuthorize("hasAuthority('MANAGER')")
+    @PreAuthorize(ConstantValue.MANAGER_AUTHOR)
     @PostMapping("/editFacility")
     public CompletableFuture<ResponseEntity<ApiResponse>> editFacility(@RequestBody FacilityRequest facilityRequest) {
         return useCaseExecutor.execute(

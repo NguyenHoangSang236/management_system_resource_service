@@ -4,7 +4,7 @@ import com.management_system.resource.entities.database.ingredient.Ingredient;
 import com.management_system.resource.entities.request_dto.IngredientRequest;
 import com.management_system.resource.infrastucture.feign.redis.RedisServiceClient;
 import com.management_system.resource.infrastucture.repository.IngredientRepository;
-import com.management_system.utilities.constant.enumuration.FilterType;
+import com.management_system.utilities.constant.enumuration.TableName;
 import com.management_system.utilities.core.usecase.UseCase;
 import com.management_system.utilities.entities.api.response.ApiResponse;
 import com.management_system.utilities.utils.DbUtils;
@@ -43,8 +43,8 @@ public class EditIngredientUseCase extends UseCase<EditIngredientUseCase.InputVa
         if (ingredientOptional.isPresent()) {
             ingredientRepo.save(dbUtils.mergeMongoEntityFromRequest(ingredientOptional.get(), input.ingredientRequest()));
 
-            CompletableFuture.runAsync(() -> redisServiceClient.deleteByKey(
-                            FilterType.INGREDIENT.name(), input.ingredientRequest().getId()))
+            CompletableFuture.runAsync(() -> redisServiceClient.delete(
+                            TableName.INGREDIENT, input.ingredientRequest().getId()))
                     .exceptionally(
                             ex -> {
                                 ex.printStackTrace();

@@ -4,7 +4,7 @@ import com.management_system.resource.entities.database.supplier.Supplier;
 import com.management_system.resource.entities.request_dto.SupplierRequest;
 import com.management_system.resource.infrastucture.feign.redis.RedisServiceClient;
 import com.management_system.resource.infrastucture.repository.SupplierRepository;
-import com.management_system.utilities.constant.enumuration.FilterType;
+import com.management_system.utilities.constant.enumuration.TableName;
 import com.management_system.utilities.core.usecase.UseCase;
 import com.management_system.utilities.entities.api.response.ApiResponse;
 import com.management_system.utilities.utils.DbUtils;
@@ -42,8 +42,8 @@ public class EditSupplierUseCase extends UseCase<EditSupplierUseCase.InputValue,
         if (supplierOptional.isPresent()) {
             supplierRepo.save(dbUtils.mergeMongoEntityFromRequest(supplierOptional.get(), input.supplierRequest()));
 
-            CompletableFuture.runAsync(() -> redisServiceClient.deleteByKey(
-                            FilterType.SUPPLIER.name(), input.supplierRequest().getId()))
+            CompletableFuture.runAsync(() -> redisServiceClient.delete(
+                            TableName.SUPPLIER, input.supplierRequest().getId()))
                     .exceptionally(
                             ex -> {
                                 ex.printStackTrace();

@@ -7,6 +7,7 @@ import com.management_system.resource.entities.request_dto.CategoryRequest;
 import com.management_system.resource.usecases.category.AddNewCategoriesUseCase;
 import com.management_system.resource.usecases.category.DeleteCategoriesUseCase;
 import com.management_system.resource.usecases.category.EditCategoryUseCase;
+import com.management_system.utilities.constant.ConstantValue;
 import com.management_system.utilities.core.usecase.UseCaseExecutor;
 import com.management_system.utilities.entities.api.response.ApiResponse;
 import com.management_system.utilities.entities.api.response.ResponseMapper;
@@ -33,7 +34,7 @@ public class CategoryController {
     final AddNewCategoriesUseCase addNewCategoriesUseCase;
     final UseCaseExecutor useCaseExecutor;
 
-    @PreAuthorize("hasAuthority('MANAGER')")
+    @PreAuthorize(ConstantValue.MANAGER_AUTHOR)
     @PostMapping("/addNewCategories")
     public CompletableFuture<ResponseEntity<ApiResponse>> addNewCategories(@RequestBody List<Category> categories, HttpServletRequest request) {
         return useCaseExecutor.execute(
@@ -43,7 +44,7 @@ public class CategoryController {
         );
     }
 
-    @PreAuthorize("hasAuthority('MANAGER')")
+    @PreAuthorize(ConstantValue.MANAGER_AUTHOR)
     @PostMapping("/editCategory")
     public CompletableFuture<ResponseEntity<ApiResponse>> editCategory(@RequestBody CategoryRequest categoryRequest, HttpServletRequest request) {
         return useCaseExecutor.execute(
@@ -53,7 +54,7 @@ public class CategoryController {
         );
     }
 
-    @PreAuthorize("hasAuthority('MANAGER')")
+    @PreAuthorize(ConstantValue.MANAGER_AUTHOR)
     @PostMapping("/deleteCategories")
     public CompletableFuture<ResponseEntity<ApiResponse>> deleteCategories(@RequestBody String json, HttpServletRequest request) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();

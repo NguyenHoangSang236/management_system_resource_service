@@ -5,7 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.management_system.resource.entities.database.facility.Facility;
 import com.management_system.resource.infrastucture.feign.redis.RedisServiceClient;
 import com.management_system.resource.infrastucture.repository.FacilityRepository;
-import com.management_system.utilities.constant.enumuration.FilterType;
+import com.management_system.utilities.constant.enumuration.TableName;
 import com.management_system.utilities.core.redis.RedisRequest;
 import com.management_system.utilities.core.usecase.UseCase;
 import com.management_system.utilities.entities.api.response.ApiResponse;
@@ -32,7 +32,7 @@ public class ViewFacilityDetailsByIdUseCase extends UseCase<ViewFacilityDetailsB
         ObjectMapper objectMapper = new ObjectMapper();
 
         try {
-            redisRes = redisServiceClient.findByKey(FilterType.FACILITY.name(), facilityId);
+            redisRes = redisServiceClient.find(TableName.FACILITY, facilityId);
         } catch (Exception e) {
             e.printStackTrace();
             redisRes = ApiResponse.builder()
@@ -59,7 +59,7 @@ public class ViewFacilityDetailsByIdUseCase extends UseCase<ViewFacilityDetailsB
                     try {
                         redisServiceClient.save(objectMapper.writeValueAsString(
                                 RedisRequest.builder()
-                                        .type(FilterType.FACILITY)
+                                        .type(TableName.FACILITY)
                                         .data(objectMapper.convertValue(facilityOptional.get(), Map.class))
                                         .build()
                         ));

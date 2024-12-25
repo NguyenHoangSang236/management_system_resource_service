@@ -4,7 +4,7 @@ import com.management_system.resource.entities.database.ingredient.Category;
 import com.management_system.resource.entities.request_dto.CategoryRequest;
 import com.management_system.resource.infrastucture.feign.redis.RedisServiceClient;
 import com.management_system.resource.infrastucture.repository.CategoryRepository;
-import com.management_system.utilities.constant.enumuration.FilterType;
+import com.management_system.utilities.constant.enumuration.TableName;
 import com.management_system.utilities.core.usecase.UseCase;
 import com.management_system.utilities.entities.api.response.ApiResponse;
 import com.management_system.utilities.utils.DbUtils;
@@ -55,8 +55,8 @@ public class EditCategoryUseCase extends UseCase<EditCategoryUseCase.InputValue,
             if (optionalCategory.isPresent()) {
                 categoryRepo.save(dbUtils.mergeMongoEntityFromRequest(optionalCategory.get(), categoryReq));
 
-                CompletableFuture.runAsync(() -> redisServiceClient.deleteByKey(
-                                FilterType.CATEGORY.name(),
+                CompletableFuture.runAsync(() -> redisServiceClient.delete(
+                                TableName.CATEGORY,
                                 categoryId))
                         .exceptionally(
                                 ex -> {

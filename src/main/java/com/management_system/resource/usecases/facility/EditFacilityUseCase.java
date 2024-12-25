@@ -4,7 +4,7 @@ import com.management_system.resource.entities.database.facility.Facility;
 import com.management_system.resource.entities.request_dto.FacilityRequest;
 import com.management_system.resource.infrastucture.feign.redis.RedisServiceClient;
 import com.management_system.resource.infrastucture.repository.FacilityRepository;
-import com.management_system.utilities.constant.enumuration.FilterType;
+import com.management_system.utilities.constant.enumuration.TableName;
 import com.management_system.utilities.core.usecase.UseCase;
 import com.management_system.utilities.entities.api.response.ApiResponse;
 import com.management_system.utilities.utils.DbUtils;
@@ -36,8 +36,8 @@ public class EditFacilityUseCase extends UseCase<EditFacilityUseCase.InputValue,
             if (facilityOptional.isPresent()) {
                 facilityRepo.save(dbUtils.mergeMongoEntityFromRequest(facilityOptional.get(), rqFacility));
 
-                CompletableFuture.runAsync(() -> redisServiceClient.deleteByKey(
-                                FilterType.FACILITY.name(), rqFacility.getId()))
+                CompletableFuture.runAsync(() -> redisServiceClient.delete(
+                                TableName.FACILITY, rqFacility.getId()))
                         .exceptionally(
                                 ex -> {
                                     ex.printStackTrace();
