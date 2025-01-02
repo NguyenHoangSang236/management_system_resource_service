@@ -20,7 +20,7 @@ public class ViewIngredientDetailsByIdUseCase extends UseCase<ViewIngredientDeta
         String ingredientId = input.id();
 
         Ingredient ingredient = (Ingredient) mongoRedisClientService.getAndCacheDataFromOneTable(
-                TableName.INGREDIENT,
+                Ingredient.class,
                 ingredientId,
                 null
         );

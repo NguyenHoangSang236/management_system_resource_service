@@ -8,9 +8,11 @@ import com.management_system.resource.entities.database.ingredient.Ingredient;
 import com.management_system.resource.entities.database.menu.Menu;
 import com.management_system.resource.infrastucture.feign.redis.RedisServiceClient;
 import com.management_system.utilities.constant.enumuration.TableName;
-import com.management_system.utilities.core.custom_functional_interface.VoidFunction;
+import com.management_system.utilities.core.redis.CachingProcessHandler;
+import com.management_system.utilities.core.redis.RedisClientService;
 import com.management_system.utilities.core.redis.RedisRequest;
 import com.management_system.utilities.entities.api.response.ApiResponse;
+import com.management_system.utilities.entities.database.DbEntity;
 import com.management_system.utilities.entities.database.MongoDbEntity;
 import com.management_system.utilities.entities.exceptions.DataNotFoundException;
 import com.management_system.utilities.entities.exceptions.InvalidDataException;
@@ -19,7 +21,6 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -35,7 +36,7 @@ public class MongoRedisClientServiceImpl implements RedisClientService {
      * Get data from Redis if it exist, or else get data from database and save it to Redis,
      * then trigger a logic before returning the result
      *
-     * @param tableName  the table name we want to proceed
+     * @param dbEntityClass  the table entity class we want to proceed
      * @param cachingProcessHandlers the logic we want to execute between returning the result and caching data to Redis
      * @param id         the id of data we want to get
      * @return Mongo database entity after query
@@ -44,25 +45,21 @@ public class MongoRedisClientServiceImpl implements RedisClientService {
      * @implNote Use this when you only need to get data from a single document only from MongoDB
      */
     @Override
-    public MongoDbEntity getAndCacheDataFromOneTable(TableName tableName, String id, List<Class<? extends CachingProcessHandler>> cachingProcessHandlers) {
+    public MongoDbEntity getAndCacheDataFromOneTable(Class<? extends DbEntity> dbEntityClass, String id, List<Class<? extends CachingProcessHandler>> cachingProcessHandlers) {
         ApiResponse redisRes;
         ObjectMapper objectMapper = new ObjectMapper();
+
+        TableName tableName = getTableNameFromEntityClass(dbEntityClass);
 
         redisRes = redisServiceClient.find(tableName, id);
 
         Object contentObj = redisRes.getContent();
         HttpStatus status = redisRes.getStatus();
 
-        Class<? extends MongoDbEntity> dbEntityClass = getClassFromTableName(tableName);
-
-        if (dbEntityClass == null) {
-            throw new InvalidDataException("Table name is invalid");
-        }
-
         if (status.equals(HttpStatus.OK) && contentObj != null) {
-            return objectMapper.convertValue(contentObj, dbEntityClass);
+            return (MongoDbEntity) objectMapper.convertValue(contentObj, dbEntityClass);
         } else {
-            MongoDbEntity entity = mongoTemplate.findById(id, dbEntityClass);
+            MongoDbEntity entity = (MongoDbEntity) mongoTemplate.findById(id, dbEntityClass);
 
             if (entity == null) {
                 throw new DataNotFoundException("Can not find data from " + tableName.name().toLowerCase() + " with ID " + id);
@@ -85,32 +82,26 @@ public class MongoRedisClientServiceImpl implements RedisClientService {
                     return null;
                 });
 
-                executeHandlers(cachingProcessHandlers);
+                if(cachingProcessHandlers != null) {
+                    executeHandlers(cachingProcessHandlers);
+                }
 
                 return entity;
             }
         }
     }
 
-
-    private Class<? extends MongoDbEntity> getClassFromTableName(TableName tableName) {
-        switch (tableName) {
-            case MENU -> {
-                return Menu.class;
-            }
-            case INGREDIENT -> {
-                return Ingredient.class;
-            }
-            case FACILITY -> {
-                return Facility.class;
-            }
-            case CATEGORY -> {
-                return Category.class;
-            }
-            default -> {
-                return null;
-            }
-        }
+    @Override
+    public TableName getTableNameFromEntityClass(Class<? extends DbEntity> entityClass) {
+        if (entityClass.equals(Menu.class)) {
+            return TableName.MENU;
+        } else if (entityClass.equals(Ingredient.class)) {
+            return TableName.INGREDIENT;
+        } else if (entityClass.equals(Facility.class)) {
+            return TableName.FACILITY;
+        } else if (entityClass.equals(Category.class)) {
+            return TableName.CATEGORY;
+        } else throw new InvalidDataException("Table entity class is invalid");
     }
 
 

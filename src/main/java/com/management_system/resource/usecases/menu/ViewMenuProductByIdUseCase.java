@@ -1,6 +1,5 @@
 package com.management_system.resource.usecases.menu;
 
-import com.management_system.resource.common.caching.CachingProcessHandler;
 import com.management_system.resource.common.caching.MongoRedisClientServiceImpl;
 import com.management_system.resource.entities.database.menu.Menu;
 import com.management_system.utilities.constant.enumuration.TableName;
@@ -20,7 +19,7 @@ public class ViewMenuProductByIdUseCase extends UseCase<ViewMenuProductByIdUseCa
         String menuId = input.menuId;
 
         Menu menuProduct = (Menu) mongoRedisClientService.getAndCacheDataFromOneTable(
-                TableName.MENU,
+                Menu.class,
                 menuId,
                 null
         );
