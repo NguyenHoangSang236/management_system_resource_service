@@ -2,7 +2,6 @@ package com.management_system.resource.usecases.ingredient;
 
 import com.management_system.resource.common.caching.MongoRedisClientServiceImpl;
 import com.management_system.resource.entities.database.ingredient.Ingredient;
-import com.management_system.utilities.constant.enumuration.TableName;
 import com.management_system.utilities.core.usecase.UseCase;
 import com.management_system.utilities.entities.api.response.ApiResponse;
 import lombok.RequiredArgsConstructor;

@@ -14,6 +14,8 @@ import com.management_system.utilities.core.usecase.UseCaseExecutor;
 import com.management_system.utilities.entities.api.request.FilterRequest;
 import com.management_system.utilities.entities.api.response.ApiResponse;
 import com.management_system.utilities.entities.api.response.ResponseMapper;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import org.springframework.http.MediaType;
@@ -25,6 +27,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
+@Tag(name = "Supplier", description = "Operations related to managing suppliers")
 @RestController
 @RequestMapping(value = "/authen/supplier", consumes = {"*/*"}, produces = {MediaType.APPLICATION_JSON_VALUE})
 @AllArgsConstructor
@@ -35,6 +38,7 @@ public class SupplierController {
     final ViewSupplierDetailsByIdUseCase viewSupplierDetailsByIdUseCase;
 
 
+    @Operation(summary = "Get suppliers by filters")
     @PostMapping("/filterSuppliers")
     public CompletableFuture<ResponseEntity<ApiResponse>> filterSuppliers(@RequestBody String json) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();

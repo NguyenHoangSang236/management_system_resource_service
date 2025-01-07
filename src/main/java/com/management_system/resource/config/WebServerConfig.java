@@ -31,7 +31,7 @@ public class WebServerConfig implements WebServerFactoryCustomizer<TomcatServlet
 //        server.setSsl(ssl);
         server.setSsl(null);
         server.setHttp2(http2);
-        server.setContextPath("/resource");
+        server.setContextPath("/api/resource");
         server.setPort(Integer.parseInt(credentialsUtils.getCredentials(SystemConfigKeyName.RESOURCE_SERVICE_SERVER_PORT).trim()));
     }
 }
