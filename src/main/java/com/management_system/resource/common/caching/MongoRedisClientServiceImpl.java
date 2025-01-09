@@ -36,9 +36,9 @@ public class MongoRedisClientServiceImpl implements RedisClientService {
      * Get data from Redis if it exist, or else get data from database and save it to Redis,
      * then trigger a logic before returning the result
      *
-     * @param dbEntityClass  the table entity class we want to proceed
+     * @param dbEntityClass          the table entity class we want to proceed
      * @param cachingProcessHandlers the logic we want to execute between returning the result and caching data to Redis
-     * @param id         the id of data we want to get
+     * @param id                     the id of data we want to get
      * @return Mongo database entity after query
      * @throws InvalidDataException  when TableName is invalid
      * @throws DataNotFoundException when data does not exist in database
@@ -82,7 +82,7 @@ public class MongoRedisClientServiceImpl implements RedisClientService {
                     return null;
                 });
 
-                if(cachingProcessHandlers != null) {
+                if (cachingProcessHandlers != null) {
                     executeHandlers(cachingProcessHandlers);
                 }
 
@@ -107,12 +107,11 @@ public class MongoRedisClientServiceImpl implements RedisClientService {
 
     private void executeHandlers(List<Class<? extends CachingProcessHandler>> handlers) {
         try {
-            for (Class<? extends CachingProcessHandler> handler: handlers) {
+            for (Class<? extends CachingProcessHandler> handler : handlers) {
                 CachingProcessHandler processHandler = handler.getConstructor().newInstance();
                 processHandler.process();
             }
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }

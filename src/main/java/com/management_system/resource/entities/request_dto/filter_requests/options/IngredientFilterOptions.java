@@ -1,4 +1,4 @@
-package com.management_system.resource.entities.request_dto;
+package com.management_system.resource.entities.request_dto.filter_requests.options;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;

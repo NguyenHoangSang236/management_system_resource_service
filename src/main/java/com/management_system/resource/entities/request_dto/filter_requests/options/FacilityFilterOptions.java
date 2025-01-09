@@ -1,4 +1,4 @@
-package com.management_system.resource.entities.request_dto;
+package com.management_system.resource.entities.request_dto.filter_requests.options;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
