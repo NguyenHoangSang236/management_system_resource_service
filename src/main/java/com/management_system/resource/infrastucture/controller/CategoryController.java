@@ -1,7 +1,5 @@
 package com.management_system.resource.infrastucture.controller;
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.management_system.resource.entities.database.ingredient.Category;
 import com.management_system.resource.entities.request_dto.CategoryRequest;
 import com.management_system.resource.usecases.category.AddNewCategoriesUseCase;
@@ -14,16 +12,20 @@ import com.management_system.utilities.entities.api.response.ResponseMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
+@Validated
 @Tag(name = "Category", description = "Operations related to managing categories of ingredients and menu")
 @RestController
 @RequestMapping(value = "/authen/category", consumes = {"*/*"}, produces = {MediaType.APPLICATION_JSON_VALUE})
@@ -53,6 +55,7 @@ public class CategoryController {
     @PreAuthorize(ConstantValue.MANAGER_AUTHOR)
     @PatchMapping("/editCategory")
     public CompletableFuture<ResponseEntity<ApiResponse>> editCategory(
+            @NotNull(message = "Category request must not be null")
             @RequestBody
             CategoryRequest categoryRequest
     ) {
@@ -65,9 +68,9 @@ public class CategoryController {
 
     @Operation(summary = "Delete one or multiple categories by IDs")
     @PreAuthorize(ConstantValue.MANAGER_AUTHOR)
-    @PostMapping("/deleteCategories")
+    @DeleteMapping("/deleteCategories")
     public CompletableFuture<ResponseEntity<ApiResponse>> deleteCategories(
-            @RequestBody List<String> idList,
+            @RequestBody @Size(max = 10, message = "ID list size must be from 0 to 10") Set<String> idList,
             HttpServletRequest request
     ) {
         return useCaseExecutor.execute(

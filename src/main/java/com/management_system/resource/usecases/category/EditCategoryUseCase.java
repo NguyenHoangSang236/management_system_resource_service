@@ -31,21 +31,12 @@ public class EditCategoryUseCase extends UseCase<EditCategoryUseCase.InputValue,
     public ApiResponse execute(InputValue input) {
         try {
             CategoryRequest categoryReq = input.categoryRequest();
-
-            if (categoryReq == null) {
-                return ApiResponse.builder()
-                        .result("failed")
-                        .message("Category request is empty")
-                        .status(HttpStatus.BAD_REQUEST)
-                        .build();
-            }
-
             String categoryId = categoryReq.getId();
 
             if (categoryId == null) {
                 return ApiResponse.builder()
                         .result("failed")
-                        .message("Can not find id field")
+                        .message("Can not find ID field")
                         .status(HttpStatus.BAD_REQUEST)
                         .build();
             }
@@ -55,9 +46,7 @@ public class EditCategoryUseCase extends UseCase<EditCategoryUseCase.InputValue,
             if (optionalCategory.isPresent()) {
                 categoryRepo.save(dbUtils.mergeMongoEntityFromRequest(optionalCategory.get(), categoryReq));
 
-                CompletableFuture.runAsync(() -> redisServiceClient.delete(
-                                TableName.CATEGORY,
-                                categoryId))
+                CompletableFuture.runAsync(() -> redisServiceClient.delete(TableName.CATEGORY, categoryId))
                         .exceptionally(
                                 ex -> {
                                     ex.printStackTrace();
