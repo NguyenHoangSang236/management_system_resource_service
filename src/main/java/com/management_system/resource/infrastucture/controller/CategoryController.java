@@ -12,6 +12,7 @@ import com.management_system.utilities.entities.api.response.ResponseMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
@@ -40,6 +41,8 @@ public class CategoryController {
     @PreAuthorize(ConstantValue.MANAGER_AUTHOR)
     @PostMapping("/addNewCategories")
     public CompletableFuture<ResponseEntity<ApiResponse>> addNewCategories(
+            @NotNull
+            @NotBlank
             @RequestBody
             List<Category> categories,
             HttpServletRequest request
@@ -55,6 +58,7 @@ public class CategoryController {
     @PreAuthorize(ConstantValue.MANAGER_AUTHOR)
     @PatchMapping("/editCategory")
     public CompletableFuture<ResponseEntity<ApiResponse>> editCategory(
+            @NotBlank
             @NotNull(message = "Category request must not be null")
             @RequestBody
             CategoryRequest categoryRequest
@@ -70,7 +74,9 @@ public class CategoryController {
     @PreAuthorize(ConstantValue.MANAGER_AUTHOR)
     @DeleteMapping("/deleteCategories")
     public CompletableFuture<ResponseEntity<ApiResponse>> deleteCategories(
-            @RequestBody @Size(max = 10, message = "ID list size must be from 0 to 10") Set<String> idList,
+            @RequestBody
+            @Size(max = 10, message = "ID list size must be from 0 to 10")
+            Set<String> idList,
             HttpServletRequest request
     ) {
         return useCaseExecutor.execute(
