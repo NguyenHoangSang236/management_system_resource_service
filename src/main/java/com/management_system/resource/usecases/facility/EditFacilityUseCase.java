@@ -4,6 +4,7 @@ import com.management_system.resource.entities.database.facility.Facility;
 import com.management_system.resource.entities.request_dto.FacilityRequest;
 import com.management_system.resource.infrastucture.feign.redis.RedisServiceClient;
 import com.management_system.resource.infrastucture.repository.FacilityRepository;
+import com.management_system.utilities.constant.enumuration.ResponseResult;
 import com.management_system.utilities.constant.enumuration.TableName;
 import com.management_system.utilities.core.usecase.UseCase;
 import com.management_system.utilities.entities.api.response.ApiResponse;
@@ -46,13 +47,13 @@ public class EditFacilityUseCase extends UseCase<EditFacilityUseCase.InputValue,
                         );
 
                 return ApiResponse.builder()
-                        .result("success")
+                        .result(ResponseResult.success.name())
                         .message("Edit facility with ID " + rqFacility.getId() + " successfully")
                         .status(HttpStatus.OK)
                         .build();
             } else {
                 return ApiResponse.builder()
-                        .result("failed")
+                        .result(ResponseResult.failed.name())
                         .message("This facility does not exist")
                         .status(HttpStatus.BAD_REQUEST)
                         .build();
@@ -61,7 +62,7 @@ public class EditFacilityUseCase extends UseCase<EditFacilityUseCase.InputValue,
             e.printStackTrace();
 
             return ApiResponse.builder()
-                    .result("failed")
+                    .result(ResponseResult.failed.name())
                     .content(e.getMessage())
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .build();

@@ -1,18 +1,20 @@
 package com.management_system.resource.infrastucture.controller;
 
-import com.management_system.resource.entities.database.ingredient.Category;
+import com.management_system.resource.entities.database.category.Category;
 import com.management_system.resource.entities.request_dto.CategoryRequest;
 import com.management_system.resource.usecases.category.AddNewCategoriesUseCase;
 import com.management_system.resource.usecases.category.DeleteCategoriesUseCase;
 import com.management_system.resource.usecases.category.EditCategoryUseCase;
+import com.management_system.resource.usecases.category.FilterCategoriesUseCase;
 import com.management_system.utilities.constant.ConstantValue;
+import com.management_system.utilities.constant.enumuration.TableName;
 import com.management_system.utilities.core.usecase.UseCaseExecutor;
 import com.management_system.utilities.entities.api.response.ApiResponse;
 import com.management_system.utilities.entities.api.response.ResponseMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.RequiredArgsConstructor;
@@ -29,20 +31,21 @@ import java.util.concurrent.CompletableFuture;
 @Validated
 @Tag(name = "Category", description = "Operations related to managing categories of ingredients and menu")
 @RestController
-@RequestMapping(value = "/authen/category", consumes = {"*/*"}, produces = {MediaType.APPLICATION_JSON_VALUE})
+@RequestMapping(consumes = {"*/*"}, produces = {MediaType.APPLICATION_JSON_VALUE})
 @RequiredArgsConstructor
 public class CategoryController {
     final DeleteCategoriesUseCase deleteCategoriesUseCase;
     final EditCategoryUseCase editCategoryUseCase;
+    final FilterCategoriesUseCase filterCategoriesUseCase;
     final AddNewCategoriesUseCase addNewCategoriesUseCase;
     final UseCaseExecutor useCaseExecutor;
 
     @Operation(summary = "Add one or multiple categories")
     @PreAuthorize(ConstantValue.MANAGER_AUTHOR)
-    @PostMapping("/addNewCategories")
+    @PostMapping("/authen/category/addNewCategories")
     public CompletableFuture<ResponseEntity<ApiResponse>> addNewCategories(
             @NotNull
-            @NotBlank
+            @NotEmpty
             @RequestBody
             List<Category> categories,
             HttpServletRequest request
@@ -56,9 +59,8 @@ public class CategoryController {
 
     @Operation(summary = "Edit a selected category")
     @PreAuthorize(ConstantValue.MANAGER_AUTHOR)
-    @PatchMapping("/editCategory")
+    @PatchMapping("/authen/category/editCategory")
     public CompletableFuture<ResponseEntity<ApiResponse>> editCategory(
-            @NotBlank
             @NotNull(message = "Category request must not be null")
             @RequestBody
             CategoryRequest categoryRequest
@@ -72,7 +74,7 @@ public class CategoryController {
 
     @Operation(summary = "Delete one or multiple categories by IDs")
     @PreAuthorize(ConstantValue.MANAGER_AUTHOR)
-    @DeleteMapping("/deleteCategories")
+    @DeleteMapping("/authen/category/deleteCategories")
     public CompletableFuture<ResponseEntity<ApiResponse>> deleteCategories(
             @RequestBody
             @Size(max = 10, message = "ID list size must be from 0 to 10")
@@ -82,6 +84,21 @@ public class CategoryController {
         return useCaseExecutor.execute(
                 deleteCategoriesUseCase,
                 new DeleteCategoriesUseCase.InputValue(request, idList),
+                ResponseMapper::map
+        );
+    }
+
+    @Operation(summary = "Get categories by filter")
+    @GetMapping("/unauthen/category/filterCategories")
+    public CompletableFuture<ResponseEntity<ApiResponse>> filterCategories(
+            @RequestParam(required = false)
+            String name,
+            @RequestParam
+            TableName type
+    ) {
+        return useCaseExecutor.execute(
+                filterCategoriesUseCase,
+                new FilterCategoriesUseCase.InputValue(name, type),
                 ResponseMapper::map
         );
     }

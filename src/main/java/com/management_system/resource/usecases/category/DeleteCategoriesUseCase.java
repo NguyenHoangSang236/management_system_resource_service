@@ -1,7 +1,8 @@
 package com.management_system.resource.usecases.category;
 
-import com.management_system.resource.entities.database.ingredient.Category;
+import com.management_system.resource.entities.database.category.Category;
 import com.management_system.resource.infrastucture.repository.CategoryRepository;
+import com.management_system.utilities.constant.enumuration.ResponseResult;
 import com.management_system.utilities.core.usecase.UseCase;
 import com.management_system.utilities.entities.api.response.ApiResponse;
 import jakarta.servlet.http.HttpServletRequest;
@@ -36,13 +37,13 @@ public class DeleteCategoriesUseCase extends UseCase<DeleteCategoriesUseCase.Inp
 
         if (resBuilder.toString().isBlank()) {
             return ApiResponse.builder()
-                    .result("failed")
+                    .result(ResponseResult.failed.name())
                     .message("Can not delete because these IDs do not exist in database")
                     .status(HttpStatus.BAD_REQUEST)
                     .build();
         } else {
             return ApiResponse.builder()
-                    .result("success")
+                    .result(ResponseResult.success.name())
                     .message("Deleted category with ID " + resBuilder.substring(0, resBuilder.lastIndexOf(",")) + " successfully")
                     .status(HttpStatus.OK)
                     .build();

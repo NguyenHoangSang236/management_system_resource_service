@@ -2,6 +2,7 @@ package com.management_system.resource.usecases.menu;
 
 import com.management_system.resource.common.caching.MongoRedisClientServiceImpl;
 import com.management_system.resource.entities.database.menu.Menu;
+import com.management_system.utilities.constant.enumuration.ResponseResult;
 import com.management_system.utilities.core.usecase.UseCase;
 import com.management_system.utilities.entities.api.response.ApiResponse;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +25,7 @@ public class ViewMenuProductByIdUseCase extends UseCase<ViewMenuProductByIdUseCa
         );
 
         return ApiResponse.builder()
-                .result("success")
+                .result(ResponseResult.success.name())
                 .content(menuProduct)
                 .status(HttpStatus.OK)
                 .build();

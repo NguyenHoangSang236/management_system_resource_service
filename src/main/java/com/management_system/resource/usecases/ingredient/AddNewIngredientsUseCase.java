@@ -6,6 +6,7 @@ import com.management_system.resource.entities.request_dto.IngredientRequest;
 import com.management_system.resource.infrastucture.constant.IngredientStatusEnum;
 import com.management_system.resource.infrastucture.repository.IngredientRepository;
 import com.management_system.resource.infrastucture.repository.SupplierRepository;
+import com.management_system.utilities.constant.enumuration.ResponseResult;
 import com.management_system.utilities.core.usecase.UseCase;
 import com.management_system.utilities.entities.api.response.ApiResponse;
 import com.management_system.utilities.utils.DbUtils;
@@ -81,14 +82,14 @@ public class AddNewIngredientsUseCase extends UseCase<AddNewIngredientsUseCase.I
                 }
 
                 return ApiResponse.builder()
-                        .result("success")
+                        .result(ResponseResult.success.name())
                         .content(resMap)
                         .message("Add " + successCount + "/" + ingredientRequests.size() + " new ingredients successfully")
                         .status(HttpStatus.OK)
                         .build();
             } else {
                 return ApiResponse.builder()
-                        .result("failed")
+                        .result(ResponseResult.failed.name())
                         .message("There is no ingredient to add")
                         .status(HttpStatus.OK)
                         .build();
@@ -97,7 +98,7 @@ public class AddNewIngredientsUseCase extends UseCase<AddNewIngredientsUseCase.I
             e.printStackTrace();
 
             return ApiResponse.builder()
-                    .result("failed")
+                    .result(ResponseResult.failed.name())
                     .message(e.getMessage())
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .build();

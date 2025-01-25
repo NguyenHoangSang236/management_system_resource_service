@@ -6,6 +6,7 @@ import com.management_system.resource.entities.request_dto.MenuRequest;
 import com.management_system.resource.infrastucture.constant.MenuStatusEnum;
 import com.management_system.resource.infrastucture.repository.CategoryRepository;
 import com.management_system.resource.infrastucture.repository.MenuRepository;
+import com.management_system.utilities.constant.enumuration.ResponseResult;
 import com.management_system.utilities.core.usecase.UseCase;
 import com.management_system.utilities.entities.api.response.ApiResponse;
 import com.management_system.utilities.entities.database.TokenInfo;
@@ -92,14 +93,14 @@ public class AddNewMenuProductsUseCase extends UseCase<AddNewMenuProductsUseCase
             }
 
             return ApiResponse.builder()
-                    .result("success")
+                    .result(ResponseResult.success.name())
                     .content(resMap)
                     .message("Add " + successCount + "/" + menuRequestList.size() + " new ingredients successfully")
                     .status(HttpStatus.OK)
                     .build();
         } else {
             return ApiResponse.builder()
-                    .result("failed")
+                    .result(ResponseResult.failed.name())
                     .message("There is no product to add!")
                     .status(HttpStatus.BAD_REQUEST)
                     .build();

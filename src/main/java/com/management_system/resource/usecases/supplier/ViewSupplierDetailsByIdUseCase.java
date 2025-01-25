@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.management_system.resource.entities.database.supplier.Supplier;
 import com.management_system.resource.infrastucture.feign.redis.RedisServiceClient;
 import com.management_system.resource.infrastucture.repository.SupplierRepository;
+import com.management_system.utilities.constant.enumuration.ResponseResult;
 import com.management_system.utilities.constant.enumuration.TableName;
 import com.management_system.utilities.core.redis.RedisRequest;
 import com.management_system.utilities.core.usecase.UseCase;
@@ -36,7 +37,7 @@ public class ViewSupplierDetailsByIdUseCase extends UseCase<ViewSupplierDetailsB
         } catch (Exception e) {
             e.printStackTrace();
             redisRes = ApiResponse.builder()
-                    .result("failed")
+                    .result(ResponseResult.failed.name())
                     .message("Error!")
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .build();
@@ -47,7 +48,7 @@ public class ViewSupplierDetailsByIdUseCase extends UseCase<ViewSupplierDetailsB
 
         if (status.equals(HttpStatus.OK) && contentObj != null) {
             return ApiResponse.builder()
-                    .result("success")
+                    .result(ResponseResult.success.name())
                     .content(contentObj)
                     .status(HttpStatus.OK)
                     .build();
@@ -72,13 +73,13 @@ public class ViewSupplierDetailsByIdUseCase extends UseCase<ViewSupplierDetailsB
                 });
 
                 return ApiResponse.builder()
-                        .result("success")
+                        .result(ResponseResult.success.name())
                         .content(supplierOptional.get())
                         .status(HttpStatus.OK)
                         .build();
             } else {
                 return ApiResponse.builder()
-                        .result("failed")
+                        .result(ResponseResult.failed.name())
                         .content("This supplier does not exist")
                         .status(HttpStatus.NO_CONTENT)
                         .build();

@@ -4,6 +4,7 @@ import com.management_system.resource.entities.database.ingredient.Ingredient;
 import com.management_system.resource.entities.request_dto.IngredientRequest;
 import com.management_system.resource.infrastucture.feign.redis.RedisServiceClient;
 import com.management_system.resource.infrastucture.repository.IngredientRepository;
+import com.management_system.utilities.constant.enumuration.ResponseResult;
 import com.management_system.utilities.constant.enumuration.TableName;
 import com.management_system.utilities.core.usecase.UseCase;
 import com.management_system.utilities.entities.api.response.ApiResponse;
@@ -32,7 +33,7 @@ public class EditIngredientUseCase extends UseCase<EditIngredientUseCase.InputVa
     public ApiResponse execute(InputValue input) {
         if (input.ingredientRequest().getId().isBlank()) {
             return ApiResponse.builder()
-                    .result("failed")
+                    .result(ResponseResult.failed.name())
                     .message("Can not find id field")
                     .status(HttpStatus.BAD_REQUEST)
                     .build();
@@ -53,13 +54,13 @@ public class EditIngredientUseCase extends UseCase<EditIngredientUseCase.InputVa
                     );
 
             return ApiResponse.builder()
-                    .result("success")
+                    .result(ResponseResult.success.name())
                     .message("Edit ingredient ID " + input.ingredientRequest().getId() + " successfully")
                     .status(HttpStatus.OK)
                     .build();
         } else {
             return ApiResponse.builder()
-                    .result("failed")
+                    .result(ResponseResult.failed.name())
                     .message("Category with id " + input.ingredientRequest().getId() + " does not exist")
                     .status(HttpStatus.BAD_REQUEST)
                     .build();

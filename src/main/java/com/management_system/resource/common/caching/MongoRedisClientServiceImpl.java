@@ -3,7 +3,7 @@ package com.management_system.resource.common.caching;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.management_system.resource.entities.database.facility.Facility;
-import com.management_system.resource.entities.database.ingredient.Category;
+import com.management_system.resource.entities.database.category.Category;
 import com.management_system.resource.entities.database.ingredient.Ingredient;
 import com.management_system.resource.entities.database.menu.Menu;
 import com.management_system.resource.infrastucture.feign.redis.RedisServiceClient;

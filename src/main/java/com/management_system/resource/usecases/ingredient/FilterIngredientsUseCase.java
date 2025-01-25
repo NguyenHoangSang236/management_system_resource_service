@@ -1,6 +1,7 @@
 package com.management_system.resource.usecases.ingredient;
 
 import com.management_system.resource.entities.database.ingredient.Ingredient;
+import com.management_system.utilities.constant.enumuration.ResponseResult;
 import com.management_system.utilities.core.usecase.UseCase;
 import com.management_system.utilities.entities.api.request.FilterRequest;
 import com.management_system.utilities.entities.api.response.ApiResponse;
@@ -24,7 +25,7 @@ public class FilterIngredientsUseCase extends UseCase<FilterIngredientsUseCase.I
         List<Ingredient> resultList = dbUtils.filterData(input.filterRequest(), Ingredient.class);
 
         return ApiResponse.builder()
-                .result("success")
+                .result(ResponseResult.success.name())
                 .content(resultList)
                 .status(HttpStatus.OK)
                 .build();

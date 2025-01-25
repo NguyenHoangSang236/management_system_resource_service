@@ -1,6 +1,7 @@
 package com.management_system.resource.usecases.facility;
 
 import com.management_system.resource.entities.database.facility.Facility;
+import com.management_system.utilities.constant.enumuration.ResponseResult;
 import com.management_system.utilities.core.usecase.UseCase;
 import com.management_system.utilities.entities.api.request.FilterRequest;
 import com.management_system.utilities.entities.api.response.ApiResponse;
@@ -22,7 +23,7 @@ public class FilterFacilitiesUseCase extends UseCase<FilterFacilitiesUseCase.Inp
         List<Facility> resultList = dbUtils.filterData(input.filterRequest(), Facility.class);
 
         return ApiResponse.builder()
-                .result("success")
+                .result(ResponseResult.success.name())
                 .content(resultList)
                 .status(HttpStatus.OK)
                 .build();

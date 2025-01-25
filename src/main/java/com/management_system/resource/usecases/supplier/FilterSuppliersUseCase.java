@@ -2,6 +2,7 @@ package com.management_system.resource.usecases.supplier;
 
 import com.management_system.resource.entities.database.supplier.Supplier;
 import com.management_system.resource.entities.request_dto.filter_requests.SupplierFilterRequest;
+import com.management_system.utilities.constant.enumuration.ResponseResult;
 import com.management_system.utilities.core.usecase.UseCase;
 import com.management_system.utilities.entities.api.request.FilterRequest;
 import com.management_system.utilities.entities.api.response.ApiResponse;
@@ -23,7 +24,7 @@ public class FilterSuppliersUseCase extends UseCase<FilterSuppliersUseCase.Input
         List<Supplier> resultList = dbUtils.filterData(input.filterRequest(), Supplier.class);
 
         return ApiResponse.builder()
-                .result("success")
+                .result(ResponseResult.success.name())
                 .content(resultList)
                 .status(HttpStatus.OK)
                 .build();

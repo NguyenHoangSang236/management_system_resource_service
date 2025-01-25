@@ -3,6 +3,7 @@ package com.management_system.resource.usecases.facility;
 import com.management_system.resource.entities.database.facility.Facility;
 import com.management_system.resource.infrastucture.constant.FacilityStatusEnum;
 import com.management_system.resource.infrastucture.repository.FacilityRepository;
+import com.management_system.utilities.constant.enumuration.ResponseResult;
 import com.management_system.utilities.core.usecase.UseCase;
 import com.management_system.utilities.entities.api.response.ApiResponse;
 import com.management_system.utilities.utils.ValueParsingUtils;
@@ -39,7 +40,7 @@ public class AddNewFacilityUseCase extends UseCase<AddNewFacilityUseCase.InputVa
         }
 
         return ApiResponse.builder()
-                .result("success")
+                .result(ResponseResult.success.name())
                 .message("Add new facilities successfully")
                 .status(HttpStatus.OK)
                 .build();

@@ -3,7 +3,7 @@ package com.management_system.resource.entities.database.importation;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.management_system.resource.entities.database.supplier.Supplier;
-import com.management_system.utilities.constant.enumuration.MeasurementUnitEnum;
+import com.management_system.utilities.constant.enumuration.MeasurementUnit;
 import com.management_system.utilities.entities.database.MongoDbEntity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -39,7 +39,7 @@ public class Importation extends MongoDbEntity implements Serializable {
     @Enumerated(EnumType.STRING)
     @JsonProperty("measurement_unit")
     @Field(name = "measurement_unit", write = Field.Write.NON_NULL)
-    MeasurementUnitEnum measurementUnit;
+    MeasurementUnit measurementUnit;
 
     @JsonProperty("ingredient_id")
     @Field(value = "ingredient_id")

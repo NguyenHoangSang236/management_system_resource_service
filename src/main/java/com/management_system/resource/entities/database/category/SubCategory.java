@@ -1,6 +1,7 @@
-package com.management_system.resource.entities.database.ingredient;
+package com.management_system.resource.entities.database.category;
 
 
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 
 @Getter
@@ -9,9 +10,9 @@ import lombok.*;
 @AllArgsConstructor
 @Builder
 public class SubCategory {
-    @NonNull
+    @NotNull
     String id;
 
-    @NonNull
+    @NotNull
     String name;
 }

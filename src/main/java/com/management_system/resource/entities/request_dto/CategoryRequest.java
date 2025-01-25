@@ -1,6 +1,6 @@
 package com.management_system.resource.entities.request_dto;
 
-import com.management_system.resource.entities.database.ingredient.SubCategory;
+import com.management_system.resource.entities.database.category.SubCategory;
 import com.management_system.utilities.entities.api.request.ApiRequest;
 import lombok.AllArgsConstructor;
 import lombok.Getter;

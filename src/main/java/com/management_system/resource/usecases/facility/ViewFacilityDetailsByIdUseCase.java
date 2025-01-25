@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.management_system.resource.entities.database.facility.Facility;
 import com.management_system.resource.infrastucture.feign.redis.RedisServiceClient;
 import com.management_system.resource.infrastucture.repository.FacilityRepository;
+import com.management_system.utilities.constant.enumuration.ResponseResult;
 import com.management_system.utilities.constant.enumuration.TableName;
 import com.management_system.utilities.core.redis.RedisRequest;
 import com.management_system.utilities.core.usecase.UseCase;
@@ -36,7 +37,7 @@ public class ViewFacilityDetailsByIdUseCase extends UseCase<ViewFacilityDetailsB
         } catch (Exception e) {
             e.printStackTrace();
             redisRes = ApiResponse.builder()
-                    .result("failed")
+                    .result(ResponseResult.failed.name())
                     .message("Error!")
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .build();
@@ -47,7 +48,7 @@ public class ViewFacilityDetailsByIdUseCase extends UseCase<ViewFacilityDetailsB
 
         if (status.equals(HttpStatus.OK) && contentObj != null) {
             return ApiResponse.builder()
-                    .result("success")
+                    .result(ResponseResult.success.name())
                     .content(contentObj)
                     .status(HttpStatus.OK)
                     .build();
@@ -72,13 +73,13 @@ public class ViewFacilityDetailsByIdUseCase extends UseCase<ViewFacilityDetailsB
                 });
 
                 return ApiResponse.builder()
-                        .result("success")
+                        .result(ResponseResult.success.name())
                         .content(facilityOptional.get())
                         .status(HttpStatus.OK)
                         .build();
             } else {
                 return ApiResponse.builder()
-                        .result("failed")
+                        .result(ResponseResult.failed.name())
                         .content("This facility does not exist")
                         .status(HttpStatus.NO_CONTENT)
                         .build();

@@ -1,6 +1,6 @@
 package com.management_system.resource.infrastucture.repository;
 
-import com.management_system.resource.entities.database.ingredient.Category;
+import com.management_system.resource.entities.database.category.Category;
 import org.springframework.data.mongodb.repository.MongoRepository;
 import org.springframework.data.mongodb.repository.Query;
 import org.springframework.stereotype.Repository;

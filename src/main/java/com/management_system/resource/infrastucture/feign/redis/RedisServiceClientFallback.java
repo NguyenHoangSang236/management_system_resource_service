@@ -1,5 +1,6 @@
 package com.management_system.resource.infrastucture.feign.redis;
 
+import com.management_system.utilities.constant.enumuration.ResponseResult;
 import com.management_system.utilities.constant.enumuration.TableName;
 import com.management_system.utilities.entities.api.response.ApiResponse;
 import org.springframework.http.HttpStatus;
@@ -12,7 +13,7 @@ public class RedisServiceClientFallback implements RedisServiceClient {
         return ApiResponse.builder()
                 .status(HttpStatus.SERVICE_UNAVAILABLE)
                 .message("Not found error")
-                .result("failed")
+                .result(ResponseResult.failed.name())
                 .build();
     }
 
@@ -21,7 +22,7 @@ public class RedisServiceClientFallback implements RedisServiceClient {
         return ApiResponse.builder()
                 .status(HttpStatus.SERVICE_UNAVAILABLE)
                 .message("Not found error")
-                .result("failed")
+                .result(ResponseResult.failed.name())
                 .build();
     }
 
@@ -30,7 +31,7 @@ public class RedisServiceClientFallback implements RedisServiceClient {
         return ApiResponse.builder()
                 .status(HttpStatus.SERVICE_UNAVAILABLE)
                 .message("Not found error")
-                .result("failed")
+                .result(ResponseResult.failed.name())
                 .build();
     }
 }

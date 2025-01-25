@@ -1,9 +1,10 @@
 package com.management_system.resource.usecases.category;
 
-import com.management_system.resource.entities.database.ingredient.Category;
+import com.management_system.resource.entities.database.category.Category;
 import com.management_system.resource.entities.request_dto.CategoryRequest;
 import com.management_system.resource.infrastucture.feign.redis.RedisServiceClient;
 import com.management_system.resource.infrastucture.repository.CategoryRepository;
+import com.management_system.utilities.constant.enumuration.ResponseResult;
 import com.management_system.utilities.constant.enumuration.TableName;
 import com.management_system.utilities.core.usecase.UseCase;
 import com.management_system.utilities.entities.api.response.ApiResponse;
@@ -35,7 +36,7 @@ public class EditCategoryUseCase extends UseCase<EditCategoryUseCase.InputValue,
 
             if (categoryId == null) {
                 return ApiResponse.builder()
-                        .result("failed")
+                        .result(ResponseResult.failed.name())
                         .message("Can not find ID field")
                         .status(HttpStatus.BAD_REQUEST)
                         .build();
@@ -55,13 +56,13 @@ public class EditCategoryUseCase extends UseCase<EditCategoryUseCase.InputValue,
                         );
 
                 return ApiResponse.builder()
-                        .result("success")
+                        .result(ResponseResult.success.name())
                         .message("Edit category successfully")
                         .status(HttpStatus.OK)
                         .build();
             } else {
                 return ApiResponse.builder()
-                        .result("failed")
+                        .result(ResponseResult.failed.name())
                         .message("Category with id " + categoryId + " does not exist")
                         .status(HttpStatus.BAD_REQUEST)
                         .build();
@@ -70,7 +71,7 @@ public class EditCategoryUseCase extends UseCase<EditCategoryUseCase.InputValue,
             e.printStackTrace();
 
             return ApiResponse.builder()
-                    .result("failed")
+                    .result(ResponseResult.failed.name())
                     .message(e.getMessage())
                     .status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .build();

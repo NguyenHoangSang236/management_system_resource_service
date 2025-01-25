@@ -4,6 +4,7 @@ import com.management_system.resource.entities.database.supplier.Supplier;
 import com.management_system.resource.entities.request_dto.SupplierRequest;
 import com.management_system.resource.infrastucture.feign.redis.RedisServiceClient;
 import com.management_system.resource.infrastucture.repository.SupplierRepository;
+import com.management_system.utilities.constant.enumuration.ResponseResult;
 import com.management_system.utilities.constant.enumuration.TableName;
 import com.management_system.utilities.core.usecase.UseCase;
 import com.management_system.utilities.entities.api.response.ApiResponse;
@@ -31,7 +32,7 @@ public class EditSupplierUseCase extends UseCase<EditSupplierUseCase.InputValue,
     public ApiResponse execute(InputValue input) {
         if (input.supplierRequest().getId().isBlank()) {
             return ApiResponse.builder()
-                    .result("failed")
+                    .result(ResponseResult.failed.name())
                     .message("Can not find id field")
                     .status(HttpStatus.BAD_REQUEST)
                     .build();
@@ -52,13 +53,13 @@ public class EditSupplierUseCase extends UseCase<EditSupplierUseCase.InputValue,
                     );
 
             return ApiResponse.builder()
-                    .result("success")
+                    .result(ResponseResult.success.name())
                     .message("Edit supplier ID " + input.supplierRequest().getId() + " successfully")
                     .status(HttpStatus.OK)
                     .build();
         } else {
             return ApiResponse.builder()
-                    .result("failed")
+                    .result(ResponseResult.failed.name())
                     .message("Supplier with id " + input.supplierRequest().getId() + " does not exist")
                     .status(HttpStatus.BAD_REQUEST)
                     .build();
