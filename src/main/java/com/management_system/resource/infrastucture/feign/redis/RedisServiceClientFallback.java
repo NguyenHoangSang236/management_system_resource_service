@@ -18,7 +18,16 @@ public class RedisServiceClientFallback implements RedisServiceClient {
     }
 
     @Override
-    public ApiResponse delete(TableName tableName, String id) {
+    public ApiResponse findAllByTable(TableName tableName) {
+        return ApiResponse.builder()
+                .status(HttpStatus.SERVICE_UNAVAILABLE)
+                .message("Not found error")
+                .result(ResponseResult.failed.name())
+                .build();
+    }
+
+    @Override
+    public ApiResponse delete(TableName tableName, String id, Boolean isSafe) {
         return ApiResponse.builder()
                 .status(HttpStatus.SERVICE_UNAVAILABLE)
                 .message("Not found error")
@@ -28,6 +37,15 @@ public class RedisServiceClientFallback implements RedisServiceClient {
 
     @Override
     public ApiResponse save(String json) {
+        return ApiResponse.builder()
+                .status(HttpStatus.SERVICE_UNAVAILABLE)
+                .message("Not found error")
+                .result(ResponseResult.failed.name())
+                .build();
+    }
+
+    @Override
+    public ApiResponse saveList(String json) {
         return ApiResponse.builder()
                 .status(HttpStatus.SERVICE_UNAVAILABLE)
                 .message("Not found error")

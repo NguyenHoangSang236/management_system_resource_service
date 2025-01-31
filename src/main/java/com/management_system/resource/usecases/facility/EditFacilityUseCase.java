@@ -38,7 +38,10 @@ public class EditFacilityUseCase extends UseCase<EditFacilityUseCase.InputValue,
                 facilityRepo.save(dbUtils.mergeMongoEntityFromRequest(facilityOptional.get(), rqFacility));
 
                 CompletableFuture.runAsync(() -> redisServiceClient.delete(
-                                TableName.FACILITY, rqFacility.getId()))
+                                TableName.FACILITY,
+                                rqFacility.getId(),
+                                true
+                        ))
                         .exceptionally(
                                 ex -> {
                                     ex.printStackTrace();

@@ -45,7 +45,10 @@ public class EditIngredientUseCase extends UseCase<EditIngredientUseCase.InputVa
             ingredientRepo.save(dbUtils.mergeMongoEntityFromRequest(ingredientOptional.get(), input.ingredientRequest()));
 
             CompletableFuture.runAsync(() -> redisServiceClient.delete(
-                            TableName.INGREDIENT, input.ingredientRequest().getId()))
+                            TableName.INGREDIENT,
+                            input.ingredientRequest().getId(),
+                            true
+                    ))
                     .exceptionally(
                             ex -> {
                                 ex.printStackTrace();

@@ -44,7 +44,10 @@ public class EditSupplierUseCase extends UseCase<EditSupplierUseCase.InputValue,
             supplierRepo.save(dbUtils.mergeMongoEntityFromRequest(supplierOptional.get(), input.supplierRequest()));
 
             CompletableFuture.runAsync(() -> redisServiceClient.delete(
-                            TableName.SUPPLIER, input.supplierRequest().getId()))
+                            TableName.SUPPLIER,
+                            input.supplierRequest().getId(),
+                            true
+                    ))
                     .exceptionally(
                             ex -> {
                                 ex.printStackTrace();

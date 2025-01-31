@@ -1,5 +1,6 @@
 package com.management_system.resource.usecases.category;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.management_system.resource.entities.database.category.Category;
 import com.management_system.resource.entities.request_dto.CategoryRequest;
 import com.management_system.resource.infrastucture.feign.redis.RedisServiceClient;
@@ -7,25 +8,35 @@ import com.management_system.resource.infrastucture.repository.CategoryRepositor
 import com.management_system.utilities.constant.enumuration.ResponseResult;
 import com.management_system.utilities.constant.enumuration.TableName;
 import com.management_system.utilities.core.usecase.UseCase;
+import com.management_system.utilities.entities.api.request.RedisRequest;
 import com.management_system.utilities.entities.api.response.ApiResponse;
 import com.management_system.utilities.utils.DbUtils;
+import com.management_system.utilities.utils.ValueParsingUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
+@Slf4j
 @Component
 public class EditCategoryUseCase extends UseCase<EditCategoryUseCase.InputValue, ApiResponse> {
-    @Autowired
-    DbUtils dbUtils;
+    private final DbUtils dbUtils;
+    private final CategoryRepository categoryRepo;
+    private final RedisServiceClient redisServiceClient;
+    private final ValueParsingUtils valueParsingUtils;
 
-    @Autowired
-    CategoryRepository categoryRepo;
-
-    @Autowired
-    RedisServiceClient redisServiceClient;
+    public EditCategoryUseCase(DbUtils dbUtils, CategoryRepository categoryRepo, RedisServiceClient redisServiceClient, ValueParsingUtils valueParsingUtils) {
+        this.dbUtils = dbUtils;
+        this.categoryRepo = categoryRepo;
+        this.redisServiceClient = redisServiceClient;
+        this.valueParsingUtils = valueParsingUtils;
+    }
 
 
     @Override
@@ -37,7 +48,7 @@ public class EditCategoryUseCase extends UseCase<EditCategoryUseCase.InputValue,
             if (categoryId == null) {
                 return ApiResponse.builder()
                         .result(ResponseResult.failed.name())
-                        .message("Can not find ID field")
+                        .message("Field 'id' must not be null")
                         .status(HttpStatus.BAD_REQUEST)
                         .build();
             }
@@ -45,15 +56,10 @@ public class EditCategoryUseCase extends UseCase<EditCategoryUseCase.InputValue,
             Optional<Category> optionalCategory = categoryRepo.findById(categoryId);
 
             if (optionalCategory.isPresent()) {
-                categoryRepo.save(dbUtils.mergeMongoEntityFromRequest(optionalCategory.get(), categoryReq));
+                Category updatedCategory = dbUtils.mergeMongoEntityFromRequest(optionalCategory.get(), categoryReq);
+                categoryRepo.save(updatedCategory);
 
-                CompletableFuture.runAsync(() -> redisServiceClient.delete(TableName.CATEGORY, categoryId))
-                        .exceptionally(
-                                ex -> {
-                                    ex.printStackTrace();
-                                    return null;
-                                }
-                        );
+                updateCache(updatedCategory.getType());
 
                 return ApiResponse.builder()
                         .result(ResponseResult.success.name())
@@ -77,6 +83,31 @@ public class EditCategoryUseCase extends UseCase<EditCategoryUseCase.InputValue,
                     .build();
         }
     }
+
+
+    private void updateCache(TableName tableName) {
+        CompletableFuture.runAsync(() -> {
+            ObjectMapper objectMapper = new ObjectMapper();
+            try {
+                List<Map<String, Object>> dataList = valueParsingUtils.parseObjectListToHashMapList(
+                        categoryRepo.findByType(tableName)
+                );
+
+                redisServiceClient.saveList(
+                        objectMapper.writeValueAsString(
+                                RedisRequest.builder()
+                                        .type(tableName)
+                                        .customKey(TableName.CATEGORY.name() + ".type:" + tableName)
+                                        .dataList(dataList)
+                                        .build()
+                        )
+                );
+            } catch (Exception e) {
+                log.error("Failed to update Redis cache: {}", e.getMessage(), e);
+            }
+        });
+    }
+
 
     public record InputValue(CategoryRequest categoryRequest) implements UseCase.InputValue {
     }
