@@ -39,6 +39,7 @@ public class AddNewCategoriesUseCase extends UseCase<AddNewCategoriesUseCase.Inp
     @Override
     public ApiResponse execute(InputValue input) {
         List<String> errors = new ArrayList<>();
+        List<String> success = new ArrayList<>();
         List<Category> categories = input.categories();
         Set<TableName> successTableNames = new HashSet<>();
         int successCount = 0;
@@ -52,7 +53,9 @@ public class AddNewCategoriesUseCase extends UseCase<AddNewCategoriesUseCase.Inp
                 .collect(Collectors.toSet());
 
         for (Category category : categories) {
-            String id = valueParsingUtils.parseStringToId("-", false, category.getName());
+            String name = valueParsingUtils.parseStringToId("-", false, category.getName());
+            String type = valueParsingUtils.parseStringToId("-", false, category.getType().name());
+            String id = type + "_" + name;
 
             if (existingIds.contains(id)) {
                 errors.add("Category with ID " + id + " exists");
@@ -63,15 +66,15 @@ public class AddNewCategoriesUseCase extends UseCase<AddNewCategoriesUseCase.Inp
 
                 if (category.getSubCategories() != null && !category.getSubCategories().isEmpty()) {
                     for (SubCategory subCategory : category.getSubCategories()) {
-                        String type = valueParsingUtils.parseStringToId("-", false, category.getType().name());
                         String subCategoryId = valueParsingUtils.parseStringToId("-", false, subCategory.getName());
-                        subCategory.setId(type + "_" + subCategoryId);
+                        subCategory.setId(id + "_" + subCategoryId);
                     }
                 }
 
                 categoryRepo.save(category);
                 successCount++;
                 successTableNames.add(category.getType());
+                success.add("Add " + category.getName() + " successfully");
             }
         }
 
@@ -86,6 +89,7 @@ public class AddNewCategoriesUseCase extends UseCase<AddNewCategoriesUseCase.Inp
                         ? "Add " + successCount + "/" + categories.size() + " new categories successfully"
                         : "Add new categories failed"
                 )
+                .content(success)
                 .status(HttpStatus.OK)
                 .build();
     }

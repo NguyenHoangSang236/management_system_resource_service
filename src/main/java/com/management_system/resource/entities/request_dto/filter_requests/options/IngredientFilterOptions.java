@@ -58,7 +58,7 @@ public class IngredientFilterOptions extends FilterOption implements Serializabl
     @Override
     public Map<String, Object> toMap() {
         ObjectMapper objectMapper = new ObjectMapper();
-        return objectMapper.convertValue(this, new TypeReference<Map<String, Object>>() {
+        return objectMapper.convertValue(this, new TypeReference<>() {
         });
     }
 }

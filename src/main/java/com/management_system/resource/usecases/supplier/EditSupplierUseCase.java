@@ -1,7 +1,7 @@
 package com.management_system.resource.usecases.supplier;
 
 import com.management_system.resource.entities.database.supplier.Supplier;
-import com.management_system.resource.entities.request_dto.SupplierRequest;
+import com.management_system.resource.entities.request_dto.supplier.SupplierRequest;
 import com.management_system.resource.infrastucture.feign.redis.RedisServiceClient;
 import com.management_system.resource.infrastucture.repository.SupplierRepository;
 import com.management_system.utilities.constant.enumuration.ResponseResult;

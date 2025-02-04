@@ -2,7 +2,7 @@ package com.management_system.resource.usecases.category;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.management_system.resource.entities.database.category.Category;
-import com.management_system.resource.entities.request_dto.CategoryRequest;
+import com.management_system.resource.entities.request_dto.category.CategoryRequest;
 import com.management_system.resource.infrastucture.feign.redis.RedisServiceClient;
 import com.management_system.resource.infrastucture.repository.CategoryRepository;
 import com.management_system.utilities.constant.enumuration.ResponseResult;
@@ -13,14 +13,12 @@ import com.management_system.utilities.entities.api.response.ApiResponse;
 import com.management_system.utilities.utils.DbUtils;
 import com.management_system.utilities.utils.ValueParsingUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 @Slf4j

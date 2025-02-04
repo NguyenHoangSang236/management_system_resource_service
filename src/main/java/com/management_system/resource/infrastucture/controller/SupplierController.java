@@ -1,19 +1,15 @@
 package com.management_system.resource.infrastucture.controller;
 
-import com.management_system.resource.entities.request_dto.filter_requests.options.SupplierFilterOptions;
 import com.management_system.resource.entities.request_dto.filter_requests.SupplierFilterRequest;
-import com.management_system.resource.entities.request_dto.SupplierRequest;
+import com.management_system.resource.entities.request_dto.supplier.SupplierRequest;
 import com.management_system.resource.usecases.supplier.AddNewSuppliersUseCase;
 import com.management_system.resource.usecases.supplier.FilterSuppliersUseCase;
 import com.management_system.resource.usecases.supplier.ViewSupplierDetailsByIdUseCase;
 import com.management_system.utilities.constant.ConstantValue;
 import com.management_system.utilities.core.usecase.UseCaseExecutor;
-import com.management_system.utilities.entities.api.request.FilterRequest;
 import com.management_system.utilities.entities.api.response.ApiResponse;
 import com.management_system.utilities.entities.api.response.ResponseMapper;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;

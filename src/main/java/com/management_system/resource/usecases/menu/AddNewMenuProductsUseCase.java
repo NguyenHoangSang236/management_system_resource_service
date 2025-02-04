@@ -2,7 +2,7 @@ package com.management_system.resource.usecases.menu;
 
 import com.management_system.resource.entities.database.menu.Menu;
 import com.management_system.resource.entities.database.menu.MenuPrice;
-import com.management_system.resource.entities.request_dto.MenuRequest;
+import com.management_system.resource.entities.request_dto.menu.MenuRequest;
 import com.management_system.resource.infrastucture.constant.MenuStatusEnum;
 import com.management_system.resource.infrastucture.repository.CategoryRepository;
 import com.management_system.resource.infrastucture.repository.MenuRepository;

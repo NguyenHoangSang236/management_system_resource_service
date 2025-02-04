@@ -1,6 +1,8 @@
-package com.management_system.resource.entities.request_dto;
+package com.management_system.resource.entities.request_dto.menu;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.management_system.resource.infrastucture.constant.MenuStatusEnum;
 import com.management_system.utilities.core.validator.insert.InsertValid;
 import com.management_system.utilities.entities.api.request.ApiRequest;
@@ -11,6 +13,7 @@ import lombok.*;
 import java.io.Serializable;
 import java.util.Currency;
 import java.util.List;
+import java.util.Map;
 
 @Getter
 @Setter
@@ -48,4 +51,11 @@ public class MenuRequest extends ApiRequest implements Serializable {
     @JsonProperty("status")
     @Enumerated(EnumType.STRING)
     MenuStatusEnum menuStatus;
+
+    @Override
+    public Map<String, Object> toMap() {
+        ObjectMapper objectMapper = new ObjectMapper();
+        return objectMapper.convertValue(this, new TypeReference<>() {
+        });
+    }
 }

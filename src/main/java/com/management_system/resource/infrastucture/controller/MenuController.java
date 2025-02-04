@@ -1,6 +1,6 @@
 package com.management_system.resource.infrastucture.controller;
 
-import com.management_system.resource.entities.request_dto.MenuRequest;
+import com.management_system.resource.entities.request_dto.menu.MenuRequest;
 import com.management_system.resource.usecases.menu.AddNewMenuProductsUseCase;
 import com.management_system.resource.usecases.menu.ViewMenuProductByIdUseCase;
 import com.management_system.utilities.constant.ConstantValue;

@@ -24,9 +24,9 @@ public class Ingredient extends MongoDbEntity implements Serializable {
     @Id
     String id;
 
-    @JsonProperty(value = "supplier_name")
+    @JsonProperty(value = "supplier_id")
     @Field(name = "supplier_name", write = Field.Write.NON_NULL)
-    String supplierName;
+    String supplierId;
 
     @Field(name = "name", write = Field.Write.NON_NULL)
     String name;
@@ -49,7 +49,7 @@ public class Ingredient extends MongoDbEntity implements Serializable {
     @Field(name = "quantity", write = Field.Write.NON_NULL)
     double quantity;
 
-    @JsonProperty(value = "categories")
-    @Field(name = "categories", write = Field.Write.NON_NULL)
-    List<String> categories;
+    @JsonProperty(value = "sub_category_ids")
+    @Field(name = "sub_category_ids", write = Field.Write.NON_NULL)
+    List<String> subCategoryIds;
 }

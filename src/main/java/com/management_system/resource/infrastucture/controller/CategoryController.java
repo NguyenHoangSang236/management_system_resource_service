@@ -1,7 +1,7 @@
 package com.management_system.resource.infrastucture.controller;
 
 import com.management_system.resource.entities.database.category.Category;
-import com.management_system.resource.entities.request_dto.CategoryRequest;
+import com.management_system.resource.entities.request_dto.category.CategoryRequest;
 import com.management_system.resource.usecases.category.AddNewCategoriesUseCase;
 import com.management_system.resource.usecases.category.DeleteCategoriesUseCase;
 import com.management_system.resource.usecases.category.EditCategoryUseCase;

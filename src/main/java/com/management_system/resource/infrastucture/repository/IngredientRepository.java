@@ -9,6 +9,8 @@ import java.util.Optional;
 
 @Repository
 public interface IngredientRepository extends MongoRepository<Ingredient, String> {
-    @Query("{'name': ?0}")
+    @Query("{'name': {$regex: '^?0$', $options: 'i'}}")
     Optional<Ingredient> getIngredientByName(String name);
+
+
 }

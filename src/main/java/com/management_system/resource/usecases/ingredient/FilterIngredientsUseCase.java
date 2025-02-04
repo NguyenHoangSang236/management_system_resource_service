@@ -1,6 +1,7 @@
 package com.management_system.resource.usecases.ingredient;
 
 import com.management_system.resource.entities.database.ingredient.Ingredient;
+import com.management_system.resource.entities.request_dto.filter_requests.options.IngredientFilterOptions;
 import com.management_system.utilities.constant.enumuration.ResponseResult;
 import com.management_system.utilities.core.usecase.UseCase;
 import com.management_system.utilities.entities.api.request.FilterRequest;
@@ -31,6 +32,6 @@ public class FilterIngredientsUseCase extends UseCase<FilterIngredientsUseCase.I
                 .build();
     }
 
-    public record InputValue(FilterRequest filterRequest) implements UseCase.InputValue {
+    public record InputValue(FilterRequest<IngredientFilterOptions> filterRequest) implements UseCase.InputValue {
     }
 }

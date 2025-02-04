@@ -36,36 +36,46 @@ public class DeleteCategoriesUseCase extends UseCase<DeleteCategoriesUseCase.Inp
 
     @Override
     public ApiResponse execute(InputValue input) {
-        Set<String> categoryList = input.idList();
+        Set<String> categoryIdList = input.idList();
+        List<String> success = new ArrayList<>();
+        List<String> errors = new ArrayList<>();
         Set<TableName> successTypes = new HashSet<>();
-        StringBuilder resBuilder = new StringBuilder();
+        List<Category> existingCategories = categoryRepo.findAllById(categoryIdList);
+        int successCount = 0;
+        int totalIds = categoryIdList.size();
 
-        List<Category> existingCategories = categoryRepo.findAllById(categoryList);
+        if (existingCategories.isEmpty()) {
+            return ApiResponse.builder()
+                    .result(ResponseResult.failed.name())
+                    .message("Can not delete because these IDs do not exist in database")
+                    .status(HttpStatus.BAD_REQUEST)
+                    .build();
+        }
 
         for (Category category : existingCategories) {
             String id = category.getId();
             TableName type = category.getType();
 
             categoryRepo.deleteById(id);
-            resBuilder.append(id);
+            success.add("Delete category with ID " + category.getId() + " successfully");
             successTypes.add(type);
+            successCount++;
+            categoryIdList.remove(id);
         }
 
-        if (resBuilder.toString().isBlank()) {
-            return ApiResponse.builder()
-                    .result(ResponseResult.failed.name())
-                    .message("Can not delete because these IDs do not exist in database")
-                    .status(HttpStatus.BAD_REQUEST)
-                    .build();
-        } else {
-            updateCache(successTypes);
+        updateCache(successTypes);
 
-            return ApiResponse.builder()
-                    .result(ResponseResult.success.name())
-                    .message("Deleted category with ID " + resBuilder.substring(0, resBuilder.lastIndexOf(",")) + " successfully")
-                    .status(HttpStatus.OK)
-                    .build();
-        }
+        errors = categoryIdList.stream()
+                .map(id -> "Category with ID " + id + " does not exist")
+                .collect(Collectors.toList());
+
+        return ApiResponse.builder()
+                .result(ResponseResult.success.name())
+                .content(success)
+                .errors(errors)
+                .message("Delete " + successCount + "/" + totalIds + " categories successfully")
+                .status(HttpStatus.OK)
+                .build();
     }
 
     private void updateCache(Set<TableName> successTableNames) {

@@ -1,5 +1,6 @@
 package com.management_system.resource.entities.database.facility;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.management_system.resource.infrastucture.constant.FacilityStatusEnum;
 import com.management_system.resource.infrastucture.constant.FacilityTypeEnum;
 import com.management_system.utilities.entities.database.MongoDbEntity;
@@ -37,6 +38,10 @@ public class Facility extends MongoDbEntity implements Serializable {
 
     @Field(name = "note")
     String note;
+
+    @JsonProperty(value = "supplier_id")
+    @Field(name = "supplier_id")
+    String supplierId;
 
     @Enumerated(EnumType.STRING)
     @Field(name = "status", write = Field.Write.NON_NULL)

@@ -13,5 +13,8 @@ public interface CategoryRepository extends MongoRepository<Category, String> {
     @Query(value = "{ '_id': { $in: ?0 } }", fields = "{ '_id': 1 }")
     List<Category> findIdsByIdIn(List<String> ids);
 
+    @Query("{ 'sub_categories._id': ?0 }")
+    List<Category> findBySubCategoryId(String subCategoryId);
+
     List<Category> findByType(TableName tableName);
 }
