@@ -1,7 +1,7 @@
 package com.management_system.resource.usecases.supplier;
 
 import com.management_system.resource.entities.database.supplier.Supplier;
-import com.management_system.resource.entities.request_dto.supplier.SupplierRequest;
+import com.management_system.resource.entities.request_dto.supplier.EditSupplierRequest;
 import com.management_system.resource.infrastucture.feign.redis.RedisServiceClient;
 import com.management_system.resource.infrastucture.repository.SupplierRepository;
 import com.management_system.utilities.constant.enumuration.ResponseResult;
@@ -13,6 +13,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
 
@@ -30,24 +32,16 @@ public class EditSupplierUseCase extends UseCase<EditSupplierUseCase.InputValue,
 
     @Override
     public ApiResponse execute(InputValue input) {
-        if (input.supplierRequest().getId().isBlank()) {
-            return ApiResponse.builder()
-                    .result(ResponseResult.failed.name())
-                    .message("Can not find id field")
-                    .status(HttpStatus.BAD_REQUEST)
-                    .build();
-        }
+        String supplierId = input.editSupplierRequest().getId();
+        List<String> errors = new ArrayList<>();
 
-        Optional<Supplier> supplierOptional = supplierRepo.findById(input.supplierRequest().getId());
+        Optional<Supplier> supplierOptional = supplierRepo.findById(supplierId);
 
         if (supplierOptional.isPresent()) {
-            supplierRepo.save(dbUtils.mergeMongoEntityFromRequest(supplierOptional.get(), input.supplierRequest()));
+            Supplier supplier = dbUtils.mergeMongoEntityFromRequest(supplierOptional.get(), input.editSupplierRequest());
+            supplierRepo.save(supplier);
 
-            CompletableFuture.runAsync(() -> redisServiceClient.delete(
-                            TableName.SUPPLIER,
-                            input.supplierRequest().getId(),
-                            true
-                    ))
+            CompletableFuture.runAsync(() -> redisServiceClient.delete(TableName.SUPPLIER, supplierId, true))
                     .exceptionally(
                             ex -> {
                                 ex.printStackTrace();
@@ -57,18 +51,22 @@ public class EditSupplierUseCase extends UseCase<EditSupplierUseCase.InputValue,
 
             return ApiResponse.builder()
                     .result(ResponseResult.success.name())
-                    .message("Edit supplier ID " + input.supplierRequest().getId() + " successfully")
+                    .errors(errors)
+                    .message("Edit supplier ID " + input.editSupplierRequest().getId() + " successfully")
                     .status(HttpStatus.OK)
                     .build();
         } else {
+            errors.add("Supplier with id " + input.editSupplierRequest().getId() + " does not exist");
+
             return ApiResponse.builder()
                     .result(ResponseResult.failed.name())
-                    .message("Supplier with id " + input.supplierRequest().getId() + " does not exist")
+                    .message("Edit supplier failed")
+                    .errors(errors)
                     .status(HttpStatus.BAD_REQUEST)
                     .build();
         }
     }
 
-    public record InputValue(SupplierRequest supplierRequest) implements UseCase.InputValue {
+    public record InputValue(EditSupplierRequest editSupplierRequest) implements UseCase.InputValue {
     }
 }

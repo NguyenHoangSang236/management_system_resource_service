@@ -8,6 +8,8 @@ import com.management_system.utilities.core.validator.insert.InsertValid;
 import com.management_system.utilities.entities.api.request.ApiRequest;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -19,27 +21,24 @@ import java.util.Map;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SupplierRequest extends ApiRequest implements Serializable {
+public class EditSupplierRequest extends ApiRequest implements Serializable {
+    @NotNull
+    @Size(max = 30)
     String id;
 
-    @InsertValid(nullMessage = "Name can not be null")
-    @Field(value = "name")
+    @Size(max = 30)
     String name;
 
-    @InsertValid(nullMessage = "Organization can not be null")
-    @Field(value = "organization")
+    @Size(max = 50)
     String organization;
 
-    @InsertValid(nullMessage = "Address can not be null")
-    @Field(value = "address")
     String address;
 
     @InsertValid(
-            nullMessage = "Email can not be null",
             emailMessage = "Invalid email",
+            nullable = true,
             isEmail = true
     )
-    @Field(value = "email")
     String email;
 
     @Enumerated(EnumType.STRING)
@@ -47,8 +46,8 @@ public class SupplierRequest extends ApiRequest implements Serializable {
     SupplierStatusEnum status;
 
     @InsertValid(
-            nullMessage = "Phone number can not be null",
             phoneMessage = "Wrong format for phone number",
+            nullable = true,
             isPhoneNumber = true
     )
     @JsonProperty(value = "phone_number")

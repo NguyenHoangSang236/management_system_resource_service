@@ -1,8 +1,10 @@
 package com.management_system.resource.infrastucture.controller;
 
 import com.management_system.resource.entities.request_dto.filter_requests.SupplierFilterRequest;
-import com.management_system.resource.entities.request_dto.supplier.SupplierRequest;
+import com.management_system.resource.entities.request_dto.supplier.AddSupplierRequest;
+import com.management_system.resource.entities.request_dto.supplier.EditSupplierRequest;
 import com.management_system.resource.usecases.supplier.AddNewSuppliersUseCase;
+import com.management_system.resource.usecases.supplier.EditSupplierUseCase;
 import com.management_system.resource.usecases.supplier.FilterSuppliersUseCase;
 import com.management_system.resource.usecases.supplier.ViewSupplierDetailsByIdUseCase;
 import com.management_system.utilities.constant.ConstantValue;
@@ -18,7 +20,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 @Tag(name = "Supplier", description = "Operations related to managing suppliers")
@@ -29,6 +30,7 @@ public class SupplierController {
     final UseCaseExecutor useCaseExecutor;
     final FilterSuppliersUseCase filterSuppliersUseCase;
     final AddNewSuppliersUseCase addNewSuppliersUseCase;
+    final EditSupplierUseCase editSupplierUseCase;
     final ViewSupplierDetailsByIdUseCase viewSupplierDetailsByIdUseCase;
 
 
@@ -46,17 +48,32 @@ public class SupplierController {
         );
     }
 
-    @Operation(summary = "Add one or multiple suppliers")
+    @Operation(summary = "Add new supplier")
     @PreAuthorize(ConstantValue.MANAGER_AUTHOR)
     @PostMapping("/addNewSuppliers")
     public CompletableFuture<ResponseEntity<ApiResponse>> addNewSuppliers(
             @Valid
             @RequestBody
-            List<@Valid SupplierRequest> suppliers
+            AddSupplierRequest supplierRequest
     ) {
         return useCaseExecutor.execute(
                 addNewSuppliersUseCase,
-                new AddNewSuppliersUseCase.InputValue(suppliers),
+                new AddNewSuppliersUseCase.InputValue(supplierRequest),
+                ResponseMapper::map
+        );
+    }
+
+    @Operation(summary = "Edit selected supplier")
+    @PreAuthorize(ConstantValue.MANAGER_AUTHOR)
+    @PatchMapping("/editSupplier")
+    public CompletableFuture<ResponseEntity<ApiResponse>> editSupplier(
+            @Valid
+            @RequestBody
+            EditSupplierRequest supplierRequest
+    ) {
+        return useCaseExecutor.execute(
+                editSupplierUseCase,
+                new EditSupplierUseCase.InputValue(supplierRequest),
                 ResponseMapper::map
         );
     }
