@@ -3,10 +3,7 @@ package com.management_system.resource.infrastucture.controller;
 import com.management_system.resource.entities.request_dto.filter_requests.SupplierFilterRequest;
 import com.management_system.resource.entities.request_dto.supplier.AddSupplierRequest;
 import com.management_system.resource.entities.request_dto.supplier.EditSupplierRequest;
-import com.management_system.resource.usecases.supplier.AddNewSuppliersUseCase;
-import com.management_system.resource.usecases.supplier.EditSupplierUseCase;
-import com.management_system.resource.usecases.supplier.FilterSuppliersUseCase;
-import com.management_system.resource.usecases.supplier.ViewSupplierDetailsByIdUseCase;
+import com.management_system.resource.usecases.supplier.*;
 import com.management_system.utilities.constant.ConstantValue;
 import com.management_system.utilities.core.usecase.UseCaseExecutor;
 import com.management_system.utilities.entities.api.response.ApiResponse;
@@ -31,11 +28,12 @@ public class SupplierController {
     final FilterSuppliersUseCase filterSuppliersUseCase;
     final AddNewSuppliersUseCase addNewSuppliersUseCase;
     final EditSupplierUseCase editSupplierUseCase;
+    final DeleteSupplierUseCase deleteSupplierUseCase;
     final ViewSupplierDetailsByIdUseCase viewSupplierDetailsByIdUseCase;
 
 
     @Operation(summary = "Get suppliers by filters")
-    @PostMapping("/filterSuppliers")
+    @PostMapping("/filter")
     public CompletableFuture<ResponseEntity<ApiResponse>> filterSuppliers(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Filter for supplier")
             @RequestBody
@@ -50,7 +48,7 @@ public class SupplierController {
 
     @Operation(summary = "Add new supplier")
     @PreAuthorize(ConstantValue.MANAGER_AUTHOR)
-    @PostMapping("/addNewSuppliers")
+    @PostMapping("/add")
     public CompletableFuture<ResponseEntity<ApiResponse>> addNewSuppliers(
             @Valid
             @RequestBody
@@ -65,7 +63,7 @@ public class SupplierController {
 
     @Operation(summary = "Edit selected supplier")
     @PreAuthorize(ConstantValue.MANAGER_AUTHOR)
-    @PatchMapping("/editSupplier")
+    @PatchMapping("/edit")
     public CompletableFuture<ResponseEntity<ApiResponse>> editSupplier(
             @Valid
             @RequestBody
@@ -84,6 +82,17 @@ public class SupplierController {
         return useCaseExecutor.execute(
                 viewSupplierDetailsByIdUseCase,
                 new ViewSupplierDetailsByIdUseCase.InputValue(id),
+                ResponseMapper::map
+        );
+    }
+
+    @Operation(summary = "Delete supplier by ID")
+    @PreAuthorize(ConstantValue.MANAGER_AUTHOR)
+    @DeleteMapping("/delete/{id}")
+    public CompletableFuture<ResponseEntity<ApiResponse>> deleteSupplierById(@PathVariable("id") String id) {
+        return useCaseExecutor.execute(
+                deleteSupplierUseCase,
+                new DeleteSupplierUseCase.InputValue(id),
                 ResponseMapper::map
         );
     }

@@ -5,10 +5,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.management_system.resource.entities.request_dto.facility.AddFacilityRequest;
 import com.management_system.resource.entities.request_dto.filter_requests.FacilityFilterRequest;
 import com.management_system.resource.entities.request_dto.facility.EditFacilityRequest;
-import com.management_system.resource.usecases.facility.AddNewFacilityUseCase;
-import com.management_system.resource.usecases.facility.EditFacilityUseCase;
-import com.management_system.resource.usecases.facility.FilterFacilitiesUseCase;
-import com.management_system.resource.usecases.facility.ViewFacilityDetailsByIdUseCase;
+import com.management_system.resource.usecases.facility.*;
+import com.management_system.resource.usecases.supplier.DeleteSupplierUseCase;
 import com.management_system.utilities.constant.ConstantValue;
 import com.management_system.utilities.core.usecase.UseCaseExecutor;
 import com.management_system.utilities.core.validator.file.ImageFileValid;
@@ -39,11 +37,12 @@ public class FacilityController {
     final AddNewFacilityUseCase addNewFacilityUseCase;
     final EditFacilityUseCase editFacilityUseCase;
     final FilterFacilitiesUseCase filterFacilitiesUseCase;
+    final DeleteFacilityUseCase deleteFacilityUseCase;
     final ViewFacilityDetailsByIdUseCase viewFacilityDetailsByIdUseCase;
 
     @Operation(summary = "Add new facility")
     @PreAuthorize(ConstantValue.MANAGER_AUTHOR)
-    @PostMapping("/addNewFacility")
+    @PostMapping("/add")
     public CompletableFuture<ResponseEntity<ApiResponse>> addNewFacilities(
             @Valid
             @RequestPart("data")
@@ -72,7 +71,7 @@ public class FacilityController {
 
     @Operation(summary = "Edit a selected facility")
     @PreAuthorize(ConstantValue.MANAGER_AUTHOR)
-    @PatchMapping("/editFacility")
+    @PatchMapping("/edit")
     public CompletableFuture<ResponseEntity<ApiResponse>> editFacility(
             @Valid
             @RequestPart("data")
@@ -99,7 +98,7 @@ public class FacilityController {
     }
 
     @Operation(summary = "Get facilities by filters")
-    @PostMapping("/filterFacilities")
+    @PostMapping("/filter")
     public CompletableFuture<ResponseEntity<ApiResponse>> filterFacilities(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Filter for facility")
             @RequestBody
@@ -113,11 +112,22 @@ public class FacilityController {
     }
 
     @Operation(summary = "Get facility's details by ID")
-    @GetMapping("/facilityId={id}")
+    @GetMapping("/{id}")
     public CompletableFuture<ResponseEntity<ApiResponse>> viewFacilityById(@PathVariable("id") String id) {
         return useCaseExecutor.execute(
                 viewFacilityDetailsByIdUseCase,
                 new ViewFacilityDetailsByIdUseCase.InputValue(id),
+                ResponseMapper::map
+        );
+    }
+
+    @Operation(summary = "Delete facility by ID")
+    @PreAuthorize(ConstantValue.MANAGER_AUTHOR)
+    @DeleteMapping("/delete/{id}")
+    public CompletableFuture<ResponseEntity<ApiResponse>> deleteFacilityById(@PathVariable("id") String id) {
+        return useCaseExecutor.execute(
+                deleteFacilityUseCase,
+                new DeleteFacilityUseCase.InputValue(id),
                 ResponseMapper::map
         );
     }

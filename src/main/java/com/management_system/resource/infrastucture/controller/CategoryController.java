@@ -42,7 +42,7 @@ public class CategoryController {
 
     @Operation(summary = "Add one or multiple categories")
     @PreAuthorize(ConstantValue.MANAGER_AUTHOR)
-    @PostMapping("/authen/category/addNewCategories")
+    @PostMapping("/authen/category/add")
     public CompletableFuture<ResponseEntity<ApiResponse>> addNewCategories(
             @NotNull
             @NotEmpty
@@ -59,7 +59,7 @@ public class CategoryController {
 
     @Operation(summary = "Edit a selected category")
     @PreAuthorize(ConstantValue.MANAGER_AUTHOR)
-    @PatchMapping("/authen/category/editCategory")
+    @PatchMapping("/authen/category/edit")
     public CompletableFuture<ResponseEntity<ApiResponse>> editCategory(
             @NotNull(message = "Category request must not be null")
             @RequestBody
@@ -74,7 +74,7 @@ public class CategoryController {
 
     @Operation(summary = "Delete one or multiple categories by IDs")
     @PreAuthorize(ConstantValue.MANAGER_AUTHOR)
-    @DeleteMapping("/authen/category/deleteCategories")
+    @DeleteMapping("/authen/category/delete")
     public CompletableFuture<ResponseEntity<ApiResponse>> deleteCategories(
             @RequestBody
             @Size(max = 10, message = "ID list size must be from 0 to 10")
@@ -89,7 +89,7 @@ public class CategoryController {
     }
 
     @Operation(summary = "Get categories by filter")
-    @GetMapping("/unauthen/category/filterCategories")
+    @GetMapping("/unauthen/category/filter")
     public CompletableFuture<ResponseEntity<ApiResponse>> filterCategories(
             @RequestParam(required = false)
             String name,

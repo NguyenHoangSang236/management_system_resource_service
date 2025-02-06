@@ -20,14 +20,15 @@ import java.util.concurrent.CompletableFuture;
 
 @Component
 public class EditSupplierUseCase extends UseCase<EditSupplierUseCase.InputValue, ApiResponse> {
-    @Autowired
-    SupplierRepository supplierRepo;
+    private final SupplierRepository supplierRepo;
+    private final RedisServiceClient redisServiceClient;
+    private final DbUtils dbUtils;
 
-    @Autowired
-    RedisServiceClient redisServiceClient;
-
-    @Autowired
-    DbUtils dbUtils;
+    public EditSupplierUseCase(SupplierRepository supplierRepo, RedisServiceClient redisServiceClient, DbUtils dbUtils) {
+        this.supplierRepo = supplierRepo;
+        this.redisServiceClient = redisServiceClient;
+        this.dbUtils = dbUtils;
+    }
 
 
     @Override

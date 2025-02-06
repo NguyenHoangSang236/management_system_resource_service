@@ -5,10 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.management_system.resource.entities.request_dto.filter_requests.IngredientFilterRequest;
 import com.management_system.resource.entities.request_dto.ingredient.AddIngredientRequest;
 import com.management_system.resource.entities.request_dto.ingredient.EditIngredientRequest;
-import com.management_system.resource.usecases.ingredient.AddNewIngredientsUseCase;
-import com.management_system.resource.usecases.ingredient.EditIngredientUseCase;
-import com.management_system.resource.usecases.ingredient.FilterIngredientsUseCase;
-import com.management_system.resource.usecases.ingredient.ViewIngredientDetailsByIdUseCase;
+import com.management_system.resource.usecases.ingredient.*;
 import com.management_system.utilities.constant.ConstantValue;
 import com.management_system.utilities.core.usecase.UseCaseExecutor;
 import com.management_system.utilities.core.validator.file.ImageFileValid;
@@ -42,11 +39,12 @@ public class IngredientController {
     final FilterIngredientsUseCase filterIngredientsUseCase;
     final EditIngredientUseCase editIngredientUseCase;
     final ViewIngredientDetailsByIdUseCase viewIngredientDetailsByIdUseCase;
+    final DeleteIngredientUseCase deleteIngredientUseCase;
     final UseCaseExecutor useCaseExecutor;
 
     @Operation(summary = "Add new ingredient")
     @PreAuthorize(ConstantValue.MANAGER_AUTHOR)
-    @PostMapping(path = "/addNewIngredients", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PostMapping(path = "/add", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public CompletableFuture<ResponseEntity<ApiResponse>> addNewIngredient(
             @Valid
             @RequestPart("data")
@@ -76,7 +74,7 @@ public class IngredientController {
 
     @Operation(summary = "Edit a selected ingredient")
     @PreAuthorize(ConstantValue.MANAGER_AUTHOR)
-    @PatchMapping(path = "/editIngredient", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    @PatchMapping(path = "/edit", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public CompletableFuture<ResponseEntity<ApiResponse>> editIngredient(
             @Valid
             @RequestPart("data")
@@ -104,7 +102,7 @@ public class IngredientController {
     }
 
     @Operation(summary = "Get ingredients by filters")
-    @PostMapping("/filterIngredients")
+    @PostMapping("/filter")
     public CompletableFuture<ResponseEntity<ApiResponse>> filterIngredient(
             @io.swagger.v3.oas.annotations.parameters.RequestBody(description = "Filter for ingredient")
             @RequestBody IngredientFilterRequest filterRequest
@@ -122,6 +120,17 @@ public class IngredientController {
         return useCaseExecutor.execute(
                 viewIngredientDetailsByIdUseCase,
                 new ViewIngredientDetailsByIdUseCase.InputValue(id),
+                ResponseMapper::map
+        );
+    }
+
+    @Operation(summary = "Delete ingredient by ID")
+    @PreAuthorize(ConstantValue.MANAGER_AUTHOR)
+    @DeleteMapping("/delete/{id}")
+    public CompletableFuture<ResponseEntity<ApiResponse>> deleteIngredientById(@PathVariable("id") String id) {
+        return useCaseExecutor.execute(
+                deleteIngredientUseCase,
+                new DeleteIngredientUseCase.InputValue(id),
                 ResponseMapper::map
         );
     }
