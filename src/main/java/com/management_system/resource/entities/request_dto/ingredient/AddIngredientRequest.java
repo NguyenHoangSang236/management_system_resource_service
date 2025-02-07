@@ -6,13 +6,11 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.management_system.resource.infrastucture.constant.IngredientMeasurementUnitEnum;
 import com.management_system.resource.infrastucture.constant.IngredientStatusEnum;
+import com.management_system.utilities.constant.ConstantValue;
 import com.management_system.utilities.entities.api.request.ApiRequest;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.validation.constraints.Min;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.*;
 import org.springframework.data.mongodb.core.mapping.Field;
 
@@ -30,16 +28,17 @@ import java.util.Map;
 public class AddIngredientRequest extends ApiRequest implements Serializable {
     @JsonProperty("supplier_id")
     @NotNull(message = "Supplier ID must not be null")
+    @NotBlank(message = "Supplier ID must not be empty")
     String supplierId;
 
     @NotNull(message = "Ingredient name must not be null")
     String name;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = ConstantValue.DATETIME_ISO_8601_FORMAT)
     @JsonProperty(value = "last_update_time")
     Date lastUpdateTime;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = ConstantValue.DATETIME_ISO_8601_FORMAT)
     @JsonProperty(value = "creation_date")
     Date creationDate;
 

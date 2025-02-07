@@ -47,7 +47,7 @@ public class FacilityController {
             @Valid
             @RequestPart("data")
             @NotNull
-            String facilityRequestBody,
+            AddFacilityRequest facilityRequest,
             @NotNull
             @Parameter(description = "File to upload", required = true,
                     content = @Content(
@@ -58,10 +58,7 @@ public class FacilityController {
             @ImageFileValid
             @RequestPart("image")
             MultipartFile image
-    ) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        AddFacilityRequest facilityRequest = objectMapper.readValue(facilityRequestBody, AddFacilityRequest.class);
-
+    ) {
         return useCaseExecutor.execute(
                 addNewFacilityUseCase,
                 new AddNewFacilityUseCase.InputValue(facilityRequest, image),
@@ -76,7 +73,7 @@ public class FacilityController {
             @Valid
             @RequestPart("data")
             @NotNull
-            String facilityRequestBody,
+            EditFacilityRequest facilityRequest,
             @Parameter(description = "File to upload", required = true,
                     content = @Content(
                             mediaType = "multipart/form-data",
@@ -86,10 +83,7 @@ public class FacilityController {
             @ImageFileValid(nullable = true)
             @RequestPart("image")
             MultipartFile image
-    ) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        EditFacilityRequest facilityRequest = objectMapper.readValue(facilityRequestBody, EditFacilityRequest.class);
-
+    ) {
         return useCaseExecutor.execute(
                 editFacilityUseCase,
                 new EditFacilityUseCase.InputValue(facilityRequest, image),

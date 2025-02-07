@@ -56,10 +56,6 @@ public class AddNewIngredientsUseCase extends UseCase<AddNewIngredientsUseCase.I
 
         if (existingIngredientOptional.isPresent()) {
             errors.add("Add ingredient " + ingredientName + " failed because this ingredient has already existed");
-        } else if (ingredientReq.getSupplierId().isBlank()) {
-            errors.add("Add ingredient " + ingredientName + " failed because supplier's ID is null");
-        } else if (ingredientReq.getSubCategoryIds() == null || ingredientReq.getSubCategoryIds().isEmpty()) {
-            errors.add("Add ingredient " + ingredientName + " failed because category IDs is null");
         } else {
             Optional<Supplier> supplierOptional = supplierRepo.findById(ingredientReq.getSupplierId());
 
@@ -146,6 +142,6 @@ public class AddNewIngredientsUseCase extends UseCase<AddNewIngredientsUseCase.I
                 .build();
     }
 
-    public record InputValue(HttpServletRequest request, AddIngredientRequest addIngredientRequest, MultipartFile image) implements UseCase.InputValue {
+    public record InputValue(AddIngredientRequest addIngredientRequest, MultipartFile image) implements UseCase.InputValue {
     }
 }

@@ -1,7 +1,5 @@
 package com.management_system.resource.infrastucture.controller;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.management_system.resource.entities.request_dto.filter_requests.IngredientFilterRequest;
 import com.management_system.resource.entities.request_dto.ingredient.AddIngredientRequest;
 import com.management_system.resource.entities.request_dto.ingredient.EditIngredientRequest;
@@ -16,7 +14,6 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
@@ -49,7 +46,7 @@ public class IngredientController {
             @Valid
             @RequestPart("data")
             @NotNull
-            String ingredientRequestBody,
+            AddIngredientRequest ingredientRequestBody,
             @Parameter(description = "File to upload", required = true,
                     content = @Content(
                             mediaType = "multipart/form-data",
@@ -59,15 +56,11 @@ public class IngredientController {
             @NotNull
             @ImageFileValid
             @RequestPart("image")
-            MultipartFile image,
-            HttpServletRequest request
-    ) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        AddIngredientRequest addIngredientRequest = objectMapper.readValue(ingredientRequestBody, AddIngredientRequest.class);
-
+            MultipartFile image
+    ) {
         return useCaseExecutor.execute(
                 addNewIngredientsUseCase,
-                new AddNewIngredientsUseCase.InputValue(request, addIngredientRequest, image),
+                new AddNewIngredientsUseCase.InputValue(ingredientRequestBody, image),
                 ResponseMapper::map
         );
     }
@@ -79,7 +72,7 @@ public class IngredientController {
             @Valid
             @RequestPart("data")
             @NotNull
-            String ingredientRequestBody,
+            EditIngredientRequest ingredientRequest,
             @Parameter(description = "File to upload", required = true,
                     content = @Content(
                             mediaType = "multipart/form-data",
@@ -88,15 +81,11 @@ public class IngredientController {
             )
             @ImageFileValid(nullable = true)
             @RequestPart("image")
-            MultipartFile image,
-            HttpServletRequest request
-    ) throws JsonProcessingException {
-        ObjectMapper objectMapper = new ObjectMapper();
-        EditIngredientRequest ingredientRequest = objectMapper.readValue(ingredientRequestBody, EditIngredientRequest.class);
-
+            MultipartFile image
+    ) {
         return useCaseExecutor.execute(
                 editIngredientUseCase,
-                new EditIngredientUseCase.InputValue(request, ingredientRequest, image),
+                new EditIngredientUseCase.InputValue(ingredientRequest, image),
                 ResponseMapper::map
         );
     }

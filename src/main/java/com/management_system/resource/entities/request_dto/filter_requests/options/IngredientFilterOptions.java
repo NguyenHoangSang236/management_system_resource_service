@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.management_system.resource.infrastucture.constant.IngredientMeasurementUnitEnum;
 import com.management_system.resource.infrastucture.constant.IngredientStatusEnum;
 import com.management_system.resource.infrastucture.constant.SortTypeEnum;
+import com.management_system.utilities.constant.ConstantValue;
 import com.management_system.utilities.core.filter.FilterOption;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -40,11 +41,11 @@ public class IngredientFilterOptions extends FilterOption implements Serializabl
     @Enumerated(EnumType.STRING)
     IngredientStatusEnum status;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = ConstantValue.DATETIME_ISO_8601_FORMAT)
     @JsonProperty("start_creation_date")
     Date startCreationDate;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = ConstantValue.DATETIME_ISO_8601_FORMAT)
     @JsonProperty("end_creation_date")
     Date endCreationDate;
 

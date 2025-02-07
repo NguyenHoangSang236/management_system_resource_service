@@ -21,6 +21,12 @@ spring:
       username: root
       password: hoangsang236
       authentication-database: admin
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 20MB
+      max-request-size: 50MB
+
 
 management-system-server:
   redis: http://localhost:8079

@@ -8,6 +8,7 @@ import com.management_system.utilities.core.validator.insert.InsertValid;
 import com.management_system.utilities.entities.api.request.ApiRequest;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.*;
@@ -21,15 +22,18 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 public class AddSupplierRequest extends ApiRequest implements Serializable {
-    @NotNull
+    @NotNull(message = "Supplier name must not be null")
+    @NotBlank(message = "Supplier name must not be empty")
     @Size(max = 30)
     String name;
 
-    @NotNull
+    @NotNull(message = "Supplier organization must not be null")
+    @NotBlank(message = "Supplier organization must not be empty")
     @Size(max = 50)
     String organization;
 
-    @NotNull
+    @NotNull(message = "Supplier address must not be null")
+    @NotBlank(message = "Supplier address must not be empty")
     String address;
 
     @InsertValid(

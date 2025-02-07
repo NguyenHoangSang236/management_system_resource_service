@@ -6,6 +6,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.management_system.resource.infrastucture.constant.IngredientMeasurementUnitEnum;
 import com.management_system.resource.infrastucture.constant.IngredientStatusEnum;
+import com.management_system.utilities.constant.ConstantValue;
 import com.management_system.utilities.entities.api.request.ApiRequest;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -35,11 +36,11 @@ public class EditIngredientRequest extends ApiRequest implements Serializable {
 
     String name;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = ConstantValue.DATETIME_ISO_8601_FORMAT)
     @JsonProperty(value = "last_update_time")
     Date lastUpdateTime;
 
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = ConstantValue.DATETIME_ISO_8601_FORMAT)
     @JsonProperty(value = "creation_date")
     Date creationDate;
 

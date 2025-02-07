@@ -2,6 +2,7 @@ package com.management_system.resource.entities.database.menu;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.management_system.utilities.constant.ConstantValue;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import lombok.*;
@@ -15,9 +16,9 @@ import java.util.Date;
 @AllArgsConstructor
 @Builder
 public class MenuPrice {
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss.SSSZ")
-    @JsonProperty("start_date")
-    Date startDate;
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = ConstantValue.DATETIME_ISO_8601_FORMAT)
+    @JsonProperty("creation_date")
+    Date creationDate;
 
     Double price;
 

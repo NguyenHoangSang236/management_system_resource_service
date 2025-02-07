@@ -25,24 +25,24 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 public class AddFacilityRequest extends ApiRequest implements Serializable {
-    @NotNull
-    @NotBlank
+    @NotNull(message = "Facility name must not be null")
+    @NotBlank(message = "Facility name must not be empty")
     @Size(max = 50)
     String name;
 
-    @NotNull
+    @NotNull(message = "Facility type must not be null")
     @Enumerated(EnumType.STRING)
     FacilityTypeEnum type;
 
-    @NotNull
+    @NotNull(message = "Facility quantity must not be null")
     @Min(0)
-    int quantity;
+    Integer quantity;
 
     String note;
 
     @JsonProperty("supplier_id")
-    @NotNull
-    @NotBlank
+    @NotNull(message = "Supplier ID must not be null")
+    @NotBlank(message = "Supplier ID must not be empty")
     @Size(max = 30)
     String supplierId;
 

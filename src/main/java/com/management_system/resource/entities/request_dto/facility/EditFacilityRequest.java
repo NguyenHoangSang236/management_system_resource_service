@@ -24,7 +24,7 @@ import java.util.Map;
 @AllArgsConstructor
 @NoArgsConstructor
 public class EditFacilityRequest extends ApiRequest implements Serializable {
-    @NotNull
+    @NotNull(message = "Facility ID must not be null")
     @Size(max = 30, min = 1)
     String id;
 

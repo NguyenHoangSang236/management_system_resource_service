@@ -167,6 +167,6 @@ public class EditIngredientUseCase extends UseCase<EditIngredientUseCase.InputVa
         }
     }
 
-    public record InputValue(HttpServletRequest request, EditIngredientRequest ingredientRequest, MultipartFile image) implements UseCase.InputValue {
+    public record InputValue(EditIngredientRequest ingredientRequest, MultipartFile image) implements UseCase.InputValue {
     }
 }

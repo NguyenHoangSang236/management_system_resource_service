@@ -4,10 +4,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.management_system.resource.infrastucture.constant.MenuStatusEnum;
-import com.management_system.utilities.core.validator.insert.InsertValid;
 import com.management_system.utilities.entities.api.request.ApiRequest;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.io.Serializable;
@@ -20,31 +20,29 @@ import java.util.Map;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class MenuRequest extends ApiRequest implements Serializable {
-    String id;
-
-    @InsertValid(nullMessage = "Menu product name can not be null")
+public class AddMenuRequest extends ApiRequest implements Serializable {
+    @NotNull(message = "Menu product name must not be null")
+    @NotBlank(message = "Menu product name must not be empty")
     String name;
-
-    @InsertValid(nullMessage = "Menu product image can not be null")
-    String image;
 
     String description;
 
+    @Size(max = 30)
     @JsonProperty("current_discount_id")
     String currentDiscountId;
 
-    @JsonProperty("category_id")
-    @InsertValid(nullMessage = "Category ID can not be null")
-    String categoryId;
-
+    @NotNull(message = "List of sub-category IDs must not be null")
+    @NotEmpty(message = "List of sub-category IDs must not be empty")
+    @Size(max = 10)
     @JsonProperty("sub_category_ids")
     List<String> subCategoryIds;
 
-    @InsertValid(nullMessage = "Product price can not be null")
+    @NotNull
+    @Min(0)
+    @Max(1000000)
     Double price;
 
-    @InsertValid(nullMessage = "Currency can not be null")
+    @NotNull
     @Enumerated(EnumType.STRING)
     Currency currency;
 
